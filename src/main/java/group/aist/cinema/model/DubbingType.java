@@ -13,8 +13,9 @@ import lombok.Setter;
 @Entity
 @Table(name = "dubbing_types")
 public class DubbingType {
+
     @Id
-    @Column(name = "id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
     @Column(name = "name", nullable = false)

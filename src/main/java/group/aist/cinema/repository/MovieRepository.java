@@ -15,9 +15,4 @@ public interface MovieRepository extends JpaRepository<Movie, Long> {
     @EntityGraph(attributePaths = {"movies", "users"})
     List<Movie> findByReleaseDate(LocalDate releaseDate);
 
-    @EntityGraph(attributePaths = {"movies", "users"})
-    List<Movie> findByHallName(String hall);
-
-    @EntityGraph(attributePaths = {"movies", "users"})
-    List<Movie> findByFavourite(String favorite);
 }

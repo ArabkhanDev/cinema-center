@@ -14,8 +14,9 @@ import lombok.Setter;
 @Entity
 @Table(name = "seats")
 public class Seat {
+
     @Id
-    @Column(name = "id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
     @Column(name = "type", nullable = false)

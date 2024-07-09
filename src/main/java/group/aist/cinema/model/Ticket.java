@@ -18,8 +18,9 @@ import java.time.LocalDate;
 @Entity
 @Table(name = "tickets")
 public class Ticket {
+
     @Id
-    @Column(name = "id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
     @Column(name = "price", nullable = false, precision = 8, scale = 2)
