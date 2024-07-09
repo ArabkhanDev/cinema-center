@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface MovieStreamRepository extends JpaRepository<MovieStream,Long> {
 
-    List<MovieStream> findMovieStreamByDubbingType(String dubbingType);
+    List<MovieStream> findByDubbingType(String dubbingType);
 }
