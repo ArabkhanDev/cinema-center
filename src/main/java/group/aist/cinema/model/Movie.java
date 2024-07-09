@@ -15,8 +15,9 @@ import java.time.LocalDate;
 @Entity
 @Table(name = "movies")
 public class Movie {
+
     @Id
-    @Column(name = "id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
     @Column(name = "name", nullable = false)
