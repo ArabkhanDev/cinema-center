@@ -35,12 +35,12 @@ public class MovieSession {
     @JoinColumn(name = "movie_id", nullable = false)
     private Movie movie;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "language_id", nullable = false)
-    private Language language;
-
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @OneToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "hall_id", nullable = false)
     private Hall hall;
+
+    @OneToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "movie_stream_id", nullable = false)
+    private MovieStream movieStream;
 
 }

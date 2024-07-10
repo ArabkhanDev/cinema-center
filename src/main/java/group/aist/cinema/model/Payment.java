@@ -24,4 +24,8 @@ public class Payment {
     @Column(name = "card_number", nullable = false)
     private String cardNumber;
 
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
 }

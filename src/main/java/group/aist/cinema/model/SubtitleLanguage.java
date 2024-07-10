@@ -21,6 +21,9 @@ public class SubtitleLanguage {
     @Column(name = "name", nullable = false)
     private String name;
 
+    @Column(name = "is_a_code", nullable = false)
+    private String isACode;
+
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "stream_id", nullable = false)
     private MovieStream movieStream;

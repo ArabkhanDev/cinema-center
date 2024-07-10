@@ -39,4 +39,9 @@ public class Movie {
     @JoinColumn(name = "stream_id", nullable = false)
     private MovieStream movieStream;
 
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "favorite_id", nullable = false)
+    private Favorite favorite;
+
+
 }

@@ -22,10 +22,6 @@ public class Favorite {
     private Long name;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "movie_id", nullable = false)
-    private Movie movie;
-
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 

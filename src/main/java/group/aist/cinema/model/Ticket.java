@@ -49,7 +49,7 @@ public class Ticket {
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "movie_id", nullable = false)
-    private Movie movie;
+    @JoinColumn(name = "movie_session_id ", nullable = false)
+    private MovieSession movieSession;
 
 }
