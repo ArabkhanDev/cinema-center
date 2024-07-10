@@ -2,7 +2,9 @@ package group.aist.cinema.service.impl;
 
 import group.aist.cinema.dto.common.SectorDTO;
 import group.aist.cinema.mapper.SectorMapper;
+import group.aist.cinema.model.Hall;
 import group.aist.cinema.model.Sector;
+import group.aist.cinema.repository.HallRepository;
 import group.aist.cinema.repository.SectorRepository;
 import group.aist.cinema.service.SectorService;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +17,7 @@ import org.springframework.stereotype.Service;
 public class SectorServiceImpl implements SectorService {
 
     private final SectorRepository sectorRepository;
+    private final HallRepository hallRepository;
     private final SectorMapper sectorMapper;
 
     @Override
@@ -32,6 +35,11 @@ public class SectorServiceImpl implements SectorService {
     @Override
     public SectorDTO createSector(SectorDTO sectorDTO) {
         Sector sector = sectorMapper.toEntity(sectorDTO);
+
+        Hall hall = hallRepository.findById(sectorDTO.getHallId())
+                .orElseThrow(() -> new RuntimeException("Hall not found with id " + sectorDTO.getHallId()));
+
+        sector.setHall(hall);
         return sectorMapper.toDTO(sectorRepository.save(sector));
     }
 
@@ -39,6 +47,11 @@ public class SectorServiceImpl implements SectorService {
     public SectorDTO updateSector(Long id, SectorDTO sectorDTO) {
         Sector sector = sectorRepository.findById(id).
                 orElseThrow(() -> new RuntimeException("Sector not found with id " + id));
+
+        Hall hall = hallRepository.findById(sectorDTO.getHallId())
+                .orElseThrow(() -> new RuntimeException("Hall not found with id " + sectorDTO.getHallId()));
+
+        sector.setHall(hall);
         sectorMapper.updateSectorFromDTO(sectorDTO, sector);
         return sectorMapper.toDTO(sectorRepository.save(sector));
     }

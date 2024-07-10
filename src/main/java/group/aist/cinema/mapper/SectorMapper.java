@@ -9,6 +9,7 @@ import org.mapstruct.MappingTarget;
 @Mapper(componentModel = "spring")
 public interface SectorMapper {
 
+    @Mapping(target = "hallId",source = "hall.id")
     SectorDTO toDTO(Sector author);
 
     Sector toEntity(SectorDTO authorDTO);
