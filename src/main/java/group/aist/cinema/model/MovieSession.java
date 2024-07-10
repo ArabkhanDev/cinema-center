@@ -16,8 +16,9 @@ import java.time.LocalDate;
 @Entity
 @Table(name = "movie-sessions")
 public class MovieSession {
+
     @Id
-    @Column(name = "id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
     @Column(name = "time", nullable = false)
@@ -28,7 +29,7 @@ public class MovieSession {
     private SessionType type;
 
     @Column(name = "is_active", nullable = false)
-    private Long isActive;
+    private boolean isActive;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "movie_id", nullable = false)
