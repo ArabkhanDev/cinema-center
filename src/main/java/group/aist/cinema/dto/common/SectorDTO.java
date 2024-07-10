@@ -18,11 +18,14 @@ public class SectorDTO {
 
     private String name;
 
+    private Long hallId;
+
 
     public SectorDTO(Sector sector) {
         this.raw = sector.getRaw();
         this.id = sector.getId();
         this.column = sector.getColumn();
         this.name = sector.getName();
+        this.hallId = sector.getHall().getId();
     }
 }

@@ -25,4 +25,8 @@ public class Sector {
     @Column(name = "name", nullable = false)
     private String name;
 
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "hall_id", nullable = false)
+    private Hall hall;
+
 }

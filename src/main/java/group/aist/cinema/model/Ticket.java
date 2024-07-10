@@ -30,6 +30,7 @@ public class Ticket {
     private String currency;
 
     @Column(name = "available_type", nullable = false)
+    @Enumerated(EnumType.STRING)
     private AvailableType availableType;
 
     @Column(name = "start_date", nullable = false)
