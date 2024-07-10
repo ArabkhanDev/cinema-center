@@ -16,14 +16,11 @@ public class Sector {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
-    @Column(name = "raw", nullable = false)
-    private String raw;
-
-    @Column(name = "`column`", nullable = false)
-    private String column;
-
     @Column(name = "name", nullable = false)
     private String name;
+
+    @Column(name = "number", nullable = false)
+    private Integer number;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "hall_id", nullable = false)

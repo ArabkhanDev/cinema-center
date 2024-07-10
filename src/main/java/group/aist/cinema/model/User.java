@@ -34,7 +34,4 @@ public class User {
     @JoinColumn(name = "balance_id", nullable = false)
     private Balance balance;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "payment_id", nullable = false)
-    private Payment payment;
 }
