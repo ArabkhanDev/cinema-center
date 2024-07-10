@@ -36,10 +36,11 @@ public class SectorServiceImpl implements SectorService {
     }
 
     @Override
-    public SectorDTO updateSector(Long id, SectorDTO authorDTO) {
-        SectorDTO sectorDTO = getSectorById(id);
-        sectorMapper.toEntity(sectorDTO);
-        return sectorDTO;
+    public SectorDTO updateSector(Long id, SectorDTO sectorDTO) {
+        Sector sector = sectorRepository.findById(id).
+                orElseThrow(() -> new RuntimeException("Sector not found with id " + id));
+        sectorMapper.updateSectorFromDTO(sectorDTO, sector);
+        return sectorMapper.toDTO(sectorRepository.save(sector));
     }
 
     @Override
