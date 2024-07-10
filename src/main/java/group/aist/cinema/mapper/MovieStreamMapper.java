@@ -8,8 +8,11 @@ import org.mapstruct.MappingTarget;
 
 @Mapper(componentModel = "spring")
 public interface MovieStreamMapper {
+
     MovieStream mapToEntity(MovieStreamDTO movieStreamDto);
+
     MovieStreamDTO mapToDto(MovieStream movieStream);
+
     @Mapping(target = "id",ignore = true)
     void updateMovieStreamFromDTO(MovieStreamDTO movieStreamDTO, @MappingTarget MovieStream movieStream);
 }

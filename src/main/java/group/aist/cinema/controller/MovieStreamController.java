@@ -8,7 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/v1/api/movieStreams")
+@RequestMapping("/v1/api/movie-streams")
 @RequiredArgsConstructor
 public class MovieStreamController {
 
