@@ -8,7 +8,9 @@ import java.math.BigDecimal;
 public class BalanceDTO {
 
     private Long id;
+
     private String currency;
+
     private BigDecimal amount;
 
 }

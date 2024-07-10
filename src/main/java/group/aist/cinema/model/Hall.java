@@ -24,14 +24,7 @@ public class Hall {
     @Column(name = "seat_count", nullable = false)
     private Integer seatCount;
 
-    @Column(name = "movie_id", nullable = false)
-    private Long movieId;
-
     @Column(name = "available_seat", nullable = false)
     private Integer availableSeat;
-
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "sector_id", nullable = false)
-    private Sector sector;
 
 }
