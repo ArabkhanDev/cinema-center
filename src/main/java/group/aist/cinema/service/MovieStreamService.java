@@ -1,18 +1,18 @@
 package group.aist.cinema.service;
 
-import group.aist.cinema.dto.common.MovieStreamDto;
+import group.aist.cinema.dto.common.MovieStreamDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 public interface MovieStreamService {
 
-    Page<MovieStreamDto> getAllMovieStreams(Pageable pageable);
+    Page<MovieStreamDTO> getAllMovieStreams(Pageable pageable);
 
-    MovieStreamDto getMovieStreamById(Long id);
+    MovieStreamDTO getMovieStreamById(Long id);
 
-    MovieStreamDto createMovieStream(MovieStreamDto movieStreamDto);
+    MovieStreamDTO createMovieStream(MovieStreamDTO movieStreamDto);
 
-    MovieStreamDto updateMovieStream(Long id, MovieStreamDto movieStreamDto);
+    MovieStreamDTO updateMovieStream(Long id, MovieStreamDTO movieStreamDto);
 
     void deleteMovieStream(Long id);
 }

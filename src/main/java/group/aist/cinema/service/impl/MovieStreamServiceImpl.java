@@ -1,6 +1,6 @@
 package group.aist.cinema.service.impl;
 
-import group.aist.cinema.dto.common.MovieStreamDto;
+import group.aist.cinema.dto.common.MovieStreamDTO;
 import group.aist.cinema.mapper.MovieStreamMapper;
 import group.aist.cinema.model.MovieStream;
 import group.aist.cinema.repository.MovieStreamRepository;
@@ -19,30 +19,28 @@ public class MovieStreamServiceImpl implements MovieStreamService {
     private final MovieStreamMapper movieStreamMapper;
 
     @Override
-    public Page<MovieStreamDto> getAllMovieStreams(Pageable pageable) {
+    public Page<MovieStreamDTO> getAllMovieStreams(Pageable pageable) {
         Page<MovieStream> movieStreams = movieStreamRepository.findAll(pageable);
         return movieStreams.map(movieStreamMapper::mapToDto);
     }
 
     @Override
-    public MovieStreamDto getMovieStreamById(Long id) {
+    public MovieStreamDTO getMovieStreamById(Long id) {
         MovieStream movieStream = movieStreamRepository.findById(id).orElseThrow(() -> new RuntimeException("Movie Stream not found with id: " + id ));
         return movieStreamMapper.mapToDto(movieStream);
     }
 
     @Override
-    public MovieStreamDto createMovieStream(MovieStreamDto movieStreamDto) {
+    public MovieStreamDTO createMovieStream(MovieStreamDTO movieStreamDto) {
         MovieStream movieStream = movieStreamMapper.mapToEntity(movieStreamDto);
         return movieStreamMapper.mapToDto(movieStreamRepository.save(movieStream));
     }
 
     @Override
-    public MovieStreamDto updateMovieStream(Long id, MovieStreamDto updatedMovieStreamDto) {
+    public MovieStreamDTO updateMovieStream(Long id, MovieStreamDTO movieStreamDTO) {
         MovieStream movieStream = movieStreamMapper.mapToEntity(getMovieStreamById(id));
-        movieStream.setDubbingType(updatedMovieStreamDto.getDubbingType());
-        movieStream.setSubtitle(updatedMovieStreamDto.getSubtitle());
-        movieStreamRepository.save(movieStream);
-        return movieStreamMapper.mapToDto(movieStream);
+        movieStreamMapper.updateMovieStreamFromDTO(movieStreamDTO,movieStream);
+        return movieStreamMapper.mapToDto(movieStreamRepository.save(movieStream));
     }
 
     @Override

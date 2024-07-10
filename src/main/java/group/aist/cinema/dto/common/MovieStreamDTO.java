@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class MovieStreamDto {
+public class MovieStreamDTO {
 
     private Long id;
 

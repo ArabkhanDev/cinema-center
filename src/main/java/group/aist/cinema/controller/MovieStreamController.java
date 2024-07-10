@@ -1,6 +1,6 @@
 package group.aist.cinema.controller;
 
-import group.aist.cinema.dto.common.MovieStreamDto;
+import group.aist.cinema.dto.common.MovieStreamDTO;
 import group.aist.cinema.service.MovieStreamService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -15,22 +15,22 @@ public class MovieStreamController {
     private final MovieStreamService movieStreamService;
 
     @GetMapping
-    public Page<MovieStreamDto> getAllMovieStreams(Pageable pageable) {
+    public Page<MovieStreamDTO> getAllMovieStreams(Pageable pageable) {
         return movieStreamService.getAllMovieStreams(pageable);
     }
 
     @GetMapping("/{id}")
-    public MovieStreamDto getMovieStreamById(@PathVariable Long id) {
+    public MovieStreamDTO getMovieStreamById(@PathVariable Long id) {
         return movieStreamService.getMovieStreamById(id);
     }
 
     @PostMapping
-    public MovieStreamDto createMovieStream(@RequestBody MovieStreamDto movieStreamDto) {
+    public MovieStreamDTO createMovieStream(@RequestBody MovieStreamDTO movieStreamDto) {
         return movieStreamService.createMovieStream(movieStreamDto);
     }
 
     @PutMapping("/{id}")
-    public MovieStreamDto updateMovieStream(@PathVariable Long id, @RequestBody MovieStreamDto movieStreamDto) {
+    public MovieStreamDTO updateMovieStream(@PathVariable Long id, @RequestBody MovieStreamDTO movieStreamDto) {
         return movieStreamService.updateMovieStream(id, movieStreamDto);
     }
 
