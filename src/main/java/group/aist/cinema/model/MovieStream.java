@@ -21,7 +21,4 @@ public class MovieStream {
     @Column(name = "subtitle", nullable = false)
     private Boolean subtitle = false;
 
-    @Column(name = "dubbing_type", nullable = false)
-    private String dubbingType;
-
 }
