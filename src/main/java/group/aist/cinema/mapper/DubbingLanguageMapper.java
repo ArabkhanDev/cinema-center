@@ -1,9 +1,7 @@
 package group.aist.cinema.mapper;
 
 import group.aist.cinema.dto.common.DubbingLanguageDTO;
-import group.aist.cinema.dto.common.MovieStreamDTO;
 import group.aist.cinema.model.DubbingLanguage;
-import group.aist.cinema.model.MovieStream;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;

@@ -1,6 +1,7 @@
 package group.aist.cinema.controller;
 
-import group.aist.cinema.dto.common.MovieStreamDTO;
+import group.aist.cinema.dto.request.MovieStreamRequestDTO;
+import group.aist.cinema.dto.response.MovieStreamResponseDTO;
 import group.aist.cinema.service.MovieStreamService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -15,23 +16,33 @@ public class MovieStreamController {
     private final MovieStreamService movieStreamService;
 
     @GetMapping
-    public Page<MovieStreamDTO> getAllMovieStreams(Pageable pageable) {
+    public Page<MovieStreamResponseDTO> getAllMovieStreams(Pageable pageable) {
         return movieStreamService.getAllMovieStreams(pageable);
     }
 
     @GetMapping("/{id}")
-    public MovieStreamDTO getMovieStreamById(@PathVariable Long id) {
+    public MovieStreamResponseDTO getMovieStreamById(@PathVariable Long id) {
         return movieStreamService.getMovieStreamById(id);
     }
 
     @PostMapping
-    public MovieStreamDTO createMovieStream(@RequestBody MovieStreamDTO movieStreamDto) {
-        return movieStreamService.createMovieStream(movieStreamDto);
+    public MovieStreamResponseDTO createMovieStream(@RequestBody MovieStreamRequestDTO movieStreamRequestDto) {
+        return movieStreamService.createMovieStream(movieStreamRequestDto);
     }
 
     @PutMapping("/{id}")
-    public MovieStreamDTO updateMovieStream(@PathVariable Long id, @RequestBody MovieStreamDTO movieStreamDto) {
-        return movieStreamService.updateMovieStream(id, movieStreamDto);
+    public MovieStreamResponseDTO updateMovieStream(@PathVariable Long id, @RequestBody MovieStreamRequestDTO movieStreamRequestDto) {
+        return movieStreamService.updateMovieStream(id, movieStreamRequestDto);
+    }
+
+    @PutMapping("/{streamId}/dubbing/{dubbingId}")
+    public void addDubbingLanguage(@PathVariable Long streamId,@PathVariable Long dubbingId){
+        movieStreamService.addDubbingLanguageToMovieStream(streamId,dubbingId);
+    }
+
+    @PutMapping("/{streamId}/subtitle/{subtitleId}")
+    public void addSubtitleLanguage(@PathVariable Long streamId,@PathVariable Long subtitleId){
+        movieStreamService.addSubtitleLanguageToMovieStream(streamId,subtitleId);
     }
 
     @DeleteMapping("/{id}")

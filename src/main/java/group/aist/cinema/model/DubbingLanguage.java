@@ -24,8 +24,8 @@ public class DubbingLanguage {
     @Column(name = "is_a_code", nullable = false)
     private String isACode;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "stream_id", nullable = false)
-    private MovieStream movieStream;
+//    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+//    @JoinColumn(name = "stream_id", nullable = false)
+//    private MovieStream movieStream;
 
 }

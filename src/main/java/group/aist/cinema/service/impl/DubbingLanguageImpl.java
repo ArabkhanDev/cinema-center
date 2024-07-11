@@ -23,7 +23,7 @@ public class DubbingLanguageImpl implements DubbingLanguageService {
     @Override
     public Page<DubbingLanguageDTO> getAllDubbingLanguages(Pageable pageable) {
         Page<DubbingLanguage> dubbingLanguages = dubbingLanguageRepository.findAll(pageable);
-        return dubbingLanguages.map(DubbingLanguageDTO::new);
+        return dubbingLanguages.map(dubbingLanguageMapper::toDTO);
     }
 
     @Override
@@ -34,10 +34,6 @@ public class DubbingLanguageImpl implements DubbingLanguageService {
     @Override
     public DubbingLanguageDTO createDubbingLanguage(DubbingLanguageDTO dubbingLanguageDTO) {
         DubbingLanguage dubbingLanguage = dubbingLanguageMapper.toEntity(dubbingLanguageDTO);
-
-        MovieStream movieStream = movieStreamRepository.findById(dubbingLanguageDTO.getMovieStreamId())
-                .orElseThrow(() -> new RuntimeException("Dubbing language not found with id " + dubbingLanguageDTO.getMovieStreamId()));
-        dubbingLanguage.setMovieStream(movieStream);
         return dubbingLanguageMapper.toDTO(dubbingLanguageRepository.save(dubbingLanguage));
     }
 
@@ -45,10 +41,6 @@ public class DubbingLanguageImpl implements DubbingLanguageService {
     public DubbingLanguageDTO updateDubbingLanguage(Long id, DubbingLanguageDTO dubbingLanguageDTO) {
         DubbingLanguage dubbingLanguage = dubbingLanguageRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Dubbing language not found with id " + id));
-
-        MovieStream movieStream = movieStreamRepository.findById(dubbingLanguageDTO.getMovieStreamId())
-                .orElseThrow(() -> new RuntimeException("Dubbing language not found with id " + dubbingLanguageDTO.getMovieStreamId()));
-        dubbingLanguage.setMovieStream(movieStream);
         dubbingLanguageMapper.updateDubbingLanguageFromDTO(dubbingLanguageDTO, dubbingLanguage);
         return dubbingLanguageMapper.toDTO(dubbingLanguageRepository.save(dubbingLanguage));
     }
