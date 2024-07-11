@@ -1,20 +1,18 @@
 package group.aist.cinema.dto.common;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-@Getter
-@Setter
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class MovieStreamDTO {
+public class SubtitleLanguageDTO {
 
     private Long id;
 
-    private Boolean subtitle;
+    private String name;
 
-    private String dubbingType;
+    private String isoCode;
 
 }

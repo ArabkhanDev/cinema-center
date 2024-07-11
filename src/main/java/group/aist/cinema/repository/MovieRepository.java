@@ -10,7 +10,7 @@ import java.util.List;
 public interface MovieRepository extends JpaRepository<Movie, Long> {
 
     @EntityGraph(attributePaths = {"movies", "users"})
-    Movie findByName(String name);
+    List<Movie> findByName(String name);
 
     @EntityGraph(attributePaths = {"movies", "users"})
     List<Movie> findByReleaseDate(LocalDate releaseDate);

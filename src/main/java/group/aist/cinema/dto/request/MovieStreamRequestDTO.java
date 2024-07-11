@@ -1,6 +1,5 @@
-package group.aist.cinema.dto.common;
+package group.aist.cinema.dto.request;
 
-import group.aist.cinema.model.DubbingLanguage;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,10 +9,14 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class DubbingLanguageDTO {
+public class MovieStreamRequestDTO {
 
     private Long id;
-    private String name;
-    private String isoCode;
+
+    private Boolean hasSubtitle;
+
+    private Long dubbingLanguageId;
+
+    private Long subtitleLanguageId;
 
 }

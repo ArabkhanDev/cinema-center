@@ -1,6 +1,7 @@
 package group.aist.cinema.mapper;
 
-import group.aist.cinema.dto.common.MovieStreamDTO;
+import group.aist.cinema.dto.request.MovieStreamRequestDTO;
+import group.aist.cinema.dto.response.MovieStreamResponseDTO;
 import group.aist.cinema.model.MovieStream;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -9,10 +10,10 @@ import org.mapstruct.MappingTarget;
 @Mapper(componentModel = "spring")
 public interface MovieStreamMapper {
 
-    MovieStream mapToEntity(MovieStreamDTO movieStreamDto);
-
-    MovieStreamDTO mapToDto(MovieStream movieStream);
+    MovieStream mapToEntity(MovieStreamRequestDTO movieStreamRequestDto);
 
     @Mapping(target = "id",ignore = true)
-    void updateMovieStreamFromDTO(MovieStreamDTO movieStreamDTO, @MappingTarget MovieStream movieStream);
+    void updateMovieStreamFromDTO(MovieStreamRequestDTO movieStreamRequestDTO, @MappingTarget MovieStream movieStream);
+
+    MovieStreamResponseDTO mapToResponseDTO(MovieStream movieStream);
 }

@@ -1,18 +1,23 @@
 package group.aist.cinema.service;
 
-import group.aist.cinema.dto.common.MovieStreamDTO;
+import group.aist.cinema.dto.request.MovieStreamRequestDTO;
+import group.aist.cinema.dto.response.MovieStreamResponseDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 public interface MovieStreamService {
 
-    Page<MovieStreamDTO> getAllMovieStreams(Pageable pageable);
+    Page<MovieStreamResponseDTO> getAllMovieStreams(Pageable pageable);
 
-    MovieStreamDTO getMovieStreamById(Long id);
+    MovieStreamResponseDTO getMovieStreamById(Long id);
 
-    MovieStreamDTO createMovieStream(MovieStreamDTO movieStreamDto);
+    MovieStreamResponseDTO createMovieStream(MovieStreamRequestDTO movieStreamRequestDto);
 
-    MovieStreamDTO updateMovieStream(Long id, MovieStreamDTO movieStreamDto);
+    void addDubbingLanguageToMovieStream(Long movieStreamId, Long dubbingLanguageId);
+
+    void addSubtitleLanguageToMovieStream(Long movieStreamId, Long subtitleLanguageId);
+
+    MovieStreamResponseDTO updateMovieStream(Long id, MovieStreamRequestDTO movieStreamRequestDto);
 
     void deleteMovieStream(Long id);
 }
