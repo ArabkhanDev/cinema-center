@@ -12,8 +12,6 @@ public interface MovieStreamMapper {
 
     MovieStream mapToEntity(MovieStreamRequestDTO movieStreamRequestDto);
 
-    MovieStreamRequestDTO mapToDto(MovieStream movieStream);
-
     @Mapping(target = "id",ignore = true)
     void updateMovieStreamFromDTO(MovieStreamRequestDTO movieStreamRequestDTO, @MappingTarget MovieStream movieStream);
 
