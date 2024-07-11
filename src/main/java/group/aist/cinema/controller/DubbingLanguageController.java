@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/v2/api/dubbing-language")
+@RequestMapping("/v1/api/dubbing-language")
 public class DubbingLanguageController {
     private final DubbingLanguageService dubbingLanguageService;
     @GetMapping
