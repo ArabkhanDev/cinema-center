@@ -23,6 +23,6 @@ public class SectorDTO {
         this.id = sector.getId();
         this.name = sector.getName();
         this.number = sector.getNumber();
-        this.hallId = sector.getHall().getId();
+        this.hallId = sector.getHall() != null ? sector.getHall().getId() : null;
     }
 }
