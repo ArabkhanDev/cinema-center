@@ -10,9 +10,9 @@ import org.mapstruct.MappingTarget;
 public interface SectorMapper {
 
     @Mapping(target = "hallId",source = "hall.id")
-    SectorDTO toDTO(Sector author);
+    SectorDTO toDTO(Sector sector);
 
-    Sector toEntity(SectorDTO authorDTO);
+    Sector toEntity(SectorDTO sectorDTO);
 
     @Mapping(target = "id", ignore = true)
     void updateSectorFromDTO(SectorDTO sectorDTO, @MappingTarget Sector sector);
