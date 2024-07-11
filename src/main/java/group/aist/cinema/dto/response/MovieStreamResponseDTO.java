@@ -21,8 +21,8 @@ public class MovieStreamResponseDTO {
 
     private Boolean hasSubtitle;
 
-    private Set<DubbingLanguage> dubbingLanguages;
+    private Set<DubbingLanguageDTO> dubbingLanguages;
 
-    private Set<SubtitleLanguage> subtitleLanguages;
+    private Set<SubtitleLanguageDTO> subtitleLanguages;
 
 }

@@ -37,9 +37,6 @@ public class SubtitleLanguageServiceImpl implements SubtitleLanguageService {
     @Override
     public SubtitleLanguageDTO createSubtitleLanguage(SubtitleLanguageDTO subtitleLanguageDto) {
         SubtitleLanguage subtitleLanguage = subtitleLanguageMapper.mapToEntity(subtitleLanguageDto);
-//        MovieStream movieStream = movieStreamRepository.findById(subtitleLanguageDto.getMovieStreamId()).
-//                orElseThrow(() -> new RuntimeException("Couldn't found Movie Stream with id " + subtitleLanguageDto.getMovieStreamId()));
-////        subtitleLanguage.setMovieStream(movieStream);
         return subtitleLanguageMapper.mapToDto(subtitleLanguageRepository.save(subtitleLanguage));
     }
 
@@ -47,10 +44,6 @@ public class SubtitleLanguageServiceImpl implements SubtitleLanguageService {
     public SubtitleLanguageDTO updateSubtitleLanguage(Long id, SubtitleLanguageDTO subtitleLanguageDto) {
         SubtitleLanguage existingSubtitleLanguage = subtitleLanguageRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Subtitle language not found with id: " + id));
-//        MovieStream movieStream = movieStreamRepository.findById(subtitleLanguageDto.getMovieStreamId()).
-//                orElseThrow(() -> new RuntimeException("Couldn't found Movie Stream with id " + subtitleLanguageDto.getMovieStreamId()));
-//        subtitleLanguageMapper.updateSubtitleLanguageFromDTO(subtitleLanguageDto, existingSubtitleLanguage);
-////        existingSubtitleLanguage.setMovieStream(movieStream);
         return subtitleLanguageMapper.mapToDto(subtitleLanguageRepository.save(existingSubtitleLanguage));
     }
 

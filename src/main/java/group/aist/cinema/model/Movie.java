@@ -23,6 +23,12 @@ public class Movie {
     @Column(name = "name", nullable = false)
     private String name;
 
+    @Column(name = "description", nullable = false)
+    private String description;
+
+    @Column(name = "genre", nullable = false)
+    private String genre;
+
     @Column(name = "release_date", nullable = false)
     private LocalDate releaseDate;
 
@@ -34,10 +40,5 @@ public class Movie {
 
     @Column(name = "image", nullable = false)
     private String image;
-
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "favorite_id", nullable = false)
-    private Favorite favorite;
-
 
 }

@@ -14,6 +14,6 @@ public class DubbingLanguageDTO {
 
     private Long id;
     private String name;
-    private String isACode;
+    private String isoCode;
 
 }

@@ -13,6 +13,6 @@ public class SubtitleLanguageDTO {
 
     private String name;
 
-    private String isACode;
+    private String isoCode;
 
 }
