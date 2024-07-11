@@ -12,7 +12,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "dubbing_types")
-public class DubbingType {
+public class DubbingLanguage {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
