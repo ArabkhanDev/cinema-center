@@ -24,6 +24,17 @@ spring:
       connectionTimeout: 30000
       idleTimeout: 600000
       maxLifetime: 1800000
+  mail:
+    host: smtp.gmail.com
+    username: udemyaltun@gmail.com
+    password: altun9542
+    port: 587
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
   jpa:
     properties:
       hibernate:
