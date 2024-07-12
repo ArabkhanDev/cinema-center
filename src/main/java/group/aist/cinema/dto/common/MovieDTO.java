@@ -20,6 +20,10 @@ public class MovieDTO {
 
     private String name;
 
+    private String description;
+
+    private String genre;
+
     private LocalDate releaseDate;
 
     private Short ageRestriction;

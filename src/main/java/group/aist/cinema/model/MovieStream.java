@@ -23,7 +23,7 @@ public class MovieStream {
 
     private Boolean hasSubtitle;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "movie_stream_dubbing_languages",
             joinColumns = @JoinColumn(name = "movie_stream_id"),
@@ -31,7 +31,7 @@ public class MovieStream {
     )
     private Set<DubbingLanguage> dubbingLanguages = new HashSet<>();
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "movie_stream_subtitle_languages",
             joinColumns = @JoinColumn(name = "movie_stream_id"),
