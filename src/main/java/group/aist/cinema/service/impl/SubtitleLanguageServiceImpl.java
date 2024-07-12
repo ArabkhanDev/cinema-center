@@ -18,7 +18,6 @@ public class SubtitleLanguageServiceImpl implements SubtitleLanguageService {
 
     private final SubtitleLanguageRepository subtitleLanguageRepository;
     private final SubtitleLanguageMapper subtitleLanguageMapper;
-    private final MovieStreamRepository movieStreamRepository;
 
     @Override
     public Page<SubtitleLanguageDTO> getAllSubtitleLanguages(Pageable pageable) {

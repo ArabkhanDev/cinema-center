@@ -12,6 +12,10 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "users")
+@NamedEntityGraph(
+        name = "User.balance",
+        attributeNodes = @NamedAttributeNode("balance")
+)
 public class User {
 
     @Id
@@ -20,9 +24,6 @@ public class User {
 
     @Column(name = "full_name", nullable = false)
     private String fullName;
-
-    @Column(name = "promocode", nullable = false)
-    private String promo_code;
 
     @Column(name = "email", nullable = false)
     private String email;
