@@ -1,14 +1,21 @@
 package group.aist.cinema.service.impl;
 
 import group.aist.cinema.dto.request.TicketRequestDTO;
+import group.aist.cinema.dto.response.TicketResponseDTO;
+import group.aist.cinema.mapper.TicketMapper;
+import group.aist.cinema.mapper.UserMapper;
 import group.aist.cinema.model.Balance;
+import group.aist.cinema.model.MovieSession;
 import group.aist.cinema.model.Ticket;
 import group.aist.cinema.model.User;
+import group.aist.cinema.repository.MovieSessionRepository;
 import group.aist.cinema.repository.TicketRepository;
 import group.aist.cinema.repository.UserRepository;
 import group.aist.cinema.service.EmailService;
 import group.aist.cinema.service.TicketService;
-import jakarta.transaction.Transactional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +29,8 @@ public class TicketServiceImpl implements TicketService {
     private final TicketRepository ticketRepository;
     private final UserRepository userRepository;
     private final EmailService emailService;
+    private final TicketMapper ticketMapper;
+    private final MovieSessionRepository movieSessionRepository;
 
     @Override
     public void purchaseTicket(Long userId, Long ticketId) {
@@ -71,27 +80,60 @@ public class TicketServiceImpl implements TicketService {
     }
 
     @Override
-    public List<Ticket> getAllTickets() {
-        return null;
+    @Transactional(readOnly = true)
+    public Page<TicketResponseDTO> getAllTickets(Pageable pageable) {
+        Page<Ticket> allTickets = ticketRepository.findAll(pageable);
+        return allTickets.map(ticketMapper::toDTO);
     }
 
     @Override
-    public Optional<Ticket> getTicketById(Long id) {
-        return Optional.empty();
+    @Transactional(readOnly = true)
+    public TicketResponseDTO getTicketById(Long id) {
+        Ticket ticket = ticketRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Ticket not find: " + id));
+        return ticketMapper.toDTO(ticket);
     }
 
     @Override
-    public Ticket createTicket(TicketRequestDTO ticketRequestDTO) {
-        return null;
+    @Transactional
+    public TicketResponseDTO createTicket(TicketRequestDTO ticketRequestDTO) {
+        Ticket ticket = ticketMapper.toEntity(ticketRequestDTO);
+
+        MovieSession movieSession = movieSessionRepository.findById(ticketRequestDTO.getMovieSessionId())
+                .orElseThrow(() -> new RuntimeException("Movie Session not found with id: " + ticketRequestDTO.getMovieSessionId()));
+        ticket.setMovieSession(movieSession);
+
+        User user = userRepository.findById(ticketRequestDTO.getUserId())
+                .orElseThrow(() -> new RuntimeException("User not found with id: " + ticketRequestDTO.getUserId()));
+        ticket.setUser(user);
+
+        Ticket saved = ticketRepository.save(ticket);
+
+        return ticketMapper.toDTO(saved);
     }
 
     @Override
-    public Ticket updateTicket(Long id, TicketRequestDTO ticketRequestDTO) {
-        return null;
+    @Transactional
+    public TicketResponseDTO updateTicket(Long id, TicketRequestDTO ticketRequestDTO) {
+        Ticket ticket = ticketRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Ticket not found with id: " + id));
+
+        MovieSession movieSession = movieSessionRepository.findById(ticketRequestDTO.getMovieSessionId())
+                .orElseThrow(() -> new RuntimeException("Movie Session not found with id: " + ticketRequestDTO.getMovieSessionId()));
+        ticket.setMovieSession(movieSession);
+
+        User user = userRepository.findById(ticketRequestDTO.getUserId())
+                .orElseThrow(() -> new RuntimeException("User not found with id: " + ticketRequestDTO.getUserId()));
+        ticket.setUser(user);
+        ticketMapper.updateTicketFromDTO(ticketRequestDTO,ticket);
+
+        Ticket saved = ticketRepository.save(ticket);
+
+        return ticketMapper.toDTO(saved);
     }
 
     @Override
     public void deleteTicket(Long id) {
-
+        ticketRepository.deleteById(id);
     }
 }
