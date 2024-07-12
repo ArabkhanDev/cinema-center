@@ -1,5 +1,6 @@
 package group.aist.cinema.dto.response;
 
+import group.aist.cinema.dto.common.BalanceDTO;
 import group.aist.cinema.model.Balance;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -19,5 +20,5 @@ public class UserResponseDTO {
 
     private String phone;
 
-    private Balance balance;
+    private BalanceDTO balanceDTO;
 }
