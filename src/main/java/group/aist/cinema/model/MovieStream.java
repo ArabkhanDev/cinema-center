@@ -23,7 +23,7 @@ public class MovieStream {
 
     private Boolean hasSubtitle;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "movie_stream_dubbing_languages",
             joinColumns = @JoinColumn(name = "movie_stream_id"),

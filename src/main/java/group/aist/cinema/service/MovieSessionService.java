@@ -13,8 +13,6 @@ public interface MovieSessionService {
 
     MovieSessionResponseDTO getMovieSessionById(Long id);
 
-    List<MovieSessionResponseDTO> getMovieSessionByMovieId(Long movieId);
-
     MovieSessionResponseDTO createMovieSession(MovieSessionRequestDTO movieSessionRequestDTO);
 
     MovieSessionResponseDTO updateMovieSession(Long id, MovieSessionRequestDTO movieSessionRequestDTO);

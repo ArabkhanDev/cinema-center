@@ -27,11 +27,6 @@ public class MovieSessionController {
         return movieSessionService.getMovieSessionById(id);
     }
 
-    @GetMapping("/movie/{movieId}")
-    public List<MovieSessionResponseDTO> getMovieSessionByMovieId(@PathVariable Long movieId) {
-        return movieSessionService.getMovieSessionByMovieId(movieId);
-    }
-
     @PostMapping
     public MovieSessionResponseDTO createMovieSession(@RequestBody MovieSessionRequestDTO movieSessionRequestDTO) {
         return movieSessionService.createMovieSession(movieSessionRequestDTO);
