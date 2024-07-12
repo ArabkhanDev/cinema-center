@@ -4,7 +4,6 @@ import group.aist.cinema.enums.SessionType;
 import group.aist.cinema.model.Hall;
 import group.aist.cinema.model.Movie;
 import group.aist.cinema.model.MovieStream;
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
