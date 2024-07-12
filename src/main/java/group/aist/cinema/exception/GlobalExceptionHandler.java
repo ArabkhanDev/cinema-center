@@ -61,6 +61,13 @@ public class GlobalExceptionHandler extends DefaultErrorAttributes {
         return ofType(request, HttpStatus.NOT_FOUND, exception.getMessage(), null);
     }
 
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseEntity<Map<String, Object>> handle(RuntimeException exception, WebRequest request) {
+        log.error("Element not found", exception);
+        return ofType(request, HttpStatus.BAD_REQUEST, exception.getMessage(), null);
+    }
+
     @SneakyThrows
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Map<String, Object>> handle(Exception exception, WebRequest request) {

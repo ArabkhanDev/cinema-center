@@ -36,18 +36,17 @@ public class MovieStreamController {
     }
 
     @PostMapping("/{streamId}/dubbing/{dubbingId}")
-    public void addDubbingLanguage(@PathVariable Long streamId,@PathVariable Long dubbingId){
-        movieStreamService.addDubbingLanguageToMovieStream(streamId,dubbingId);
+    public void addDubbingLanguage(@PathVariable Long streamId, @PathVariable Long dubbingId) {
+        movieStreamService.addDubbingLanguageToMovieStream(streamId, dubbingId);
     }
 
     @PostMapping("/{streamId}/subtitle/{subtitleId}")
-    public void addSubtitleLanguage(@PathVariable Long streamId,@PathVariable Long subtitleId){
-        movieStreamService.addSubtitleLanguageToMovieStream(streamId,subtitleId);
+    public void addSubtitleLanguage(@PathVariable Long streamId, @PathVariable Long subtitleId) {
+        movieStreamService.addSubtitleLanguageToMovieStream(streamId, subtitleId);
     }
 
     @DeleteMapping("/{id}")
     public void deleteMovieStream(@PathVariable Long id) {
         movieStreamService.deleteMovieStream(id);
     }
-
 }
