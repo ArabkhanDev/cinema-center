@@ -17,12 +17,12 @@ public class BalanceController {
         return balanceService.getBalanceById(id);
     }
 
-    @PostMapping("/create")
+    @PostMapping()
     public BalanceDTO createBalance(BalanceDTO balanceDTO) {
         return balanceService.createBalance(balanceDTO);
     }
 
-    @PutMapping("/update/{id}")
+    @PutMapping("/{id}")
     public BalanceDTO updateBalance(@PathVariable Long id, BalanceDTO balanceDTO) {
         return balanceService.updateBalance(id, balanceDTO);
     }
