@@ -35,12 +35,12 @@ public class MovieStreamController {
         return movieStreamService.updateMovieStream(id, movieStreamRequestDto);
     }
 
-    @PutMapping("/{streamId}/dubbing/{dubbingId}")
+    @PostMapping("/{streamId}/dubbing/{dubbingId}")
     public void addDubbingLanguage(@PathVariable Long streamId,@PathVariable Long dubbingId){
         movieStreamService.addDubbingLanguageToMovieStream(streamId,dubbingId);
     }
 
-    @PutMapping("/{streamId}/subtitle/{subtitleId}")
+    @PostMapping("/{streamId}/subtitle/{subtitleId}")
     public void addSubtitleLanguage(@PathVariable Long streamId,@PathVariable Long subtitleId){
         movieStreamService.addSubtitleLanguageToMovieStream(streamId,subtitleId);
     }
