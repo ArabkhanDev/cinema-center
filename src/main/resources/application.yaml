@@ -36,4 +36,4 @@ spring:
     generateDdl: false
     openInView: false
     hibernate:
-      ddlAuto: create-drop
+      ddlAuto: update
