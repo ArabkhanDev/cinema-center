@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("v1/api/halls")
+@RequestMapping("/v1/api/halls")
 public class HallController {
 
     private final HallService hallService;
