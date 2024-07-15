@@ -3,6 +3,8 @@ package group.aist.cinema.controller;
 import group.aist.cinema.dto.common.BalanceDTO;
 import group.aist.cinema.service.BalanceService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -11,6 +13,11 @@ import org.springframework.web.bind.annotation.*;
 public class BalanceController {
 
     private final BalanceService balanceService;
+
+    @GetMapping
+    public Page<BalanceDTO> getAllBalances(Pageable pageable){
+        return balanceService.getAllBalances(pageable);
+    }
 
     @GetMapping("/{id}")
     public BalanceDTO getBalanceById(@PathVariable Long id) {

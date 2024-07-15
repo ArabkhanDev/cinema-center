@@ -16,5 +16,7 @@ public interface UserRepository extends JpaRepository<User,Long> {
     Page<User> findAll(Pageable pageable);
 
     @EntityGraph(value = "User.balance", type = EntityGraph.EntityGraphType.LOAD)
-    Optional<User> findById(Long id);
+    Optional<User> findById(String id);
+
+    void deleteUserById(String id);
 }

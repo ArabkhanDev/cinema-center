@@ -6,7 +6,11 @@ import group.aist.cinema.model.Balance;
 import group.aist.cinema.repository.BalanceRepository;
 import group.aist.cinema.service.BalanceService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -15,6 +19,11 @@ public class BalanceServiceImpl implements BalanceService {
      private final BalanceRepository balanceRepository;
      private final BalanceMapper balanceMapper;
 
+
+     @Override
+     public Page<BalanceDTO> getAllBalances(Pageable pageable) {
+          return balanceRepository.findAll(pageable).map(balanceMapper::toDTO);
+     }
 
      @Override
      public BalanceDTO getBalanceById(Long id) {

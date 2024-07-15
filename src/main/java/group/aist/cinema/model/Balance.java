@@ -20,10 +20,10 @@ public class Balance {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
-    @Column(name = "currency", nullable = false)
+    @Column(name = "currency")
     private String currency;
 
-    @Column(name = "amount", nullable = false)
-    private BigDecimal amount;
+    @Column(name = "amount")
+    private Double amount;
 
 }

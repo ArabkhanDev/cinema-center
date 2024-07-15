@@ -36,4 +36,22 @@ spring:
     generateDdl: false
     openInView: false
     hibernate:
-      ddlAuto: update
+      ddlAuto: create-drop
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: "http://localhost:8180/realms/cinema"
+          jwk-set-uri: "http://localhost:8180/realms/cinema/protocol/openid-connect/certs"
+
+jwt:
+  auth:
+    converter:
+      resource-id: cinema-client
+
+keycloak:
+  realm: cinema
+  host: http://127.0.0.1:8180
+  clientId: admin-cli
+  clientSecret: BWFNSrt1NZpGyEWOrWcDyJ4hW3kg1xFv
+  grantType: client_credentials

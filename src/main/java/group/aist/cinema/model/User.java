@@ -19,11 +19,11 @@ import lombok.Setter;
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private String id;
 
-    @Column(name = "full_name", nullable = false)
-    private String fullName;
+    @Column(name = "user_name", nullable = false)
+    private String username;
 
     @Column(name = "email", nullable = false)
     private String email;

@@ -5,6 +5,7 @@ import group.aist.cinema.dto.response.SeatResponseDTO;
 import group.aist.cinema.dto.response.UserResponseDTO;
 import group.aist.cinema.model.Seat;
 import group.aist.cinema.model.User;
+import org.keycloak.representations.idm.UserRepresentation;
 import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -15,6 +16,14 @@ public interface UserMapper {
 
     UserResponseDTO toDTO(User user);
 
+    UserResponseDTO mapFromRepresentationToDto(UserRepresentation userRepresentation);
+
+    UserRepresentation mapToRepresentation(UserRequestDTO userRequestDTO);
+
+    User fromRepresentationToEntity(UserRepresentation userRepresentation);
+
+    User fromResponseDtoToEntity(UserResponseDTO userResponseDTO);
+
     User toEntity(UserRequestDTO userDTO);
 
     @Mapping(target = "id", ignore = true)
@@ -23,7 +32,7 @@ public interface UserMapper {
     @AfterMapping
     default void setBalanceId(@MappingTarget UserResponseDTO userResponseDTO, User user) {
         if (user.getBalance() != null) {
-            userResponseDTO.getBalance().setId(user.getBalance().getId());
+            userResponseDTO.getBalanceDTO().setId(user.getBalance().getId());
         }
     }
 }

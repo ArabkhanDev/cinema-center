@@ -10,13 +10,16 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserRequestDTO {
-    private Long id;
 
-    private String fullName;
+//    private String id;
+
+    private String username;
 
     private String email;
 
     private String phone;
+
+    private String password;
 
     private Long balanceId;
 }

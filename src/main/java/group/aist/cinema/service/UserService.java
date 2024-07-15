@@ -2,17 +2,21 @@ package group.aist.cinema.service;
 
 import group.aist.cinema.dto.request.UserRequestDTO;
 import group.aist.cinema.dto.response.UserResponseDTO;
+import org.keycloak.representations.idm.UserRepresentation;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 public interface UserService {
+
     Page<UserResponseDTO> getAllUsers(Pageable pageable);
 
-    UserResponseDTO getUserById(Long id);
+    UserResponseDTO getUserById(String id);
 
-    UserResponseDTO createUser(UserRequestDTO userDTO);
+    UserResponseDTO getUserByEmail(String email);
 
-    UserResponseDTO updateUser(Long id, UserRequestDTO userDTO);
+    UserResponseDTO registerUser(UserRequestDTO userDTO);
 
-    void deleteUserById(Long id);
+    UserResponseDTO updateUser(String id, UserRequestDTO userDTO);
+
+    void deleteUserById(String id);
 }
