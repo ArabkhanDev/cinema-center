@@ -31,7 +31,6 @@ public class MovieStream {
     )
     private Set<DubbingLanguage> dubbingLanguages = new HashSet<>();
 
-
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "movie_stream_subtitle_languages",

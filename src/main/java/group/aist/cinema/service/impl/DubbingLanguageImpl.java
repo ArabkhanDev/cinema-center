@@ -3,9 +3,7 @@ package group.aist.cinema.service.impl;
 import group.aist.cinema.dto.common.DubbingLanguageDTO;
 import group.aist.cinema.mapper.DubbingLanguageMapper;
 import group.aist.cinema.model.DubbingLanguage;
-import group.aist.cinema.model.MovieStream;
 import group.aist.cinema.repository.DubbingLanguageRepository;
-import group.aist.cinema.repository.MovieStreamRepository;
 import group.aist.cinema.service.DubbingLanguageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -17,7 +15,6 @@ import org.springframework.stereotype.Service;
 public class DubbingLanguageImpl implements DubbingLanguageService {
 
     private final DubbingLanguageRepository dubbingLanguageRepository;
-    private final MovieStreamRepository movieStreamRepository;
     private final DubbingLanguageMapper dubbingLanguageMapper;
 
     @Override
