@@ -1,5 +1,6 @@
 package group.aist.cinema.service.impl;
 
+import com.google.zxing.WriterException;
 import group.aist.cinema.dto.request.TicketRequestDTO;
 import group.aist.cinema.dto.response.TicketResponseDTO;
 import group.aist.cinema.enums.AvailableType;
@@ -14,12 +15,14 @@ import group.aist.cinema.repository.TicketRepository;
 import group.aist.cinema.repository.UserRepository;
 import group.aist.cinema.service.EmailService;
 import group.aist.cinema.service.TicketService;
+import jakarta.mail.MessagingException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
@@ -76,6 +79,7 @@ public class TicketServiceImpl implements TicketService {
                     .build();
             user.setBalance(lastBalance);
             ticket.setUser(user);
+            ticket.setAvailableType(AvailableType.RESERVED);
         } else {
             throw new RuntimeException("Insufficient balance");
         }
@@ -83,7 +87,7 @@ public class TicketServiceImpl implements TicketService {
         return ticketRepository.save(ticket);
     }
 
-    @Override
+   /* @Override
     @Transactional
     public void returnTicket(Long ticketId) {
         Optional<Ticket> ticketOpt = ticketRepository.findById(ticketId);
@@ -100,7 +104,36 @@ public class TicketServiceImpl implements TicketService {
         } else {
             throw new RuntimeException("Ticket not found");
         }
+    }*/
+
+    @Override
+    @Transactional
+    public void returnTicket(Long ticketId) throws WriterException, MessagingException, IOException {
+        Ticket ticket = ticketRepository.findById(ticketId)
+                .orElseThrow(() -> new RuntimeException("Ticket not found with id: " + ticketId));
+
+        User user = ticket.getUser();
+        String qrCodeText = "http://localhost:8080/api/tickets/scanQrCode/" + ticket.getId();
+        String emailText = "Please scan the attached QR code to mark your ticket as unusable.";
+
+        emailService.sendMessageWithQrCode(user.getEmail(), "Return Ticket QR Code", emailText, qrCodeText);
     }
+
+
+    @Override
+    @Transactional
+    public void scanQrCode(Long ticketId) {
+        Ticket ticket = ticketRepository.findById(ticketId)
+                .orElseThrow(() -> new RuntimeException("Ticket not found with id: " + ticketId));
+
+        if (ticket.getAvailableType() == AvailableType.RETURNED) {
+            throw new RuntimeException("This ticket is already marked as returned");
+        }
+
+        ticket.setAvailableType(AvailableType.RETURNED);
+        ticketRepository.save(ticket);
+    }
+
 
     @Override
     @Transactional(readOnly = true)
