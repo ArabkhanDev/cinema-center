@@ -14,6 +14,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.util.List;
 
 @RestController
 @RequestMapping("/v1/api/ticket")
@@ -22,9 +24,9 @@ public class TicketController {
 
     private final TicketService ticketService;
 
-    @PostMapping("/sendPurchaseLink")
-    public ResponseEntity<String> sendPurchaseLink(@RequestBody TicketRequestDTO ticketRequestDTO) {
-        ticketService.sendPurchaseLink(ticketRequestDTO);
+    @GetMapping("/sendPurchaseLink/{ticketId}")
+    public ResponseEntity<String> sendPurchaseLink(@PathVariable Long ticketId) {
+        ticketService.sendPurchaseLink(ticketId);
         return ResponseEntity.ok("Email send successfully! Please check your email and confirm your ticket");
     }
 
@@ -35,18 +37,35 @@ public class TicketController {
 
     @PostMapping("/return/{ticketId}")
     public ResponseEntity<String> returnTicket(@PathVariable Long ticketId) throws MessagingException, IOException, WriterException {
-        ticketService.returnTicket(ticketId);
+        ticketService.returnTicketLink(ticketId);
         return ResponseEntity.ok("Email send successfully! Please check your email to return your ticket");
     }
 
-    @GetMapping("/scanQrCode/{ticketId}")
-    public ResponseEntity<String> scanQrCode(@PathVariable Long ticketId) {
+    @GetMapping("/confirmReturn/{ticketId}")
+    public ResponseEntity<String> confirmReturn(@PathVariable Long ticketId) {
+        ticketService.confirmReturn(ticketId);
+        return ResponseEntity.ok("You returned ticket successfully!");
+    }
+
+    @GetMapping("/generateQrCode/{ticketId}")
+    public ResponseEntity<String> generateQrCode(@PathVariable Long ticketId) {
         try {
-            ticketService.scanQrCode(ticketId);
+            ticketService.generateQrCode(ticketId);
+
             return ResponseEntity.ok("Ticket is marked as returned");
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } catch (WriterException e) {
+            throw new RuntimeException(e);
         }
+    }
+
+    @GetMapping("/scanQrCode/{ticketId}")
+    public ResponseEntity<String> scanQrCode(@PathVariable Long ticketId){
+        String scan = ticketService.scanQrCode(ticketId);
+        return ResponseEntity.ok(scan);
     }
 
 
@@ -63,6 +82,16 @@ public class TicketController {
     @GetMapping("/{id}")
     public TicketResponseDTO getTicketById(@PathVariable Long id) {
         return ticketService.getTicketById(id);
+    }
+
+    @GetMapping()
+    public List<TicketResponseDTO> getAvailableTickets() {
+        return ticketService.getAvailableTickets();
+    }
+
+    @GetMapping("/byPrice")
+    public List<TicketResponseDTO> getTicketByPrice(@RequestParam BigDecimal price) {
+        return ticketService.getTicketByPrice(price);
     }
 
     @PutMapping("/{id}")

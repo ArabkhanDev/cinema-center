@@ -44,6 +44,9 @@ public class Ticket {
     @Column(name = "qr_code", nullable = false)
     private String qrCode;
 
+    @Column(name = "is_scanned", nullable = false)
+    private Boolean isScanned;
+
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;

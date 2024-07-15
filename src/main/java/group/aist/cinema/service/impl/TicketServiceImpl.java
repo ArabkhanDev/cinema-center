@@ -6,14 +6,13 @@ import group.aist.cinema.dto.response.TicketResponseDTO;
 import group.aist.cinema.enums.AvailableType;
 import group.aist.cinema.mapper.TicketMapper;
 import group.aist.cinema.mapper.UserMapper;
-import group.aist.cinema.model.Balance;
-import group.aist.cinema.model.MovieSession;
-import group.aist.cinema.model.Ticket;
-import group.aist.cinema.model.User;
+import group.aist.cinema.model.*;
+import group.aist.cinema.repository.HallRepository;
 import group.aist.cinema.repository.MovieSessionRepository;
 import group.aist.cinema.repository.TicketRepository;
 import group.aist.cinema.repository.UserRepository;
 import group.aist.cinema.service.EmailService;
+import group.aist.cinema.service.QrCodeService;
 import group.aist.cinema.service.TicketService;
 import jakarta.mail.MessagingException;
 import org.springframework.data.domain.Page;
@@ -24,6 +23,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,28 +34,24 @@ public class TicketServiceImpl implements TicketService {
     private final UserRepository userRepository;
     private final EmailService emailService;
     private final TicketMapper ticketMapper;
+    private final QrCodeService qrCodeService;
     private final MovieSessionRepository movieSessionRepository;
 
     @Transactional
     @Override
-    public void sendPurchaseLink(TicketRequestDTO ticketRequestDTO) {
-        User user = userRepository.findById(ticketRequestDTO.getUserId())
-                .orElseThrow(() -> new RuntimeException("User not found with id: " + ticketRequestDTO.getUserId()));
-        MovieSession movieSession = movieSessionRepository.findById(ticketRequestDTO.getMovieSessionId())
-                .orElseThrow(() -> new RuntimeException("Movie session not found"));
+    public void sendPurchaseLink(Long ticketId) {
+        Ticket ticket = ticketRepository.findById(ticketId)
+                .orElseThrow(() -> new RuntimeException("Ticket not found with id: "+ticketId));
 
-        Ticket ticket = new Ticket();
-        ticket.setPrice(ticketRequestDTO.getPrice());
-        ticket.setCurrency(ticketRequestDTO.getCurrency());
-        ticket.setStartDate(ticketRequestDTO.getStartDate());
-        ticket.setEndDate(ticketRequestDTO.getEndDate());
+        if (ticket.getAvailableType() != AvailableType.AVAILABLE){
+            throw new RuntimeException("Ticket is not available");
+        }
+
+        User user = ticket.getUser();
+
         ticket.setAvailableType(AvailableType.ORDERED);
-        ticket.setUser(user);
-        ticket.setMovieSession(movieSession);
 
-        ticket = ticketRepository.save(ticket);
-
-        String purchaseLink = "http://localhost:8080/v1/api/tickets/confirmPurchase/" + ticket.getId();
+        String purchaseLink = "http://localhost:8080/v1/api/tickets/confirmPurchase/" + ticketId;
 
         emailService.sendSimpleMessage(user.getEmail(), "Confirm your Ticket Purchase",
                 "Please confirm your ticket purchase by clicking the following link: " + purchaseLink);
@@ -65,7 +61,7 @@ public class TicketServiceImpl implements TicketService {
     @Override
     public Ticket confirmPurchase(Long ticketId) {
         Ticket ticket = ticketRepository.findById(ticketId)
-                .orElseThrow(() -> new RuntimeException("Ticket not found"));
+                .orElseThrow(() -> new RuntimeException("Ticket not found with id: " + ticketId));
 
         User user = ticket.getUser();
 
@@ -83,36 +79,69 @@ public class TicketServiceImpl implements TicketService {
         } else {
             throw new RuntimeException("Insufficient balance");
         }
+        ticket.setAvailableType(AvailableType.ORDERED);
 
         return ticketRepository.save(ticket);
     }
 
     @Override
     @Transactional
-    public void returnTicket(Long ticketId) throws WriterException, MessagingException, IOException {
+    public void returnTicketLink(Long ticketId) throws WriterException, MessagingException, IOException {
         Ticket ticket = ticketRepository.findById(ticketId)
                 .orElseThrow(() -> new RuntimeException("Ticket not found with id: " + ticketId));
 
         User user = ticket.getUser();
-        String qrCodeText = "http://localhost:8080/api/tickets/scanQrCode/" + ticket.getId();
-        String emailText = "Please scan the attached QR code to mark your ticket as unusable.";
 
-        emailService.sendMessageWithQrCode(user.getEmail(), "Return Ticket QR Code", emailText, qrCodeText);
+
+        String returnLink = "http://localhost:8080/v1/api/tickets/confirmReturn/" + ticket.getId();
+
+        emailService.sendSimpleMessage(user.getEmail(), "Confirm your Ticket Return",
+                "Please confirm returning your ticket by clicking the following link: " + returnLink);
     }
-
 
     @Override
     @Transactional
-    public void scanQrCode(Long ticketId) {
+    public void confirmReturn(Long ticketId) {
+        Ticket ticket = ticketRepository.findById(ticketId)
+                .orElseThrow(() -> new RuntimeException("Ticket not found with id" + ticketId));
+
+        User user = ticket.getUser();
+
+        BigDecimal balance = user.getBalance().getAmount();
+        BigDecimal price = ticket.getPrice();
+            BigDecimal newBalance = balance.add(price);
+            Balance lastBalance = Balance.builder()
+                    .currency(ticket.getCurrency())
+                    .amount(newBalance)
+                    .build();
+            user.setBalance(lastBalance);
+
+            ticketRepository.deleteById(ticketId);
+    }
+
+    @Override
+    @Transactional
+    public byte[] generateQrCode(Long ticketId) throws IOException, WriterException {
         Ticket ticket = ticketRepository.findById(ticketId)
                 .orElseThrow(() -> new RuntimeException("Ticket not found with id: " + ticketId));
 
-        if (ticket.getAvailableType() == AvailableType.RETURNED) {
-            throw new RuntimeException("This ticket is already marked as returned");
-        }
+        byte[] bytes = qrCodeService.generateQrCode(ticketId);
+        String qr = Arrays.toString(bytes);
+        ticket.setQrCode(qr);
+        return bytes;
+    }
 
-        ticket.setAvailableType(AvailableType.RETURNED);
-        ticketRepository.save(ticket);
+    @Override
+    @Transactional
+    public String scanQrCode(Long ticketId){
+        Ticket ticket = ticketRepository.findById(ticketId)
+                .orElseThrow(() -> new RuntimeException("Ticket not found with id: " + ticketId));
+        if (ticket.getIsScanned())
+            return "Ticket already scanned!!!";
+        else
+            ticket.setIsScanned(true);
+
+        return "Ticket scanned successfully!";
     }
 
 
@@ -132,17 +161,44 @@ public class TicketServiceImpl implements TicketService {
     }
 
     @Override
+    @Transactional(readOnly = true)
+    public List<TicketResponseDTO> getTicketByPrice(BigDecimal price) {
+        List<Ticket> tickets = ticketRepository.findByPriceOrderByPrice(price);
+        return tickets.stream().map(ticketMapper::toDTO).toList();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<TicketResponseDTO> getAvailableTickets() {
+
+        List<Ticket> allAvailableTickets = ticketRepository.findByAvailableType(AvailableType.AVAILABLE);
+        if (allAvailableTickets.isEmpty()){
+            throw new RuntimeException("There are not available ticket!");
+        }
+
+        return allAvailableTickets.stream().map(ticketMapper::toDTO).toList();
+    }
+
+    @Override
     @Transactional
     public TicketResponseDTO createTicket(TicketRequestDTO ticketRequestDTO) {
-        Ticket ticket = ticketMapper.toEntity(ticketRequestDTO);
-
         MovieSession movieSession = movieSessionRepository.findById(ticketRequestDTO.getMovieSessionId())
                 .orElseThrow(() -> new RuntimeException("Movie Session not found with id: " + ticketRequestDTO.getMovieSessionId()));
-        ticket.setMovieSession(movieSession);
-
         User user = userRepository.findById(ticketRequestDTO.getUserId())
                 .orElseThrow(() -> new RuntimeException("User not found with id: " + ticketRequestDTO.getUserId()));
+
+        Ticket ticket = ticketMapper.toEntity(ticketRequestDTO);
+        Hall hall = movieSession.getHall();
+
+        if(hall.getAvailableSeat()<1){
+            throw new RuntimeException("There are not available seat");
+        }
+
+        ticket.setAvailableType(AvailableType.AVAILABLE);
         ticket.setUser(user);
+        ticket.setMovieSession(movieSession);
+        ticket.setIsScanned(false);
+
 
         Ticket saved = ticketRepository.save(ticket);
 
