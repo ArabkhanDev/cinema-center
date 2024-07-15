@@ -23,7 +23,7 @@ public interface UserMapper {
     @AfterMapping
     default void setBalanceId(@MappingTarget UserResponseDTO userResponseDTO, User user) {
         if (user.getBalance() != null) {
-            userResponseDTO.getBalance().setId(user.getBalance().getId());
+            userResponseDTO.getBalanceDTO().setId(user.getBalance().getId());
         }
     }
 }

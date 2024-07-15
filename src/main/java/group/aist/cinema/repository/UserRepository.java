@@ -10,10 +10,10 @@ import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<User,Long> {
 
-    Optional<User> findUserByEmail(String email);
+    Optional<User> findByEmail(String email);
 
     @EntityGraph(value = "User.balance", type = EntityGraph.EntityGraphType.LOAD)
-    Page<User> findAll(Pageable pageable);
+    Page<User> findAllBy(Pageable pageable);
 
     @EntityGraph(value = "User.balance", type = EntityGraph.EntityGraphType.LOAD)
     Optional<User> findById(Long id);

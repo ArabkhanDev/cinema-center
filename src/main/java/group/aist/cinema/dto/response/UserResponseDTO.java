@@ -2,13 +2,9 @@ package group.aist.cinema.dto.response;
 
 import group.aist.cinema.dto.common.BalanceDTO;
 import group.aist.cinema.model.Balance;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
-@Getter
-@Setter
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserResponseDTO {
