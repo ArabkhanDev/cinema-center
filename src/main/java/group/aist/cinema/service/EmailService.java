@@ -48,8 +48,6 @@ public class EmailService {
         helper.setSubject(subject);
         helper.setText(text);
 
-
-
         QRCodeWriter qrCodeWriter = new QRCodeWriter();
         BitMatrix bitMatrix = qrCodeWriter.encode(qrCodeText, BarcodeFormat.QR_CODE, 250, 250);
 

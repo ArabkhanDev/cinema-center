@@ -87,25 +87,6 @@ public class TicketServiceImpl implements TicketService {
         return ticketRepository.save(ticket);
     }
 
-   /* @Override
-    @Transactional
-    public void returnTicket(Long ticketId) {
-        Optional<Ticket> ticketOpt = ticketRepository.findById(ticketId);
-        if (ticketOpt.isPresent()) {
-            Ticket ticket = ticketOpt.get();
-            User user = ticket.getUser();
-            BigDecimal lastBalance = user.getBalance().getAmount().add(ticket.getPrice());
-            Balance balance = Balance.builder()
-                    .amount(lastBalance)
-                    .currency(ticket.getCurrency())
-                    .build();
-            user.setBalance(balance);
-            ticketRepository.delete(ticket);
-        } else {
-            throw new RuntimeException("Ticket not found");
-        }
-    }*/
-
     @Override
     @Transactional
     public void returnTicket(Long ticketId) throws WriterException, MessagingException, IOException {
