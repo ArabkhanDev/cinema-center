@@ -37,3 +37,14 @@ spring:
     openInView: false
     hibernate:
       ddlAuto: update
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: "http://localhost:8180/realms/cinema"
+          jwk-set-uri: "http://localhost:8180/realms/cinema/protocol/openid-connect/certs"
+
+jwt:
+  auth:
+    converter:
+      resource-id: cinema-client

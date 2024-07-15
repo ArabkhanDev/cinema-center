@@ -10,7 +10,8 @@ import org.springframework.web.bind.annotation.*;
 
 
 @RestController
-@RequestMapping("/v1/api/users")
+//@RequestMapping("/v1/api/users")
+@RequestMapping(" /admin/realms/cinema-client/users")
 @RequiredArgsConstructor
 
 public class UserController {
