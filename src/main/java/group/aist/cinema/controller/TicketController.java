@@ -1,9 +1,8 @@
 package group.aist.cinema.controller;
 
 import group.aist.cinema.dto.request.TicketRequestDTO;
-import group.aist.cinema.dto.request.UserRequestDTO;
 import group.aist.cinema.dto.response.TicketResponseDTO;
-import group.aist.cinema.dto.response.UserResponseDTO;
+import group.aist.cinema.model.Ticket;
 import group.aist.cinema.service.TicketService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -18,10 +17,15 @@ public class TicketController {
 
     private final TicketService ticketService;
 
-    @PostMapping("/purchase")
-    public ResponseEntity<String> purchaseTicket(@RequestParam Long userId, @RequestBody Long ticketId) {
-        ticketService.purchaseTicket(userId, ticketId);
-        return ResponseEntity.ok("Ticket purchased successfully!");
+    @PostMapping("/sendPurchaseLink")
+    public ResponseEntity<String> sendPurchaseLink(@RequestBody TicketRequestDTO ticketRequestDTO) {
+        ticketService.sendPurchaseLink(ticketRequestDTO);
+        return ResponseEntity.ok("Email send successfully! Please check your email and confirm your ticket");
+    }
+
+    @GetMapping("/confirmPurchase/{ticketId}")
+    public Ticket confirmPurchase(@PathVariable Long ticketId) {
+        return ticketService.confirmPurchase(ticketId);
     }
 
     @PostMapping("/return/{ticketId}")

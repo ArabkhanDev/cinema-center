@@ -17,8 +17,15 @@ public class EmailService {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(to);
         message.setSubject("Your Ticket");
-        // TODO: sending qr
         message.setText("Your ticket details: " + ticket.toString());
+        mailSender.send(message);
+    }
+
+    public void sendSimpleMessage(String to, String subject, String text) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(to);
+        message.setSubject(subject);
+        message.setText(text);
         mailSender.send(message);
     }
 

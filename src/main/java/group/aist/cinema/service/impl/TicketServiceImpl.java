@@ -2,6 +2,7 @@ package group.aist.cinema.service.impl;
 
 import group.aist.cinema.dto.request.TicketRequestDTO;
 import group.aist.cinema.dto.response.TicketResponseDTO;
+import group.aist.cinema.enums.AvailableType;
 import group.aist.cinema.mapper.TicketMapper;
 import group.aist.cinema.mapper.UserMapper;
 import group.aist.cinema.model.Balance;
@@ -32,32 +33,54 @@ public class TicketServiceImpl implements TicketService {
     private final TicketMapper ticketMapper;
     private final MovieSessionRepository movieSessionRepository;
 
+    @Transactional
     @Override
-    public void purchaseTicket(Long userId, Long ticketId) {
-        Optional<User> userOpt = userRepository.findById(userId);
-        Optional<Ticket> ticketOpt = ticketRepository.findById(ticketId);
-        Ticket ticket = ticketOpt.get();
-        if (userOpt.isPresent()) {
-            User user = userOpt.get();
-            BigDecimal balance = user.getBalance().getAmount();
-            BigDecimal price = ticket.getPrice();
-            if (balance.compareTo(price) >= 0) {
-                BigDecimal newBalance = balance.subtract(price);
-                Balance lastBalance = Balance.builder()
-                        .currency(ticket.getCurrency())
-                        .amount(newBalance)
-                        .build();
-                user.setBalance(lastBalance);
-                ticket.setUser(user);
-                ticketRepository.save(ticket);
+    public void sendPurchaseLink(TicketRequestDTO ticketRequestDTO) {
+        User user = userRepository.findById(ticketRequestDTO.getUserId())
+                .orElseThrow(() -> new RuntimeException("User not found with id: " + ticketRequestDTO.getUserId()));
+        MovieSession movieSession = movieSessionRepository.findById(ticketRequestDTO.getMovieSessionId())
+                .orElseThrow(() -> new RuntimeException("Movie session not found"));
 
-                emailService.sendTicketEmail(user.getEmail(), ticket);
-            } else {
-                throw new RuntimeException("Insufficient balance");
-            }
+        Ticket ticket = new Ticket();
+        ticket.setPrice(ticketRequestDTO.getPrice());
+        ticket.setCurrency(ticketRequestDTO.getCurrency());
+        ticket.setStartDate(ticketRequestDTO.getStartDate());
+        ticket.setEndDate(ticketRequestDTO.getEndDate());
+        ticket.setAvailableType(AvailableType.ORDERED);
+        ticket.setUser(user);
+        ticket.setMovieSession(movieSession);
+
+        ticket = ticketRepository.save(ticket);
+
+        String purchaseLink = "http://localhost:8080/v1/api/tickets/confirmPurchase/" + ticket.getId();
+
+        emailService.sendSimpleMessage(user.getEmail(), "Confirm your Ticket Purchase",
+                "Please confirm your ticket purchase by clicking the following link: " + purchaseLink);
+    }
+
+    @Transactional
+    @Override
+    public Ticket confirmPurchase(Long ticketId) {
+        Ticket ticket = ticketRepository.findById(ticketId)
+                .orElseThrow(() -> new RuntimeException("Ticket not found"));
+
+        User user = ticket.getUser();
+
+        BigDecimal balance = user.getBalance().getAmount();
+        BigDecimal price = ticket.getPrice();
+        if (balance.compareTo(price) >= 0) {
+            BigDecimal newBalance = balance.subtract(price);
+            Balance lastBalance = Balance.builder()
+                    .currency(ticket.getCurrency())
+                    .amount(newBalance)
+                    .build();
+            user.setBalance(lastBalance);
+            ticket.setUser(user);
         } else {
-            throw new RuntimeException("User not found");
+            throw new RuntimeException("Insufficient balance");
         }
+
+        return ticketRepository.save(ticket);
     }
 
     @Override
