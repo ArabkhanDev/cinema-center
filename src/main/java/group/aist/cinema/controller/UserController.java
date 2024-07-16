@@ -1,6 +1,7 @@
 package group.aist.cinema.controller;
 
 import group.aist.cinema.dto.request.UserRequestDTO;
+import group.aist.cinema.dto.request.UserUpdateRequest;
 import group.aist.cinema.dto.response.UserResponseDTO;
 import group.aist.cinema.service.UserService;
 import group.aist.cinema.service.impl.UserServiceImpl;
@@ -41,7 +42,7 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public UserResponseDTO updateUser(@PathVariable String id, @RequestBody UserRequestDTO userDTO) {
+    public UserResponseDTO updateUser(@PathVariable String id, @RequestBody UserUpdateRequest userDTO) {
         return userService.updateUser(id, userDTO);
     }
 

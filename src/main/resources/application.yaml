@@ -44,14 +44,14 @@ spring:
           issuer-uri: "http://localhost:8180/realms/cinema"
           jwk-set-uri: "http://localhost:8180/realms/cinema/protocol/openid-connect/certs"
 
-jwt:
-  auth:
-    converter:
-      resource-id: cinema-client
+#jwt:
+#  auth:
+#    converter:
+#      resource-id: cinema-user
 
 keycloak:
   realm: cinema
   host: http://127.0.0.1:8180
   clientId: admin-cli
-  clientSecret: BWFNSrt1NZpGyEWOrWcDyJ4hW3kg1xFv
+  clientSecret: kXX3Rvtpt0gqBQ3j9YN1CtwPLmGtMLBb
   grantType: client_credentials

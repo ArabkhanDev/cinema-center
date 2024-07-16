@@ -24,6 +24,6 @@ public class Balance {
     private String currency;
 
     @Column(name = "amount")
-    private Double amount;
+    private BigDecimal amount;
 
 }

@@ -2,6 +2,7 @@ package group.aist.cinema.service.impl;
 
 import group.aist.cinema.config.KeycloakSecurityUtil;
 import group.aist.cinema.dto.request.UserRequestDTO;
+import group.aist.cinema.dto.request.UserUpdateRequest;
 import group.aist.cinema.dto.response.UserResponseDTO;
 import group.aist.cinema.mapper.UserMapper;
 import group.aist.cinema.model.Balance;
@@ -103,22 +104,20 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public UserResponseDTO updateUser(String id, UserRequestDTO userRequestDTO) {
+    public UserResponseDTO updateUser(String id, UserUpdateRequest userUpdateRequest) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found with id: " + id));
 
-        Balance balance = balanceRepository.findById(userRequestDTO.getBalanceId())
-                .orElseThrow(() -> new RuntimeException("Balance not found with id " + userRequestDTO.getBalanceId()));
+        user = userMapper.fromUpdateReqToEntity(userUpdateRequest);
+        userRepository.save(user);
 
-        user.setBalance(balance);
-        userMapper.updateUserFromDTO(userRequestDTO, user);
-        return userMapper.toDTO(userRepository.save(user));
+        return userMapper.toDTO(user);
     }
 
     @Override
     public void deleteUserById(String id) {
         Keycloak keycloak = keycloakSecurityUtil.getKeycloakInstance();
-        keycloak.realm("client").users().delete(id);
+        keycloak.realm("cinema").users().delete(id);
         userRepository.deleteUserById(id);
 
     }

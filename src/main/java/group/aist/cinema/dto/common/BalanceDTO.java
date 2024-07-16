@@ -15,6 +15,6 @@ public class BalanceDTO {
 
     private String currency;
 
-    private Double amount;
+    private BigDecimal amount;
 
 }
