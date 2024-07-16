@@ -4,7 +4,6 @@ import group.aist.cinema.dto.request.UserRequestDTO;
 import group.aist.cinema.dto.request.UserUpdateRequest;
 import group.aist.cinema.dto.response.SeatResponseDTO;
 import group.aist.cinema.dto.response.UserResponseDTO;
-import group.aist.cinema.model.Seat;
 import group.aist.cinema.model.User;
 import org.keycloak.representations.idm.UserRepresentation;
 import org.mapstruct.AfterMapping;
