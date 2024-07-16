@@ -1,6 +1,7 @@
 package group.aist.cinema.controller;
 
 import group.aist.cinema.dto.common.DubbingLanguageDTO;
+import group.aist.cinema.model.base.BaseResponse;
 import group.aist.cinema.service.DubbingLanguageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -13,27 +14,28 @@ import org.springframework.web.bind.annotation.*;
 public class DubbingLanguageController {
     private final DubbingLanguageService dubbingLanguageService;
     @GetMapping
-    public Page<DubbingLanguageDTO> getDubbingLanguages(Pageable pageable) {
-        return dubbingLanguageService.getAllDubbingLanguages(pageable);
+    public BaseResponse<Page<DubbingLanguageDTO>> getDubbingLanguages(Pageable pageable) {
+        return BaseResponse.success(dubbingLanguageService.getAllDubbingLanguages(pageable));
     }
 
     @GetMapping("/{id}")
-    public DubbingLanguageDTO dubbingLanguageDTOById(@PathVariable Long id) {
-        return dubbingLanguageService.getDubbingLanguage(id);
+    public BaseResponse<DubbingLanguageDTO> dubbingLanguageDTOById(@PathVariable Long id) {
+        return BaseResponse.success(dubbingLanguageService.getDubbingLanguage(id));
     }
 
     @PostMapping
-    public DubbingLanguageDTO createDubbingLanguage(@RequestBody DubbingLanguageDTO dubbingLanguageDTO) {
-        return dubbingLanguageService.createDubbingLanguage(dubbingLanguageDTO);
+    public BaseResponse<DubbingLanguageDTO> createDubbingLanguage(@RequestBody DubbingLanguageDTO dubbingLanguageDTO) {
+        return BaseResponse.created(dubbingLanguageService.createDubbingLanguage(dubbingLanguageDTO));
     }
 
     @PutMapping("/{id}")
-    public DubbingLanguageDTO updateDubbingLanguage(@RequestBody DubbingLanguageDTO dubbingLanguageDTO, @PathVariable Long id) {
-        return dubbingLanguageService.updateDubbingLanguage(id, dubbingLanguageDTO);
+    public BaseResponse<DubbingLanguageDTO> updateDubbingLanguage(@RequestBody DubbingLanguageDTO dubbingLanguageDTO, @PathVariable Long id) {
+        return BaseResponse.success(dubbingLanguageService.updateDubbingLanguage(id, dubbingLanguageDTO));
     }
 
     @DeleteMapping("/{id}")
-    public void deleteDubbingLanguage(@PathVariable Long id) {
+    public BaseResponse<Void> deleteDubbingLanguage(@PathVariable Long id) {
         dubbingLanguageService.deleteDubbingLanguage(id);
+        return BaseResponse.noContent();
     }
 }

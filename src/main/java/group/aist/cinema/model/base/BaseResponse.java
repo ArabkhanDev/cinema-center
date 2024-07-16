@@ -64,7 +64,7 @@ public class BaseResponse <T> {
         return created(null);
     }
 
-    public static <T> BaseResponse<T> notContent() {
+    public static <T> BaseResponse<T> noContent() {
         return BaseResponse.<T>builder()
                 .status(HttpStatus.NO_CONTENT)
                 .meta(Meta.of(NO_CONTENT))
