@@ -12,8 +12,6 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class MovieSessionRequestDTO {
 
-    private Long id;
-
     private LocalDate time;
 
     private SessionType type;
