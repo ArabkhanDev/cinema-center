@@ -9,7 +9,9 @@ import org.mapstruct.MappingTarget;
 @Mapper(componentModel = "spring")
 public interface BalanceMapper {
 
+
     BalanceDTO toDTO(Balance balance);
+
 
     Balance toEntity(BalanceDTO balanceDTO);
 
