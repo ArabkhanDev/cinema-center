@@ -2,6 +2,7 @@ package group.aist.cinema.controller;
 
 import group.aist.cinema.dto.request.FavoriteRequestDTO;
 import group.aist.cinema.dto.response.FavoriteResponseDTO;
+import group.aist.cinema.model.base.BaseResponse;
 import group.aist.cinema.service.FavoriteService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -16,45 +17,50 @@ public class FavoriteController {
     private final FavoriteService favoriteService;
 
     @GetMapping
-    public Page<FavoriteResponseDTO> getAllFavorites(Pageable pageable) {
-        return favoriteService.getAllFavorites(pageable);
+    public BaseResponse<Page<FavoriteResponseDTO>> getAllFavorites(Pageable pageable) {
+        return BaseResponse.success(favoriteService.getAllFavorites(pageable));
     }
 
     @GetMapping("/name")
-    public FavoriteResponseDTO getFavoriteByName(@RequestParam String name) {
-        return favoriteService.getFavoriteByName(name);
+    public BaseResponse<FavoriteResponseDTO> getFavoriteByName(@RequestParam String name) {
+        return BaseResponse.success(favoriteService.getFavoriteByName(name));
     }
 
     @GetMapping("/{userId}")
-    public Page<FavoriteResponseDTO> getFavoriteByUserId(@PathVariable Long userId, Pageable pageable) {
-        return favoriteService.getFavoriteByUserId(userId, pageable);
+    public BaseResponse<Page<FavoriteResponseDTO>> getFavoriteByUserId(@PathVariable Long userId, Pageable pageable) {
+        return BaseResponse.success(favoriteService.getFavoriteByUserId(userId, pageable));
     }
 
     @PostMapping
-    public void addFavorite(@RequestBody FavoriteRequestDTO favoriteRequestDTO) {
+    public BaseResponse<Void> addFavorite(@RequestBody FavoriteRequestDTO favoriteRequestDTO) {
         favoriteService.createFavorite(favoriteRequestDTO);
+        return BaseResponse.noContent();
     }
 
     @PostMapping("/{favoriteId}/movies/{movieId}")
-    public void addFavoriteToUser(@PathVariable Long favoriteId,
+    public BaseResponse<Void> addFavoriteToUser(@PathVariable Long favoriteId,
                                   @PathVariable Long movieId) {
         favoriteService.addMovieToFavorite(favoriteId, movieId);
+        return BaseResponse.noContent();
     }
 
     @PutMapping("/{id}")
-    public void updateFavorite(@PathVariable Long id, @RequestBody FavoriteRequestDTO favoriteRequestDTO) {
+    public BaseResponse<Void> updateFavorite(@PathVariable Long id, @RequestBody FavoriteRequestDTO favoriteRequestDTO) {
         favoriteService.updateFavorite(id, favoriteRequestDTO);
+        return BaseResponse.noContent();
     }
 
     @DeleteMapping("/{favoriteId}/movies/{movieId}")
-    public void deleteFavorite(@PathVariable Long favoriteId,
+    public BaseResponse<Void> deleteFavorite(@PathVariable Long favoriteId,
                                @PathVariable Long movieId) {
         favoriteService.deleteMovieFromFavorite(favoriteId, movieId);
+        return BaseResponse.noContent();
     }
 
     @DeleteMapping("/{id}")
-    public void deleteFavorite(@PathVariable Long id) {
+    public BaseResponse<Void> deleteFavorite(@PathVariable Long id) {
         favoriteService.deleteFavorite(id);
+        return BaseResponse.noContent();
     }
 
 
