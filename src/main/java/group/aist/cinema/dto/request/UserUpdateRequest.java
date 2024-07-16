@@ -5,9 +5,7 @@ import lombok.*;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserRequestDTO {
-
-//    private String id;
+public class UserUpdateRequest {
 
     private String username;
 
@@ -15,7 +13,4 @@ public class UserRequestDTO {
 
     private String phone;
 
-    private String password;
-
-    private Long balanceId;
 }
