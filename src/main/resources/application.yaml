@@ -36,10 +36,10 @@ spring:
     generateDdl: false
     openInView: false
     hibernate:
-      ddlAuto: create-drop
+      ddlAuto: update
   security:
     oauth2:
-      resourceserver:
+      resource-server:
         jwt:
           issuer-uri: "http://localhost:8180/realms/cinema"
           jwk-set-uri: "http://localhost:8180/realms/cinema/protocol/openid-connect/certs"
