@@ -41,19 +41,24 @@ public class SeatServiceImpl implements SeatService {
     @Override
     @Transactional
     public SeatResponseDTO createSeat(SeatRequestDTO seatRequestDTO) {
-        Seat seat = seatMapper.toEntity(seatRequestDTO);
-
-        Sector sector = sectorRepository.findById(seatRequestDTO.getSectorId())
-                .orElseThrow(() -> new RuntimeException("Sector not found with id " + seatRequestDTO.getSectorId()));
-
-        seat.setSector(sector);
-        seat.setType(SeatType.fromString(seatRequestDTO.getType()));
-        return seatMapper.toDTO(seatRepository.save(seat));
+        return seatMapper.toDTO(seatRepository.save(getSeat(seatRequestDTO)));
     }
 
     @Override
     @Transactional
     public SeatResponseDTO updateSeat(Long id, SeatRequestDTO seatRequestDTO) {
+        seatMapper.updateSeatFromDTO(seatRequestDTO, getSeat(id, seatRequestDTO));
+        return seatMapper.toDTO(seatRepository.save(getSeat(id, seatRequestDTO)));
+    }
+
+    @Override
+    public void deleteSeat(Long id) {
+        seatRepository.deleteById(id);
+    }
+
+
+
+    private Seat getSeat(Long id, SeatRequestDTO seatRequestDTO) {
         Seat seat = seatRepository.findById(id).
                 orElseThrow(() -> new RuntimeException("Seat not found with id " + id));
 
@@ -62,13 +67,18 @@ public class SeatServiceImpl implements SeatService {
 
         seat.setSector(sector);
         seat.setType(SeatType.fromString(seatRequestDTO.getType()));
-        seatMapper.updateSeatFromDTO(seatRequestDTO, seat);
-        return seatMapper.toDTO(seatRepository.save(seat));
+        return seat;
     }
 
-    @Override
-    public void deleteSeat(Long id) {
-        seatRepository.deleteById(id);
+    private Seat getSeat(SeatRequestDTO seatRequestDTO) {
+        Seat seat = seatMapper.toEntity(seatRequestDTO);
+
+        Sector sector = sectorRepository.findById(seatRequestDTO.getSectorId())
+                .orElseThrow(() -> new RuntimeException("Sector not found with id " + seatRequestDTO.getSectorId()));
+
+        seat.setSector(sector);
+        seat.setType(SeatType.fromString(seatRequestDTO.getType()));
+        return seat;
     }
 }
 

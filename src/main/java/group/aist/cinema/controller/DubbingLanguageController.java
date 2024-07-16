@@ -19,7 +19,7 @@ public class DubbingLanguageController {
     }
 
     @GetMapping("/{id}")
-    public BaseResponse<DubbingLanguageDTO> dubbingLanguageDTOById(@PathVariable Long id) {
+    public BaseResponse<DubbingLanguageDTO> dubbingLanguageById(@PathVariable Long id) {
         return BaseResponse.success(dubbingLanguageService.getDubbingLanguage(id));
     }
 

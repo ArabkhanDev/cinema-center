@@ -11,8 +11,6 @@ import lombok.Setter;
 @NoArgsConstructor
 public class MovieStreamRequestDTO {
 
-    private Long id;
-
     private Boolean hasSubtitle;
 
     private Long dubbingLanguageId;

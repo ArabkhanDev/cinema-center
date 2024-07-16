@@ -34,30 +34,27 @@ public class SectorServiceImpl implements SectorService {
 
     @Override
     public SectorDTO createSector(SectorDTO sectorDTO) {
-        Sector sector = sectorMapper.toEntity(sectorDTO);
-
-        Hall hall = hallRepository.findById(sectorDTO.getHallId())
-                .orElseThrow(() -> new RuntimeException("Hall not found with id " + sectorDTO.getHallId()));
-
-        sector.setHall(hall);
-        return sectorMapper.toDTO(sectorRepository.save(sector));
+        return sectorMapper.toDTO(sectorRepository.save(setHallAndGetSector(sectorDTO, sectorMapper.toEntity(sectorDTO))));
     }
 
     @Override
     public SectorDTO updateSector(Long id, SectorDTO sectorDTO) {
         Sector sector = sectorRepository.findById(id).
                 orElseThrow(() -> new RuntimeException("Sector not found with id " + id));
-
-        Hall hall = hallRepository.findById(sectorDTO.getHallId())
-                .orElseThrow(() -> new RuntimeException("Hall not found with id " + sectorDTO.getHallId()));
-
-        sector.setHall(hall);
-        sectorMapper.updateSectorFromDTO(sectorDTO, sector);
+        sectorMapper.updateSectorFromDTO(sectorDTO, setHallAndGetSector(sectorDTO, sector));
         return sectorMapper.toDTO(sectorRepository.save(sector));
     }
 
     @Override
     public void deleteSector(Long id) {
         sectorRepository.deleteById(id);
+    }
+
+
+    private Sector setHallAndGetSector(SectorDTO sectorDTO, Sector sector) {
+        Hall hall = hallRepository.findById(sectorDTO.getHallId())
+                .orElseThrow(() -> new RuntimeException("Hall not found with id " + sectorDTO.getHallId()));
+        sector.setHall(hall);
+        return sector;
     }
 }

@@ -35,8 +35,7 @@ public class SubtitleLanguageServiceImpl implements SubtitleLanguageService {
 
     @Override
     public SubtitleLanguageDTO createSubtitleLanguage(SubtitleLanguageDTO subtitleLanguageDto) {
-        SubtitleLanguage subtitleLanguage = subtitleLanguageMapper.mapToEntity(subtitleLanguageDto);
-        return subtitleLanguageMapper.mapToDto(subtitleLanguageRepository.save(subtitleLanguage));
+        return subtitleLanguageMapper.mapToDto(subtitleLanguageRepository.save(subtitleLanguageMapper.mapToEntity(subtitleLanguageDto)));
     }
 
     @Override

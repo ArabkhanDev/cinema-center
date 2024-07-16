@@ -41,14 +41,9 @@ public class MovieStreamServiceImpl implements MovieStreamService {
     @Override
     @Transactional
     public MovieStreamResponseDTO getMovieStreamById(Long id) {
-        MovieStream movieStream = movieStreamRepository.findById(id).orElseThrow(() -> new ResponseStatusException(BAD_REQUEST, "Movie Stream not found with id: " + id));
-
-        MovieStreamResponseDTO dto = movieStreamMapper.mapToResponseDTO(movieStream);
-        if (!movieStream.getHasSubtitle()) {
-            dto.setSubtitleLanguages(Set.of());
-        }
-
-        return dto;
+        MovieStream movieStream = movieStreamRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(BAD_REQUEST, "Movie Stream not found with id: " + id));
+        return checkSubtitle(movieStream);
     }
 
     @Override
@@ -95,7 +90,7 @@ public class MovieStreamServiceImpl implements MovieStreamService {
         MovieStream movieStream = movieStreamRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(BAD_REQUEST, "Movie Stream not found with id: " + id));
         movieStreamMapper.updateMovieStreamFromDTO(movieStreamRequestDto, movieStream);
-        return checkSubtitle(movieStreamRequestDto, movieStream);
+        return checkSubtitle(movieStream);
     }
 
     @Override
@@ -105,9 +100,10 @@ public class MovieStreamServiceImpl implements MovieStreamService {
     }
 
 
-    private MovieStreamResponseDTO checkSubtitle(MovieStreamRequestDTO movieStreamRequestDto, MovieStream movieStream) {
+
+    private MovieStreamResponseDTO checkSubtitle(MovieStream movieStream) {
         MovieStreamResponseDTO dto = movieStreamMapper.mapToResponseDTO(movieStream);
-        if (!movieStreamRequestDto.getHasSubtitle()) {
+        if (!movieStream.getHasSubtitle()) {
             dto.setSubtitleLanguages(Set.of());
         }
         return dto;

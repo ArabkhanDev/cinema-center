@@ -26,17 +26,17 @@ public class SeatController {
         return BaseResponse.success(seatService.getSeatById(id));
     }
 
-    @PostMapping("/create")
+    @PostMapping
     public BaseResponse<SeatResponseDTO> createSector(SeatRequestDTO seatRequestDTO) {
         return BaseResponse.created(seatService.createSeat(seatRequestDTO));
     }
 
-    @PutMapping("/update/{id}")
+    @PutMapping("/{id}")
     public BaseResponse<SeatResponseDTO> updateSector(@PathVariable Long id, SeatRequestDTO seatRequestDTO) {
         return BaseResponse.success(seatService.updateSeat(id, seatRequestDTO));
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public BaseResponse<Void> deleteSector(@PathVariable Long id) {
         seatService.deleteSeat(id);
         return BaseResponse.noContent();

@@ -11,11 +11,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class SeatRequestDTO {
 
-
-    private Long id;
     private String vertical;
+
     private String horizontal;
+
     private String type;
+
     private Long sectorId;
 
 }
