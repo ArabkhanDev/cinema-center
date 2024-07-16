@@ -1,6 +1,7 @@
 package group.aist.cinema.controller;
 
 import group.aist.cinema.dto.common.SubtitleLanguageDTO;
+import group.aist.cinema.model.base.BaseResponse;
 import group.aist.cinema.service.SubtitleLanguageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -15,28 +16,29 @@ public class SubtitleLanguageController {
     private final SubtitleLanguageService subtitleLanguageService;
 
     @GetMapping
-    public Page<SubtitleLanguageDTO> getAllSubtitleLanguages(Pageable pageable) {
-        return subtitleLanguageService.getAllSubtitleLanguages(pageable);
+    public BaseResponse<Page<SubtitleLanguageDTO>> getAllSubtitleLanguages(Pageable pageable) {
+        return BaseResponse.success(subtitleLanguageService.getAllSubtitleLanguages(pageable));
     }
 
     @GetMapping("/{id}")
-    public SubtitleLanguageDTO getSubtitleLanguageById(@PathVariable Long id) {
-        return subtitleLanguageService.getSubtitleLanguageById(id);
+    public BaseResponse<SubtitleLanguageDTO> getSubtitleLanguageById(@PathVariable Long id) {
+        return BaseResponse.success(subtitleLanguageService.getSubtitleLanguageById(id));
     }
 
 
     @PostMapping
-    public SubtitleLanguageDTO createSubtitleLanguage(@RequestBody SubtitleLanguageDTO subtitleLanguageDTO) {
-        return subtitleLanguageService.createSubtitleLanguage(subtitleLanguageDTO);
+    public BaseResponse<SubtitleLanguageDTO> createSubtitleLanguage(@RequestBody SubtitleLanguageDTO subtitleLanguageDTO) {
+        return BaseResponse.success(subtitleLanguageService.createSubtitleLanguage(subtitleLanguageDTO));
     }
 
     @PutMapping("/{id}")
-    public SubtitleLanguageDTO updateSubtitleLanguage(@PathVariable Long id, @RequestBody SubtitleLanguageDTO subtitleLanguageDTO) {
-        return subtitleLanguageService.updateSubtitleLanguage(id, subtitleLanguageDTO);
+    public BaseResponse<SubtitleLanguageDTO> updateSubtitleLanguage(@PathVariable Long id, @RequestBody SubtitleLanguageDTO subtitleLanguageDTO) {
+        return BaseResponse.success(subtitleLanguageService.updateSubtitleLanguage(id, subtitleLanguageDTO));
     }
 
     @DeleteMapping("/{id}")
-    public void deleteSubtitleLanguage(@PathVariable Long id) {
+    public BaseResponse<Void> deleteSubtitleLanguage(@PathVariable Long id) {
         subtitleLanguageService.deleteSubtitleLanguage(id);
+        return BaseResponse.noContent();
     }
 }

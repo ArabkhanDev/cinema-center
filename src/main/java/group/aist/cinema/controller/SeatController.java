@@ -2,6 +2,7 @@ package group.aist.cinema.controller;
 
 import group.aist.cinema.dto.request.SeatRequestDTO;
 import group.aist.cinema.dto.response.SeatResponseDTO;
+import group.aist.cinema.model.base.BaseResponse;
 import group.aist.cinema.service.SeatService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -16,27 +17,28 @@ public class SeatController {
     private final SeatService seatService;
 
     @GetMapping
-    public Page<SeatResponseDTO> getAllSeats(Pageable pageable) {
-        return seatService.getAllSeats(pageable);
+    public BaseResponse<Page<SeatResponseDTO>> getAllSeats(Pageable pageable) {
+        return BaseResponse.success(seatService.getAllSeats(pageable));
     }
 
     @GetMapping("/{id}")
-    public SeatResponseDTO getSectorById(@PathVariable Long id) {
-        return seatService.getSeatById(id);
+    public BaseResponse<SeatResponseDTO> getSectorById(@PathVariable Long id) {
+        return BaseResponse.success(seatService.getSeatById(id));
     }
 
     @PostMapping("/create")
-    public SeatResponseDTO createSector(SeatRequestDTO seatRequestDTO) {
-        return seatService.createSeat(seatRequestDTO);
+    public BaseResponse<SeatResponseDTO> createSector(SeatRequestDTO seatRequestDTO) {
+        return BaseResponse.created(seatService.createSeat(seatRequestDTO));
     }
 
     @PutMapping("/update/{id}")
-    public SeatResponseDTO updateSector(@PathVariable Long id, SeatRequestDTO seatRequestDTO) {
-        return seatService.updateSeat(id, seatRequestDTO);
+    public BaseResponse<SeatResponseDTO> updateSector(@PathVariable Long id, SeatRequestDTO seatRequestDTO) {
+        return BaseResponse.success(seatService.updateSeat(id, seatRequestDTO));
     }
 
     @DeleteMapping("/delete/{id}")
-    public void deleteSector(@PathVariable Long id) {
+    public BaseResponse<Void> deleteSector(@PathVariable Long id) {
         seatService.deleteSeat(id);
+        return BaseResponse.noContent();
     }
 }

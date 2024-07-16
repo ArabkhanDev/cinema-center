@@ -1,6 +1,7 @@
 package group.aist.cinema.controller;
 
 import group.aist.cinema.dto.common.SectorDTO;
+import group.aist.cinema.model.base.BaseResponse;
 import group.aist.cinema.service.SectorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -15,28 +16,29 @@ public class SectorController {
     private final SectorService sectorService;
 
     @GetMapping
-    public Page<SectorDTO> getAllSectors(Pageable pageable) {
-        return sectorService.getAllSectors(pageable);
+    public BaseResponse<Page<SectorDTO>> getAllSectors(Pageable pageable) {
+        return BaseResponse.success(sectorService.getAllSectors(pageable));
     }
 
     @GetMapping("/{id}")
-    public SectorDTO getSectorById(@PathVariable Long id) {
-        return sectorService.getSectorById(id);
+    public BaseResponse<SectorDTO> getSectorById(@PathVariable Long id) {
+        return BaseResponse.success(sectorService.getSectorById(id));
     }
 
     @PostMapping("/create")
-    public SectorDTO createSector(SectorDTO sectorDTO) {
-        return sectorService.createSector(sectorDTO);
+    public BaseResponse<SectorDTO> createSector(SectorDTO sectorDTO) {
+        return BaseResponse.created(sectorService.createSector(sectorDTO));
     }
 
     @PutMapping("/update/{id}")
-    public SectorDTO updateSector(@PathVariable Long id, SectorDTO sectorDTO) {
-        return sectorService.updateSector(id, sectorDTO);
+    public BaseResponse<SectorDTO> updateSector(@PathVariable Long id, SectorDTO sectorDTO) {
+        return BaseResponse.success(sectorService.updateSector(id, sectorDTO));
     }
 
     @DeleteMapping("/delete/{id}")
-    public void deleteSector(@PathVariable Long id) {
+    public BaseResponse<Void> deleteSector(@PathVariable Long id) {
         sectorService.deleteSector(id);
+        return BaseResponse.noContent();
     }
 
 }
