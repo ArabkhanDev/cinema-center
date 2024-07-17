@@ -7,7 +7,11 @@ import group.aist.cinema.service.MovieSessionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.hateoas.EntityModel;
 import org.springframework.web.bind.annotation.*;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
 @RequestMapping("/v1/api/movie-sessions")
@@ -22,8 +26,13 @@ public class MovieSessionController {
     }
 
     @GetMapping("/{id}")
-    public BaseResponse<MovieSessionResponseDTO> getMovieSessionById(@PathVariable Long id) {
-        return BaseResponse.success(movieSessionService.getMovieSessionById(id));
+    public BaseResponse<EntityModel<MovieSessionResponseDTO>> getMovieSessionById(@PathVariable Long id) {
+        MovieSessionResponseDTO movieSessionDto = movieSessionService.getMovieSessionById(id);
+        EntityModel<MovieSessionResponseDTO> resource = EntityModel.of(movieSessionDto);
+        resource.add(linkTo(methodOn(MovieController.class).getMovieById(movieSessionDto.getMovie().getId())).withRel("Movie"));
+        resource.add(linkTo(methodOn(MovieSessionController.class).getMovieSessionById(movieSessionDto.getMovieStream().getId())).withRel("Movie Stream"));
+        resource.add(linkTo(methodOn(HallController.class).getHallById(movieSessionDto.getHall().getId())).withRel("Hall"));
+        return BaseResponse.success(resource);
     }
 
     @PostMapping
