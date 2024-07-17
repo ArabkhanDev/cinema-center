@@ -9,9 +9,9 @@ import org.springframework.http.HttpStatus;
 import static group.aist.cinema.enums.response.SuccessResponseMessages.*;
 
 @Data
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
+@NoArgsConstructor(access = AccessLevel.PUBLIC)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-@Builder(access = AccessLevel.PROTECTED)
+@Builder(access = AccessLevel.PRIVATE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class BaseResponse <T> {
 

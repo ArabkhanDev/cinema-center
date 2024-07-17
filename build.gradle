@@ -38,6 +38,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.keycloak:keycloak-admin-client:25.0.1'
+	implementation 'org.springframework.hateoas:spring-hateoas:2.3.1'
 	annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.2.Final'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'

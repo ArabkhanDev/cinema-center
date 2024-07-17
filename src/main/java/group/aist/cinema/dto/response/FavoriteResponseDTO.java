@@ -1,6 +1,5 @@
 package group.aist.cinema.dto.response;
 
-import group.aist.cinema.dto.common.MovieDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,6 +17,6 @@ public class FavoriteResponseDTO {
 
     private UserResponseDTO user;
 
-    private Set<MovieDTO> movies;
+    private Set<MovieResponseDTO> movies;
 
 }
