@@ -3,7 +3,6 @@ package group.aist.cinema.controller;
 import group.aist.cinema.dto.common.SubtitleLanguageDTO;
 import group.aist.cinema.model.base.BaseResponse;
 import group.aist.cinema.service.SubtitleLanguageService;
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -13,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/v1/api/subtitle-languages")
 @RequiredArgsConstructor
-@SecurityRequirement(name = "Keycloak")
 public class SubtitleLanguageController {
 
     private final SubtitleLanguageService subtitleLanguageService;
