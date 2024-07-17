@@ -1,22 +1,25 @@
 package group.aist.cinema.service;
 
-import group.aist.cinema.dto.common.MovieDTO;
+import group.aist.cinema.dto.request.MovieRequestDTO;
+import group.aist.cinema.dto.request.MovieUpdateRequest;
+import group.aist.cinema.dto.response.MovieResponseDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface MovieService {
 
-    Page<MovieDTO> getAllMovies(Pageable pageable);
+    Page<MovieResponseDTO> getAllMovies(Pageable pageable);
 
-    MovieDTO getMovieById(Long id);
+    MovieResponseDTO getMovieById(Long id);
 
-    List<MovieDTO> getMovieByName(String name);
+    List<MovieResponseDTO> getMovieByName(String name);
 
-    MovieDTO createMovie(MovieDTO movieDto);
+    public MovieResponseDTO createMovie(MovieRequestDTO movieDto) throws IOException;
 
-    MovieDTO updateMovie(Long id, MovieDTO movieDto);
+    MovieResponseDTO updateMovie(Long id, MovieUpdateRequest movieDto);
 
     void deleteMovie(Long id);
 

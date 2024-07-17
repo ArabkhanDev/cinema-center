@@ -38,7 +38,7 @@ public class Movie {
     @Column(name = "duration", nullable = false)
     private String duration;
 
-    @Column(name = "image", nullable = false)
+    @Column(name = "image")
     private String image;
 
 }
