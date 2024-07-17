@@ -2,7 +2,6 @@ package group.aist.cinema.controller;
 
 import group.aist.cinema.dto.request.MovieSessionRequestDTO;
 import group.aist.cinema.dto.response.MovieSessionResponseDTO;
-import group.aist.cinema.model.Movie;
 import group.aist.cinema.model.base.BaseResponse;
 import group.aist.cinema.service.MovieSessionService;
 import lombok.RequiredArgsConstructor;

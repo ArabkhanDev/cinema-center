@@ -24,7 +24,7 @@ public class BaseResponse <T> {
     @AllArgsConstructor(access = AccessLevel.PRIVATE)
     @Builder(access = AccessLevel.PRIVATE)
     @FieldDefaults(level = AccessLevel.PRIVATE)
-    public static final class Meta {
+    public static  class Meta {
         String key;
         String message;
 
