@@ -21,7 +21,12 @@ public class SwaggerCustomConfig {
                         .tokenUrl("http://localhost:8180/realms/cinema/protocol/openid-connect/token")
                         .scopes(new Scopes()
                                 .addString("offline_access", "Offline access")
-                                .addString("email", "Email address"))));
+                                .addString("email", "Email address")))
+                        .password(new OAuthFlow()
+                                .tokenUrl("http://localhost:8180/realms/cinema/protocol/openid-connect/token")
+                                .scopes(new Scopes()
+                                        .addString("offline_access", "Offline access")
+                                        .addString("email", "Email address"))));
     }
 
     @Bean
