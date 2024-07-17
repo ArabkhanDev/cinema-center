@@ -42,7 +42,7 @@ public class SecurityConfig {
         http.authorizeHttpRequests(authorize -> {
             authorize
                     .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
-                    .anyRequest().authenticated();
+                    .anyRequest().hasAnyAuthority("ADMIN", "USER");
         });
         http.oauth2ResourceServer(t -> t.jwt(configurer -> configurer.jwtAuthenticationConverter(keycloakRoleConverter)));
         http.sessionManagement(t -> t.sessionCreationPolicy(SessionCreationPolicy.STATELESS));

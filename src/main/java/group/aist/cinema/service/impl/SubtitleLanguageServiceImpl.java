@@ -21,12 +21,14 @@ public class SubtitleLanguageServiceImpl implements SubtitleLanguageService {
     private final SubtitleLanguageMapper subtitleLanguageMapper;
 
     @Override
+    @PreAuthorize("hasRole('USER')")
     public Page<SubtitleLanguageDTO> getAllSubtitleLanguages(Pageable pageable) {
         Page<SubtitleLanguage> subtitleLanguages = subtitleLanguageRepository.findAll(pageable);
         return subtitleLanguages.map(subtitleLanguageMapper::mapToDto);
     }
 
     @Override
+    @PreAuthorize("hasRole('ADMIN')")
     public SubtitleLanguageDTO getSubtitleLanguageById(Long id) {
         SubtitleLanguage subtitleLanguage = subtitleLanguageRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Subtitle language not found with id: " + id));
