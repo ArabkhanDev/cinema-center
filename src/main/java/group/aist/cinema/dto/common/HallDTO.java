@@ -1,8 +1,8 @@
 package group.aist.cinema.dto.common;
 
 import group.aist.cinema.model.Hall;
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -21,11 +21,11 @@ public class HallDTO {
     private String name;
 
     @NotNull(message = "Seat count cannot be null")
-    @Min(value = 0, message = "Seat count must be a positive integer")
+    @Positive(message = "Seat count must be a positive integer")
     private Integer seatCount;
 
     @NotNull(message = "Available seat cannot be null")
-    @Min(value = 0, message = "Available seat must be greater than or equal to 0")
+    @Positive(message = "Available seat must be greater than or equal to 0")
     private Integer availableSeat;
 
     public HallDTO(Hall hall) {

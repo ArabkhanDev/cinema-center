@@ -1,8 +1,8 @@
 package group.aist.cinema.dto.common;
 
 import group.aist.cinema.model.Sector;
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -21,7 +21,7 @@ public class SectorDTO {
     private String name;
 
     @NotNull(message = "Number of the sectors cannot be null")
-    @Min(value = 1, message = "Number of the sectors must be greater than or equal to 1")
+    @Positive(message = "Number of the sectors must be greater than or equal to 1")
     private Integer number;
 
     @NotNull(message = "Hall ID cannot be null")
