@@ -14,14 +14,14 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
-@Table(name = "favorites")
+@Table(name = "favorites", uniqueConstraints = @UniqueConstraint(columnNames = "name"))
 public class Favorite {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
-    @Column(name = "name", nullable = false)
+    @Column(name = "name", nullable = false, unique = true)
     private String name;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
