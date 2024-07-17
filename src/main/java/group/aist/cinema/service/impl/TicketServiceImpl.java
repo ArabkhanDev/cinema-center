@@ -1,5 +1,6 @@
 package group.aist.cinema.service.impl;
 
+
 import com.google.zxing.WriterException;
 import group.aist.cinema.dto.request.TicketRequestDTO;
 import group.aist.cinema.dto.response.TicketResponseDTO;
@@ -14,7 +15,6 @@ import group.aist.cinema.repository.UserRepository;
 import group.aist.cinema.service.EmailService;
 import group.aist.cinema.service.QrCodeService;
 import group.aist.cinema.service.TicketService;
-import jakarta.mail.MessagingException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
@@ -86,7 +86,7 @@ public class TicketServiceImpl implements TicketService {
 
     @Override
     @Transactional
-    public void returnTicketLink(Long ticketId) throws WriterException, MessagingException, IOException {
+    public void returnTicketLink(Long ticketId) {
         Ticket ticket = ticketRepository.findById(ticketId)
                 .orElseThrow(() -> new RuntimeException("Ticket not found with id: " + ticketId));
 
@@ -125,7 +125,7 @@ public class TicketServiceImpl implements TicketService {
         Ticket ticket = ticketRepository.findById(ticketId)
                 .orElseThrow(() -> new RuntimeException("Ticket not found with id: " + ticketId));
 
-        byte[] bytes = qrCodeService.generateQrCode(ticketId);
+        byte[] bytes = qrCodeService.generatePdfWithQrCode(ticketId);
         String qr = Arrays.toString(bytes);
         ticket.setQrCode(qr);
         return bytes;
