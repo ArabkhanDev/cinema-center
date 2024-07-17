@@ -7,7 +7,7 @@ import org.springframework.http.HttpStatus;
 public enum SuccessResponseMessages implements ResponseMessages {
     SUCCESS("success", "Successfully", HttpStatus.OK),
     CREATED("created","Successfully created",HttpStatus.CREATED),
-    NO_CONTENT("not_content", "Not content", HttpStatus.NO_CONTENT);
+    NO_CONTENT("no_content", "No content", HttpStatus.NO_CONTENT);
 
     private final String key;
     private final String message;
