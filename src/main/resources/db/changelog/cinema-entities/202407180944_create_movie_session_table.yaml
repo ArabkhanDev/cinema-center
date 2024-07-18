@@ -69,6 +69,3 @@ databaseChangeLog:
             constraintName: fk_movie_sessions_movie_stream_id
             referencedColumnNames: id
             referencedTableName: movie-streams
-
-
-#            movie_sessions_seq_gen
