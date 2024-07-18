@@ -1,0 +1,41 @@
+databaseChangeLog:
+  - changeSet:
+      id: 202407181006_create_seat_table
+      author: arabkhan
+      changes:
+        - createTable:
+            tableName: seats
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: horizontal
+                  type: VARCHAR(20)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: vertical
+                  type: VARCHAR(20)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: type
+                  type: VARCHAR(20)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: sector_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+        - addForeignKeyConstraint:
+            baseTableName: seats
+            baseColumnNames: sector_id
+            constraintName: fk_seat_sector_id
+            referencedTableName: sector
+            referencedColumnNames: id
