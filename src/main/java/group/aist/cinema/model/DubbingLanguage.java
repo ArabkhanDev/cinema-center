@@ -11,7 +11,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "dubbing_types")
+@Table(name = "dubbing_languages")
 public class DubbingLanguage {
 
     @Id

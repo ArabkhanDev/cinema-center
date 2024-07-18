@@ -48,7 +48,7 @@ spring:
     generateDdl: false
     openInView: false
     hibernate:
-      ddlAuto: update
+      ddlAuto: validate
   security:
     oauth2:
       resource-server:

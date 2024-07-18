@@ -1,0 +1,32 @@
+databaseChangeLog:
+  - changeSet:
+      id: 202407180939_create_dubbing_language_table
+      author: elshan
+      changes:
+        - createTable:
+            tableName: dubbing_languages
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: VARCHAR(25)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: iso_code
+                  type: VARCHAR(10)
+                  constraints:
+                    nullable: false
+        - createSequence:
+            sequenceName: hibernate_sequence
+        - addAutoIncrement:
+            columnName: id
+            tableName: dubbing_languages
+            incrementBy: 1
+            startWith: 1
+            columnDataType: BIGINT

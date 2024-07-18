@@ -1,0 +1,57 @@
+databaseChangeLog:
+  - changeSet:
+      id: 2024071809343_create_dubbing_language_table
+      author: elshan
+      changes:
+        - createTable:
+            tableName: favorites
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: VARCHAR(40)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: user_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+        - createSequence:
+            sequenceName: hibernate_sequence
+        - addAutoIncrement:
+            columnName: id
+            tableName: favorites
+            incrementBy: 1
+            startWith: 1
+            columnDataType: BIGINT
+        - createTable:
+            tableName: favorite_movies
+            columns:
+              - column:
+                  name: favorite_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: movie_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+        - addForeignKeyConstraint:
+            baseColumnNames: favorite_id
+            baseTableName: favorite_movies
+            constraintName: fk_favorite_movies_favorite_id
+            referencedTableName: favorites
+            referencedColumnNames: id
+        - addForeignKeyConstraint:
+            baseColumnNames: movie_id
+            baseTableName: favorite_movies
+            constraintName: fk_favorite_movies_movie_id
+            referencedTableName: movies
+            referencedColumnNames: id
