@@ -58,12 +58,12 @@ keycloak:
   realm: cinema
   host: http://127.0.0.1:8180
   clientId: admin-cli
-  clientSecret: r1zEU0Zl6xx36NWx0uOAxh1ah0A2RoCF
+  clientSecret: thQWJZzOm03oBi1L6GGBPfNVhfFI3w4o
   grantType: client_credentials
 
 springdoc:
   swagger-ui:
     oauth:
       client-id: cinema-client
-      client-secret: Vs9dMXbnaQjuTuxV4bmnuxdepLjMBjba
+      client-secret: J0Yk7sfE2aKAPR87eKhPx8RVCOzVtOTM
 
