@@ -24,5 +24,5 @@ public class TicketResponseDTO {
 
     private UserResponseDTO user;
 
-    private MovieResponseDTO movie;
+    private MovieSessionResponseDTO movie;
 }
