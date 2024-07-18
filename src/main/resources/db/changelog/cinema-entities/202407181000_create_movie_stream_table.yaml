@@ -1,0 +1,84 @@
+databaseChangeLog:
+  - changeSet:
+      id: 202407181000_create_movie_stream_table
+      author: arabkhan
+      changes:
+        - createTable:
+            tableName: movie-streams
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: has_subtitle
+                  type: boolean
+
+        - createTable:
+            tableName: movie_stream_dubbing_languages
+            columns:
+              - column:
+                  name: movie_stream_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: dubbing_language_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+
+        - addPrimaryKey:
+            tableName: movie_stream_dubbing_languages
+            columnNames: movie_stream_id, dubbing_language_id
+            constraintName: pk_movie_stream_dubbing_languages
+
+        - createTable:
+            tableName: movie_stream_subtitle_languages
+            columns:
+              - column:
+                  name: movie_stream_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: subtitle_language_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+
+        - addPrimaryKey:
+            tableName: movie_stream_subtitle_languages
+            columnNames: movie_stream_id, subtitle_language_id
+            constraintName: pk_movie_stream_subtitle_languages
+
+        - addForeignKeyConstraint:
+            baseColumnNames: movie_stream_id
+            baseTableName: movie_stream_dubbing_languages
+            constraintName: fk_dubbing_movie_stream_id
+            referencedColumnNames: id
+            referencedTableName: movie-streams
+
+        - addForeignKeyConstraint:
+            baseColumnNames: dubbing_language_id
+            baseTableName: movie_stream_dubbing_languages
+            constraintName: fk_dubbing_language_id
+            referencedColumnNames: id
+            referencedTableName: dubbing_languages
+
+        - addForeignKeyConstraint:
+            baseColumnNames: movie_stream_id
+            baseTableName: movie_stream_subtitle_languages
+            constraintName: fk_subtitle_movie_stream_id
+            referencedColumnNames: id
+            referencedTableName: movie-streams
+
+        - addForeignKeyConstraint:
+            baseColumnNames: subtitle_language_id
+            baseTableName: movie_stream_subtitle_languages
+            constraintName: fk_subtitle_language_id
+            referencedColumnNames: id
+            referencedTableName: subtitle_languages

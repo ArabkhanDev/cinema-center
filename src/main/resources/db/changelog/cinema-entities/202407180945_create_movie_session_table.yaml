@@ -1,0 +1,63 @@
+databaseChangeLog:
+  - changeSet:
+      id: 202407180945_create_movie_session_table
+      author: arabkhan
+      changes:
+        - createTable:
+            tableName: movie-sessions
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: time
+                  type: date
+                  constraints:
+                    nullable: false
+              - column:
+                  name: type
+                  type: varchar(20)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: is_active
+                  type: boolean
+                  constraints:
+                    nullable: false
+              - column:
+                  name: movie_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: hall_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: movie_stream_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+        - addForeignKeyConstraint:
+            baseColumnNames: movie_id
+            baseTableName: movie-sessions
+            constraintName: fk_movie_sessions_movie_id
+            referencedColumnNames: id
+            referencedTableName: movies
+        - addForeignKeyConstraint:
+            baseColumnNames: hall_id
+            baseTableName: movie-sessions
+            constraintName: fk_movie_sessions_hall_id
+            referencedColumnNames: id
+            referencedTableName: halls
+        - addForeignKeyConstraint:
+            baseColumnNames: movie_stream_id
+            baseTableName: movie-sessions
+            constraintName: fk_movie_sessions_movie_stream_id
+            referencedColumnNames: id
+            referencedTableName: movie_streams
