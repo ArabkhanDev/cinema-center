@@ -8,24 +8,24 @@ databaseChangeLog:
             columns:
               - column:
                   name: id
-                  type: bigint
+                  type: BİGINT
                   autoIncrement: true
                   constraints:
                     primaryKey: true
                     nullable: false
               - column:
                   name: type
-                  type: varchar(20)
+                  type: VARCHAR(20)
                   constraints:
                     nullable: false
               - column:
                   name: card_number
-                  type: varchar(20)
+                  type: VARCHAR(20)
                   constraints:
                     nullable: false
               - column:
                   name: user_id
-                  type: bigint
+                  type: BİGINT
                   constraints:
                     nullable: false
         - addForeignKeyConstraint:

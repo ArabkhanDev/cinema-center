@@ -8,26 +8,26 @@ databaseChangeLog:
             columns:
               - column:
                   name: id
-                  type: bigint
+                  type: BİGINT
                   autoIncrement: true
                   constraints:
                     primaryKey: true
                     nullable: false
               - column:
                   name: has_subtitle
-                  type: boolean
+                  type: BOOLEAN
 
         - createTable:
             tableName: movie_stream_dubbing_languages
             columns:
               - column:
                   name: movie_stream_id
-                  type: bigint
+                  type: BİGINT
                   constraints:
                     nullable: false
               - column:
                   name: dubbing_language_id
-                  type: bigint
+                  type: BİGINT
                   constraints:
                     nullable: false
 
@@ -41,12 +41,12 @@ databaseChangeLog:
             columns:
               - column:
                   name: movie_stream_id
-                  type: bigint
+                  type: BİGINT
                   constraints:
                     nullable: false
               - column:
                   name: subtitle_language_id
-                  type: bigint
+                  type: BİGINT
                   constraints:
                     nullable: false
 

@@ -8,39 +8,39 @@ databaseChangeLog:
             columns:
               - column:
                   name: id
-                  type: bigint
+                  type: BİGİNT
                   autoIncrement: true
                   constraints:
                     primaryKey: true
                     nullable: false
               - column:
                   name: time
-                  type: date
+                  type: DATE
                   constraints:
                     nullable: false
               - column:
                   name: type
-                  type: varchar(20)
+                  type: VARCHAR(20)
                   constraints:
                     nullable: false
               - column:
                   name: is_active
-                  type: boolean
+                  type: BOOLEAN
                   constraints:
                     nullable: false
               - column:
                   name: movie_id
-                  type: bigint
+                  type: BİGİNT
                   constraints:
                     nullable: false
               - column:
                   name: hall_id
-                  type: bigint
+                  type: BİGİNT
                   constraints:
                     nullable: false
               - column:
                   name: movie_stream_id
-                  type: bigint
+                  type: BİGİNT
                   constraints:
                     nullable: false
         - addForeignKeyConstraint:
