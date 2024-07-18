@@ -25,9 +25,11 @@ databaseChangeLog:
                     nullable: false
               - column:
                   name: user_id
-                  type: BIGINT
+                  type: VARCHAR(50)
                   constraints:
                     nullable: false
+        - createSequence:
+            sequenceName: payments_seq
         - addForeignKeyConstraint:
             baseColumnNames: user_id
             baseTableName: payments

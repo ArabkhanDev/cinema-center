@@ -1,6 +1,6 @@
 databaseChangeLog:
   - changeSet:
-      id: 202407181049_create_user_table
+      id: 202407181130_create_users_table
       author: ilkin
       changes:
         - createTable:
@@ -14,17 +14,17 @@ databaseChangeLog:
                     nullable: false
               - column:
                   name: user_name
-                  type: VARCHAR(20)
+                  type: VARCHAR(30)
                   constraints:
                     nullable: false
               - column:
                   name: email
-                  type: VARCHAR(20)
+                  type: VARCHAR(30)
                   constraints:
                     nullable: false
               - column:
                   name: phone
-                  type: VARCHAR(15)
+                  type: VARCHAR(20)
                   constraints:
                     nullable: false
               - column:
@@ -33,10 +33,8 @@ databaseChangeLog:
                   constraints:
                     nullable: false
         - addForeignKeyConstraint:
-            constraintName: fk_users_balance_id
-            baseTableName: users
             baseColumnNames: balance_id
+            baseTableName: users
+            constraintName: fk_users_balance_id
             referencedTableName: balances
             referencedColumnNames: id
-        - createSequence:
-            sequenceName: hibernate_sequence

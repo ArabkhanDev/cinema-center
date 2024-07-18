@@ -17,7 +17,8 @@ import java.math.BigDecimal;
 public class Balance {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "balance_seq_gen")
+    @SequenceGenerator(name = "balance_seq_gen", sequenceName = "balances_seq", allocationSize = 1)
     private Long id;
 
     @Column(name = "currency")

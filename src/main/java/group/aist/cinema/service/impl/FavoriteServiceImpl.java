@@ -19,7 +19,6 @@ import org.springframework.web.server.ResponseStatusException;
 @Service
 @RequiredArgsConstructor
 public class FavoriteServiceImpl implements FavoriteService {
-
     private final FavoriteRepository favoriteRepository;
     private final MovieRepository movieRepository;
     private final UserRepository userRepository;
@@ -79,8 +78,6 @@ public class FavoriteServiceImpl implements FavoriteService {
     public void deleteFavorite(Long id) {
         favoriteRepository.deleteById(id);
     }
-
-
 
     private Favorite getFavorite(Long id) {
         return favoriteRepository.findById(id)

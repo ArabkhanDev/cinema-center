@@ -18,7 +18,8 @@ import java.time.LocalDate;
 public class MovieSession {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "movie_sessions_seq_gen")
+    @SequenceGenerator(name = "movie_sessions_seq_gen", sequenceName = "movie_sessions_seq", allocationSize = 1)
     private Long id;
 
     @Column(name = "time", nullable = false)

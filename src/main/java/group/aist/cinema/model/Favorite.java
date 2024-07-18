@@ -18,7 +18,8 @@ import java.util.List;
 public class Favorite {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "favorite_seq_gen")
+    @SequenceGenerator(name = "favorite_seq_gen", sequenceName = "favorite_seq", allocationSize = 1)
     private Long id;
 
     @Column(name = "name", nullable = false, unique = true)

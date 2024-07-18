@@ -33,9 +33,11 @@ databaseChangeLog:
                   type: BIGINT
                   constraints:
                     nullable: false
+        - createSequence:
+            sequenceName: seats_seq
         - addForeignKeyConstraint:
             baseTableName: seats
             baseColumnNames: sector_id
             constraintName: fk_seat_sector_id
-            referencedTableName: sector
+            referencedTableName: sectors
             referencedColumnNames: id
