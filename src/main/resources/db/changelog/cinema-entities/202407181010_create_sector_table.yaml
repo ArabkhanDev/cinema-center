@@ -28,6 +28,7 @@ databaseChangeLog:
                   constraints:
                     nullable: false
         - addForeignKeyConstraint:
+            constraintName: fk_sectors_hall_id
             baseTableName: sectors
             baseColumnNames: hall_id
             referencedTableName: halls

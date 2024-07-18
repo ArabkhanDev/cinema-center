@@ -24,7 +24,7 @@ databaseChangeLog:
                     nullable: false
               - column:
                   name: available_type
-                  type: VARCHAR(255)
+                  type: VARCHAR(20)
                   constraints:
                     nullable: false
               - column:
@@ -53,11 +53,13 @@ databaseChangeLog:
                   constraints:
                     nullable: false
         - addForeignKeyConstraint:
+            constraintName: fk_tickets_user_id
             baseTableName: tickets
             baseColumnNames: user_id
             referencedTableName: users
             referencedColumnNames: id
         - addForeignKeyConstraint:
+            constraintName: fk_tickets_movie_session_id
             baseTableName: tickets
             baseColumnNames: movie_session_id
             referencedTableName: movie_sessions

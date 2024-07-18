@@ -8,23 +8,23 @@ databaseChangeLog:
             columns:
               - column:
                   name: id
-                  type: VARCHAR(255)
+                  type: VARCHAR(50)
                   constraints:
                     primaryKey: true
                     nullable: false
               - column:
                   name: user_name
-                  type: VARCHAR(255)
+                  type: VARCHAR(20)
                   constraints:
                     nullable: false
               - column:
                   name: email
-                  type: VARCHAR(255)
+                  type: VARCHAR(20)
                   constraints:
                     nullable: false
               - column:
                   name: phone
-                  type: VARCHAR(255)
+                  type: VARCHAR(15)
                   constraints:
                     nullable: false
               - column:
@@ -33,6 +33,7 @@ databaseChangeLog:
                   constraints:
                     nullable: false
         - addForeignKeyConstraint:
+            constraintName: fk_users_balance_id
             baseTableName: users
             baseColumnNames: balance_id
             referencedTableName: balances
