@@ -13,7 +13,8 @@ import lombok.*;
 public class Seat {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seats_seq_gen")
+    @SequenceGenerator(name = "seats_seq_gen", sequenceName = "seats_seq", allocationSize = 1)
     private Long id;
 
     @Column(name = "horizontal", nullable = false)

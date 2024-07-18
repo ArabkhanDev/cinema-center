@@ -3,10 +3,7 @@ package group.aist.cinema.service.impl;
 import group.aist.cinema.dto.request.MovieSessionRequestDTO;
 import group.aist.cinema.dto.response.MovieSessionResponseDTO;
 import group.aist.cinema.mapper.MovieSessionMapper;
-import group.aist.cinema.model.Hall;
-import group.aist.cinema.model.Movie;
 import group.aist.cinema.model.MovieSession;
-import group.aist.cinema.model.MovieStream;
 import group.aist.cinema.repository.HallRepository;
 import group.aist.cinema.repository.MovieRepository;
 import group.aist.cinema.repository.MovieSessionRepository;
@@ -63,8 +60,6 @@ public class MovieSessionServiceImpl implements MovieSessionService {
     public void deleteMovieSession(Long id) {
         movieSessionRepository.deleteById(id);
     }
-
-
 
     private void setAllRelations(MovieSessionRequestDTO movieSessionRequestDTO, MovieSession movieSession) {
         movieSession.setMovie(movieRepository.findById(movieSessionRequestDTO.getMovieId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST,"There is no id with this movie session")));

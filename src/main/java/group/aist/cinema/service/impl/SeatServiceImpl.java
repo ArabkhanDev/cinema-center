@@ -56,8 +56,6 @@ public class SeatServiceImpl implements SeatService {
         seatRepository.deleteById(id);
     }
 
-
-
     private Seat getSeat(Long id, SeatRequestDTO seatRequestDTO) {
         Seat seat = seatRepository.findById(id).
                 orElseThrow(() -> new RuntimeException("Seat not found with id " + id));

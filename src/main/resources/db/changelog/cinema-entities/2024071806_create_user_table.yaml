@@ -1,43 +1,40 @@
 databaseChangeLog:
   - changeSet:
-      id: 202407181006_create_seat_table
-      author: arabkhan
+      id: 202407181130_create_users_table
+      author: ilkin
       changes:
         - createTable:
-            tableName: seats
+            tableName: users
             columns:
               - column:
                   name: id
-                  type: BIGINT
-                  autoIncrement: true
+                  type: VARCHAR(50)
                   constraints:
                     primaryKey: true
                     nullable: false
               - column:
-                  name: horizontal
+                  name: user_name
+                  type: VARCHAR(30)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: email
+                  type: VARCHAR(30)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: phone
                   type: VARCHAR(20)
                   constraints:
                     nullable: false
               - column:
-                  name: vertical
-                  type: VARCHAR(20)
-                  constraints:
-                    nullable: false
-              - column:
-                  name: type
-                  type: VARCHAR(20)
-                  constraints:
-                    nullable: false
-              - column:
-                  name: sector_id
+                  name: balance_id
                   type: BIGINT
                   constraints:
                     nullable: false
-        - createSequence:
-            sequenceName: seats_seq
         - addForeignKeyConstraint:
-            baseTableName: seats
-            baseColumnNames: sector_id
-            constraintName: fk_seat_sector_id
-            referencedTableName: sectors
+            baseColumnNames: balance_id
+            baseTableName: users
+            constraintName: fk_users_balance_id
+            referencedTableName: balances
             referencedColumnNames: id

@@ -79,7 +79,8 @@ springdoc:
   swagger-ui:
     oauth:
       client-id: cinema-client
-      client-secret: BNbND6rmxNf0zwYV72yFzbTrm7DxvZDQ
+      client-secret: Vs9dMXbnaQjuTuxV4bmnuxdepLjMBjba
+
 
 logging:
   level:

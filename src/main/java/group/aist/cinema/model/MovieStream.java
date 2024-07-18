@@ -18,7 +18,8 @@ import java.util.Set;
 public class MovieStream {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "movie_streams_seq_gen")
+    @SequenceGenerator(name = "movie_streams_seq_gen", sequenceName = "movie_streams_seq", allocationSize = 1)
     private Long id;
 
     private Boolean hasSubtitle;
