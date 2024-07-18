@@ -1,0 +1,32 @@
+databaseChangeLog:
+  - changeSet:
+      id: 202407171807_create_balance_table
+      author: arabkhan
+      changes:
+        - createTable:
+            tableName: balances
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: currency
+                  type: VARCHAR(10)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: amount
+                  type: DECIMAL(19,2)
+                  constraints:
+                    nullable: false
+        - createSequence:
+            sequenceName: hibernate_sequence
+        - addAutoIncrement:
+            columnName: id
+            tableName: balances
+            incrementBy: 1
+            startWith: 1
+            columnDataType: BIGINT

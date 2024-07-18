@@ -14,7 +14,7 @@ spring:
 
   liquibase:
     enabled: true
-    change-log: classpath:migrations/changelog-master.xml
+    change-log: db/changelog/db.changelog-master.yaml
 
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
@@ -69,4 +69,8 @@ springdoc:
     oauth:
       client-id: cinema-client
       client-secret: BNbND6rmxNf0zwYV72yFzbTrm7DxvZDQ
+
+logging:
+  level:
+    liquibase: DEBUG
 
