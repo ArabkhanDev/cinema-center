@@ -8,18 +8,17 @@ import group.aist.cinema.enums.AvailableType;
 import group.aist.cinema.mapper.TicketMapper;
 import group.aist.cinema.mapper.UserMapper;
 import group.aist.cinema.model.*;
-import group.aist.cinema.repository.HallRepository;
-import group.aist.cinema.repository.MovieSessionRepository;
-import group.aist.cinema.repository.TicketRepository;
-import group.aist.cinema.repository.UserRepository;
+import group.aist.cinema.repository.*;
 import group.aist.cinema.service.EmailService;
 import group.aist.cinema.service.QrCodeService;
 import group.aist.cinema.service.TicketService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -41,10 +40,10 @@ public class TicketServiceImpl implements TicketService {
     @Override
     public void sendPurchaseLink(Long ticketId) {
         Ticket ticket = ticketRepository.findById(ticketId)
-                .orElseThrow(() -> new RuntimeException("Ticket not found with id: "+ticketId));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Ticket not found with id: " + ticketId));
 
         if (ticket.getAvailableType() != AvailableType.AVAILABLE){
-            throw new RuntimeException("Ticket is not available");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Ticket is not available");
         }
 
         User user = ticket.getUser();
@@ -61,7 +60,7 @@ public class TicketServiceImpl implements TicketService {
     @Override
     public Ticket confirmPurchase(Long ticketId) {
         Ticket ticket = ticketRepository.findById(ticketId)
-                .orElseThrow(() -> new RuntimeException("Ticket not found with id: " + ticketId));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Ticket not found with id: " + ticketId));
 
         User user = ticket.getUser();
 
@@ -73,11 +72,12 @@ public class TicketServiceImpl implements TicketService {
                     .currency(ticket.getCurrency())
                     .amount(newBalance)
                     .build();
+
             user.setBalance(lastBalance);
             ticket.setUser(user);
             ticket.setAvailableType(AvailableType.RESERVED);
         } else {
-            throw new RuntimeException("Insufficient balance");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Insufficient balance");
         }
         ticket.setAvailableType(AvailableType.ORDERED);
 
@@ -88,7 +88,7 @@ public class TicketServiceImpl implements TicketService {
     @Transactional
     public void returnTicketLink(Long ticketId) {
         Ticket ticket = ticketRepository.findById(ticketId)
-                .orElseThrow(() -> new RuntimeException("Ticket not found with id: " + ticketId));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Ticket not found with id: " + ticketId));
 
         User user = ticket.getUser();
 
@@ -103,7 +103,7 @@ public class TicketServiceImpl implements TicketService {
     @Transactional
     public void confirmReturn(Long ticketId) {
         Ticket ticket = ticketRepository.findById(ticketId)
-                .orElseThrow(() -> new RuntimeException("Ticket not found with id" + ticketId));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Ticket not found with id: " + ticketId));
 
         User user = ticket.getUser();
 
@@ -123,7 +123,7 @@ public class TicketServiceImpl implements TicketService {
     @Transactional
     public byte[] generateQrCode(Long ticketId) throws IOException, WriterException {
         Ticket ticket = ticketRepository.findById(ticketId)
-                .orElseThrow(() -> new RuntimeException("Ticket not found with id: " + ticketId));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Ticket not found with id: " + ticketId));
 
         byte[] bytes = qrCodeService.generatePdfWithQrCode(ticketId);
         String qr = Arrays.toString(bytes);
@@ -135,7 +135,7 @@ public class TicketServiceImpl implements TicketService {
     @Transactional
     public String scanQrCode(Long ticketId){
         Ticket ticket = ticketRepository.findById(ticketId)
-                .orElseThrow(() -> new RuntimeException("Ticket not found with id: " + ticketId));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Ticket not found with id: " + ticketId));
         if (ticket.getIsScanned())
             return "Ticket already scanned!!!";
         else
@@ -156,7 +156,7 @@ public class TicketServiceImpl implements TicketService {
     @Transactional(readOnly = true)
     public TicketResponseDTO getTicketById(Long id) {
         Ticket ticket = ticketRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Ticket not find: " + id));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Ticket not found with id: " + id));
         return ticketMapper.toDTO(ticket);
     }
 
@@ -173,7 +173,7 @@ public class TicketServiceImpl implements TicketService {
 
         List<Ticket> allAvailableTickets = ticketRepository.findByAvailableType(AvailableType.AVAILABLE);
         if (allAvailableTickets.isEmpty()){
-            throw new RuntimeException("There are not available ticket!");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "There are no available tickets!");
         }
 
         return allAvailableTickets.stream().map(ticketMapper::toDTO).toList();
@@ -183,15 +183,17 @@ public class TicketServiceImpl implements TicketService {
     @Transactional
     public TicketResponseDTO createTicket(TicketRequestDTO ticketRequestDTO) {
         MovieSession movieSession = movieSessionRepository.findById(ticketRequestDTO.getMovieSessionId())
-                .orElseThrow(() -> new RuntimeException("Movie Session not found with id: " + ticketRequestDTO.getMovieSessionId()));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Movie Session not found with id: " + ticketRequestDTO.getMovieSessionId()));
+
         User user = userRepository.findById(ticketRequestDTO.getUserId())
-                .orElseThrow(() -> new RuntimeException("User not found with id: " + ticketRequestDTO.getUserId()));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found with id: " + ticketRequestDTO.getUserId()));
+
 
         Ticket ticket = ticketMapper.toEntity(ticketRequestDTO);
         Hall hall = movieSession.getHall();
 
-        if(hall.getAvailableSeat()<1){
-            throw new RuntimeException("There are not available seat");
+        if(hall.getAvailableSeat() < 1){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "There are no available seats");
         }
 
         ticket.setAvailableType(AvailableType.AVAILABLE);
@@ -209,14 +211,15 @@ public class TicketServiceImpl implements TicketService {
     @Transactional
     public TicketResponseDTO updateTicket(Long id, TicketRequestDTO ticketRequestDTO) {
         Ticket ticket = ticketRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Ticket not found with id: " + id));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Ticket not found with id: " + id));
 
         MovieSession movieSession = movieSessionRepository.findById(ticketRequestDTO.getMovieSessionId())
-                .orElseThrow(() -> new RuntimeException("Movie Session not found with id: " + ticketRequestDTO.getMovieSessionId()));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Movie Session not found with id: " + ticketRequestDTO.getMovieSessionId()));
+
         ticket.setMovieSession(movieSession);
 
         User user = userRepository.findById(ticketRequestDTO.getUserId())
-                .orElseThrow(() -> new RuntimeException("User not found with id: " + ticketRequestDTO.getUserId()));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found with id: " + ticketRequestDTO.getUserId()));
         ticket.setUser(user);
         ticketMapper.updateTicketFromDTO(ticketRequestDTO,ticket);
 

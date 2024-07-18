@@ -20,8 +20,10 @@ import java.io.IOException;
 @Service
 public class QrCodeService {
 
+    private static final String QR_CODE_URL_TEMPLATE = "http://localhost:8080/v1/api/tickets/scanQrCode/";
+
     public byte[] generatePdfWithQrCode(Long ticketId) throws WriterException, IOException {
-        String qrCodeText = "http://localhost:8080/v1/api/tickets/scanQrCode/" + ticketId;
+        String qrCodeText = QR_CODE_URL_TEMPLATE + ticketId;
 
         QRCodeWriter qrCodeWriter = new QRCodeWriter();
         BitMatrix bitMatrix = qrCodeWriter.encode(qrCodeText, BarcodeFormat.QR_CODE, 250, 250);

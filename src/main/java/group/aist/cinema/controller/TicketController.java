@@ -4,6 +4,7 @@ import com.google.zxing.WriterException;
 import group.aist.cinema.dto.request.TicketRequestDTO;
 import group.aist.cinema.dto.response.TicketResponseDTO;
 import group.aist.cinema.model.Ticket;
+import group.aist.cinema.model.base.BaseResponse;
 import group.aist.cinema.service.TicketService;
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
@@ -25,9 +26,9 @@ public class TicketController {
     private final TicketService ticketService;
 
     @GetMapping("/sendPurchaseLink/{ticketId}")
-    public ResponseEntity<String> sendPurchaseLink(@PathVariable Long ticketId) {
+    public BaseResponse<String> sendPurchaseLink(@PathVariable Long ticketId) {
         ticketService.sendPurchaseLink(ticketId);
-        return ResponseEntity.ok("Email send successfully! Please check your email and confirm your ticket");
+        return BaseResponse.success("Email send successfully! Please check your email and confirm your ticket");
     }
 
     @GetMapping("/confirmPurchase/{ticketId}")
@@ -36,36 +37,34 @@ public class TicketController {
     }
 
     @PostMapping("/return/{ticketId}")
-    public ResponseEntity<String> returnTicket(@PathVariable Long ticketId) throws MessagingException, IOException, WriterException {
+    public BaseResponse<String>  returnTicket(@PathVariable Long ticketId) throws MessagingException, IOException, WriterException {
         ticketService.returnTicketLink(ticketId);
-        return ResponseEntity.ok("Email send successfully! Please check your email to return your ticket");
+        return BaseResponse.success("Email send successfully! Please check your email to return your ticket");
     }
 
     @GetMapping("/confirmReturn/{ticketId}")
-    public ResponseEntity<String> confirmReturn(@PathVariable Long ticketId) {
+    public BaseResponse<String>  confirmReturn(@PathVariable Long ticketId) {
         ticketService.confirmReturn(ticketId);
-        return ResponseEntity.ok("You returned ticket successfully!");
+        return BaseResponse.success("You returned ticket successfully!");
     }
 
     @GetMapping("/generateQrCode/{ticketId}")
-    public ResponseEntity<String> generateQrCode(@PathVariable Long ticketId) {
+    public BaseResponse<String> generateQrCode(@PathVariable Long ticketId) {
         try {
             ticketService.generateQrCode(ticketId);
-
-            return ResponseEntity.ok("Ticket is marked as returned");
+            return BaseResponse.success("Ticket is marked as returned");
         } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        } catch (WriterException e) {
+            return BaseResponse.success("Bad Request");
+        } catch (IOException | WriterException e) {
             throw new RuntimeException(e);
         }
     }
 
+
     @GetMapping("/scanQrCode/{ticketId}")
-    public ResponseEntity<String> scanQrCode(@PathVariable Long ticketId){
+    public BaseResponse<String> scanQrCode(@PathVariable Long ticketId){
         String scan = ticketService.scanQrCode(ticketId);
-        return ResponseEntity.ok(scan);
+        return BaseResponse.success(scan);
     }
 
 

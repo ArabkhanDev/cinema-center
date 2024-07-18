@@ -1,6 +1,5 @@
 package group.aist.cinema.dto.response;
 
-import group.aist.cinema.dto.common.MovieDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,5 +24,5 @@ public class TicketResponseDTO {
 
     private UserResponseDTO user;
 
-    private MovieDTO movie;
+    private MovieResponseDTO movie;
 }

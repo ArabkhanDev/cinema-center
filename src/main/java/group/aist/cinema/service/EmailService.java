@@ -39,24 +39,24 @@ public class EmailService {
     }
 
 
-
-    public void sendMessageWithQrCode(String to, String subject, String text, String qrCodeText) throws MessagingException, WriterException, IOException {
-        MimeMessage message = mailSender.createMimeMessage();
-        MimeMessageHelper helper = new MimeMessageHelper(message,true);
-
-        helper.setTo(to);
-        helper.setSubject(subject);
-        helper.setText(text);
-
-        QRCodeWriter qrCodeWriter = new QRCodeWriter();
-        BitMatrix bitMatrix = qrCodeWriter.encode(qrCodeText, BarcodeFormat.QR_CODE, 250, 250);
-
-        ByteArrayOutputStream pngOutputStream = new ByteArrayOutputStream();
-        MatrixToImageWriter.writeToStream(bitMatrix, "PNG", pngOutputStream);
-        byte[] pngData = pngOutputStream.toByteArray();
-
-        helper.addAttachment("qr-code.png", () -> new ByteArrayInputStream(pngData));
-        mailSender.send(message);
-    }
+    // QR sender via email
+//    public void sendMessageWithQrCode(String to, String subject, String text, String qrCodeText) throws MessagingException, WriterException, IOException {
+//        MimeMessage message = mailSender.createMimeMessage();
+//        MimeMessageHelper helper = new MimeMessageHelper(message,true);
+//
+//        helper.setTo(to);
+//        helper.setSubject(subject);
+//        helper.setText(text);
+//
+//        QRCodeWriter qrCodeWriter = new QRCodeWriter();
+//        BitMatrix bitMatrix = qrCodeWriter.encode(qrCodeText, BarcodeFormat.QR_CODE, 250, 250);
+//
+//        ByteArrayOutputStream pngOutputStream = new ByteArrayOutputStream();
+//        MatrixToImageWriter.writeToStream(bitMatrix, "PNG", pngOutputStream);
+//        byte[] pngData = pngOutputStream.toByteArray();
+//
+//        helper.addAttachment("qr-code.png", () -> new ByteArrayInputStream(pngData));
+//        mailSender.send(message);
+//    }
 
 }
