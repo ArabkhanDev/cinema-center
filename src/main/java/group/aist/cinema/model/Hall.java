@@ -15,7 +15,8 @@ import lombok.Setter;
 public class Hall {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "halls_seq_gen")
+    @SequenceGenerator(name = "halls_seq_gen", sequenceName = "halls_seq", allocationSize = 1)
     private Long id;
 
     @Column(name = "name", nullable = false)

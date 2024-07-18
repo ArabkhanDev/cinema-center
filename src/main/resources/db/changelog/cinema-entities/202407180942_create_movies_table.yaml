@@ -46,7 +46,7 @@ databaseChangeLog:
                   name: image
                   type: VARCHAR(255)
         - createSequence:
-            sequenceName: hibernate_sequence
+            sequenceName: movies_seq
         - addAutoIncrement:
             columnName: id
             tableName: movies

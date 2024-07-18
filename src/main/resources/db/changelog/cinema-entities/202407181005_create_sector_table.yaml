@@ -1,10 +1,10 @@
 databaseChangeLog:
   - changeSet:
-      id: 202407180953_create_halls_table
-      author: elshan
+      id: 202407180943_create_sectors_table
+      author: ilkin
       changes:
         - createTable:
-            tableName: halls
+            tableName: sectors
             columns:
               - column:
                   name: id
@@ -14,24 +14,30 @@ databaseChangeLog:
                     nullable: false
               - column:
                   name: name
-                  type: VARCHAR(30)
+                  type: VARCHAR(255)
                   constraints:
                     nullable: false
               - column:
-                  name: seat_count
+                  name: number
                   type: INT
                   constraints:
                     nullable: false
               - column:
-                  name: available_seat
-                  type: INT
+                  name: hall_id
+                  type: BIGINT
                   constraints:
                     nullable: false
         - createSequence:
-            sequenceName: hibernate_sequence
+            sequenceName: sectors_seq
         - addAutoIncrement:
             columnName: id
-            tableName: halls
+            tableName: sectors
             incrementBy: 1
             startWith: 1
             columnDataType: BIGINT
+        - addForeignKeyConstraint:
+            baseColumnNames: hall_id
+            baseTableName: sectors
+            constraintName: fk_sectors_hall_id
+            referencedTableName: halls
+            referencedColumnNames: id

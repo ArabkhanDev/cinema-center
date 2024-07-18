@@ -23,7 +23,7 @@ databaseChangeLog:
                   constraints:
                     nullable: false
         - createSequence:
-            sequenceName: hibernate_sequence
+            sequenceName: balances_seq
         - addAutoIncrement:
             columnName: id
             tableName: balances

@@ -20,7 +20,8 @@ import java.time.LocalDate;
 public class Ticket {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "tickets_seq_gen")
+    @SequenceGenerator(name = "tickets_seq_gen", sequenceName = "tickets_seq", allocationSize = 1)
     private Long id;
 
     @Column(name = "price", nullable = false, precision = 8, scale = 2)

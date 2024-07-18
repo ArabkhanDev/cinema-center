@@ -23,7 +23,7 @@ databaseChangeLog:
                   constraints:
                     nullable: false
         - createSequence:
-            sequenceName: hibernate_sequence
+            sequenceName: dubbing_languages_seq
         - addAutoIncrement:
             columnName: id
             tableName: dubbing_languages

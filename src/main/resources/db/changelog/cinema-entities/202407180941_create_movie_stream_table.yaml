@@ -1,6 +1,6 @@
 databaseChangeLog:
   - changeSet:
-      id: 202407181000_create_movie_stream_table
+      id: 202407180941_create_movie_stream_table
       author: arabkhan
       changes:
         - createTable:
@@ -50,6 +50,8 @@ databaseChangeLog:
                   constraints:
                     nullable: false
 
+        - createSequence:
+            sequenceName: movie_streams_seq
         - addPrimaryKey:
             tableName: movie_stream_subtitle_languages
             columnNames: movie_stream_id, subtitle_language_id

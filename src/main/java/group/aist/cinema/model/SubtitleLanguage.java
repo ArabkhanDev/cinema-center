@@ -15,7 +15,8 @@ import lombok.Setter;
 public class SubtitleLanguage {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "subtitle_languages_seq_gen")
+    @SequenceGenerator(name = "subtitle_languages_seq_gen", sequenceName = "subtitle_languages_seq", allocationSize = 1)
     private Long id;
 
     @Column(name = "name", nullable = false)
