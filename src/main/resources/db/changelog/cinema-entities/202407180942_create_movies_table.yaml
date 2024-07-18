@@ -44,7 +44,7 @@ databaseChangeLog:
                     nullable: false
               - column:
                   name: image
-                  type: VARCHAR(255)
+                  type: VARCHAR(100)
         - createSequence:
             sequenceName: movies_seq
         - addAutoIncrement:
