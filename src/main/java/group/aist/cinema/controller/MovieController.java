@@ -8,6 +8,7 @@ import group.aist.cinema.service.MovieService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -18,7 +19,7 @@ import java.io.IOException;
 public class MovieController {
 
     private final MovieService movieService;
-
+    
     @GetMapping
     public BaseResponse<Page<MovieResponseDTO>> getAllMovieStreams(Pageable pageable) {
         return BaseResponse.success(movieService.getAllMovies(pageable));
@@ -30,16 +31,20 @@ public class MovieController {
     }
 
     @PostMapping(consumes = { "multipart/form-data" })
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public MovieResponseDTO createMovie(@ModelAttribute MovieRequestDTO movieRequestDTO) throws IOException {
         return movieService.createMovie(movieRequestDTO);
     }
 
+
     @PutMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public BaseResponse<MovieResponseDTO> updateMovie(@PathVariable Long id, @RequestBody MovieUpdateRequest movieDTO) {
         return BaseResponse.success(movieService.updateMovie(id, movieDTO));
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public BaseResponse<Void> deleteMovie(@PathVariable Long id) {
         movieService.deleteMovie(id);
         return BaseResponse.noContent();
