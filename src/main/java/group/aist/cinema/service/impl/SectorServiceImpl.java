@@ -14,14 +14,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import static group.aist.cinema.util.ExceptionMessages.HALL_NOT_FOUND;
+import static group.aist.cinema.util.ExceptionMessages.SECTOR_NOT_FOUND;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @Service
 @RequiredArgsConstructor
 public class SectorServiceImpl implements SectorService {
 
-    private static final String SECTOR_NOT_FOUND = "Sector not found with id ";
-    private static final String HALL_NOT_FOUND = "Hall not found with id ";
     private final SectorRepository sectorRepository;
     private final HallRepository hallRepository;
     private final SectorMapper sectorMapper;

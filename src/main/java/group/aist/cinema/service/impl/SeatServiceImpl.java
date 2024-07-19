@@ -16,15 +16,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
+import static group.aist.cinema.util.ExceptionMessages.SEAT_NOT_FOUND;
+import static group.aist.cinema.util.ExceptionMessages.SECTOR_NOT_FOUND;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
 @Service
 @RequiredArgsConstructor
 public class SeatServiceImpl implements SeatService {
-
-    private static final String SEAT_NOT_FOUND = "Seat not found with id: ";
-    private static final String SECTOR_NOT_FOUND = "Sector not found with id: ";
-
 
     private final SeatRepository seatRepository;
     private final SectorRepository sectorRepository;

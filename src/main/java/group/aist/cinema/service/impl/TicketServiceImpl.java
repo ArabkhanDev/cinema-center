@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.List;
 
+import static group.aist.cinema.util.ExceptionMessages.TICKET_NOT_FOUND;
 import static group.aist.cinema.util.TicketUtil.CONFIRM_PURCHASE_LINK;
 import static group.aist.cinema.util.TicketUtil.CONFIRM_RETURN_LINK;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
@@ -31,8 +32,6 @@ import static org.springframework.http.HttpStatus.BAD_REQUEST;
 @Service
 @RequiredArgsConstructor
 public class TicketServiceImpl implements TicketService {
-
-    private final String TICKET_NOT_FOUND= "Ticket not found with id: ";
 
     private final TicketRepository ticketRepository;
     private final UserRepository userRepository;

@@ -27,6 +27,8 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
+import static group.aist.cinema.util.ExceptionMessages.BALANCE_NOT_FOUND;
+import static group.aist.cinema.util.ExceptionMessages.USER_NOT_FOUND;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 
@@ -34,8 +36,6 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
-    private static final String USER_NOT_FOUND = "User not found with id ";
-    private static final String BALANCE_NOT_FOUND = "Balance not found with id ";
     private final UserRepository userRepository;
     private final UserMapper userMapper;
     private final BalanceRepository balanceRepository;

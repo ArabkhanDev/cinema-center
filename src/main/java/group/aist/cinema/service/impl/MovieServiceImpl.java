@@ -19,13 +19,12 @@ import java.util.Base64;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static group.aist.cinema.util.ExceptionMessages.MOVIE_NOT_FOUND;
 import static org.springframework.http.HttpStatus.*;
 
 @Service
 @RequiredArgsConstructor
 public class MovieServiceImpl implements MovieService {
-
-    private static final String MOVIE_NOT_FOUND = "Movie Not Found with ID: ";
 
     private final MovieRepository movieRepository;
     private final MovieMapper movieMapper;
