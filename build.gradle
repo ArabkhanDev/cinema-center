@@ -43,8 +43,12 @@ dependencies {
 
 	implementation 'com.itextpdf:itext7-core:7.1.17'
 
+	testImplementation 'org.junit.jupiter:junit-jupiter-api'
+	testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
 
+	testImplementation 'org.mockito:mockito-core'
 
+	testImplementation 'org.assertj:assertj-core'
 
 	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.1.0'
 
