@@ -30,7 +30,7 @@ public class User {
     @Column(name = "phone", nullable = false)
     private String phone;
 
-    @OneToOne(fetch = FetchType.LAZY, optional = false)
+    @OneToOne(fetch = FetchType.EAGER, optional = false, cascade = CascadeType.ALL)
     @JoinColumn(name = "balance_id", nullable = false)
     private Balance balance;
 

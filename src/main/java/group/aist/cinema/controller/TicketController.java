@@ -10,8 +10,7 @@ import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -32,7 +31,7 @@ public class TicketController {
     }
 
     @GetMapping("/confirmPurchase/{ticketId}")
-    public Ticket confirmPurchase(@PathVariable Long ticketId) {
+    public Ticket confirmPurchase(@PathVariable Long ticketId) throws MessagingException, IOException, WriterException {
         return ticketService.confirmPurchase(ticketId);
     }
 
@@ -51,8 +50,7 @@ public class TicketController {
     @GetMapping("/generateQrCode/{ticketId}")
     public BaseResponse<String> generateQrCode(@PathVariable Long ticketId) {
         try {
-            ticketService.generateQrCode(ticketId);
-            return BaseResponse.success("Ticket is marked as returned");
+            return BaseResponse.success(ticketService.generateQrCode(ticketId));
         } catch (RuntimeException e) {
             return BaseResponse.success("Bad Request");
         } catch (IOException | WriterException e) {
@@ -69,6 +67,7 @@ public class TicketController {
 
 
     @PostMapping
+    @PreAuthorize("hasAuthority('ADMIN')")
     public TicketResponseDTO createTicket(@RequestBody TicketRequestDTO ticketRequestDTO){
         return ticketService.createTicket(ticketRequestDTO);
     }
@@ -83,7 +82,7 @@ public class TicketController {
         return ticketService.getTicketById(id);
     }
 
-    @GetMapping()
+    @GetMapping("/available-tickets")
     public List<TicketResponseDTO> getAvailableTickets() {
         return ticketService.getAvailableTickets();
     }

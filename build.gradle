@@ -31,11 +31,20 @@ dependencies {
 	runtimeOnly 'org.postgresql:postgresql'
 	annotationProcessor 'org.projectlombok:lombok'
 
-	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-mail', version: '1.2.0.RELEASE'
+	implementation 'org.springframework.boot:spring-boot-starter-mail'
+
+	implementation 'jakarta.mail:jakarta.mail-api:2.0.1'
+	implementation 'com.sun.mail:jakarta.mail:2.0.1'
+
+	implementation 'jakarta.activation:jakarta.activation-api:2.0.1'
+
+	configurations.all {
+		exclude group: 'javax.mail', module: 'mail'
+		exclude group: 'javax.activation', module: 'activation'
+	}
 
 	implementation group: 'com.google.zxing', name: 'core', version: '3.3.1'
 
-	implementation group: 'jakarta.mail', name: 'jakarta.mail-api', version: '2.1.3'
 
 
 
