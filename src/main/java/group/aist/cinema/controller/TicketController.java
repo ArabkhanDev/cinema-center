@@ -24,13 +24,13 @@ public class TicketController {
 
     private final TicketService ticketService;
 
-    @GetMapping("/sendPurchaseLink/{ticketId}")
+    @PostMapping("/send-purchase-link/{ticketId}")
     public BaseResponse<String> sendPurchaseLink(@PathVariable Long ticketId) {
         ticketService.sendPurchaseLink(ticketId);
         return BaseResponse.success("Email send successfully! Please check your email and confirm your ticket");
     }
 
-    @GetMapping("/confirmPurchase/{ticketId}")
+    @PostMapping("/confirm-purchase/{ticketId}")
     public Ticket confirmPurchase(@PathVariable Long ticketId) throws MessagingException, IOException, WriterException {
         return ticketService.confirmPurchase(ticketId);
     }
@@ -41,13 +41,14 @@ public class TicketController {
         return BaseResponse.success("Email send successfully! Please check your email to return your ticket");
     }
 
-    @GetMapping("/confirmReturn/{ticketId}")
+    @PostMapping("/confirm-return/{ticketId}")
     public BaseResponse<String>  confirmReturn(@PathVariable Long ticketId) {
         ticketService.confirmReturn(ticketId);
         return BaseResponse.success("You returned ticket successfully!");
     }
 
-    @GetMapping("/generateQrCode/{ticketId}")
+    @PostMapping("/generate-qrcode/{ticketId}")
+    @PreAuthorize("hasRole('ADMIN')")
     public BaseResponse<String> generateQrCode(@PathVariable Long ticketId) {
         try {
             return BaseResponse.success(ticketService.generateQrCode(ticketId));
@@ -59,7 +60,8 @@ public class TicketController {
     }
 
 
-    @GetMapping("/scanQrCode/{ticketId}")
+    @PostMapping("/scan-qr-code/{ticketId}")
+    @PreAuthorize("hasRole('ADMIN')")
     public BaseResponse<String> scanQrCode(@PathVariable Long ticketId){
         String scan = ticketService.scanQrCode(ticketId);
         return BaseResponse.success(scan);
@@ -67,12 +69,12 @@ public class TicketController {
 
 
     @PostMapping
-    @PreAuthorize("hasAuthority('ADMIN')")
     public TicketResponseDTO createTicket(@RequestBody TicketRequestDTO ticketRequestDTO){
         return ticketService.createTicket(ticketRequestDTO);
     }
 
     @GetMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public Page<TicketResponseDTO> getAllTickets(Pageable pageable) {
         return ticketService.getAllTickets(pageable);
     }
@@ -83,6 +85,7 @@ public class TicketController {
     }
 
     @GetMapping("/available-tickets")
+    @PreAuthorize("hasRole('ADMIN')")
     public List<TicketResponseDTO> getAvailableTickets() {
         return ticketService.getAvailableTickets();
     }
@@ -93,6 +96,7 @@ public class TicketController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public TicketResponseDTO updateTicket(@PathVariable Long id, @RequestBody TicketRequestDTO ticketRequestDTO) {
         return ticketService.updateTicket(id, ticketRequestDTO);
     }

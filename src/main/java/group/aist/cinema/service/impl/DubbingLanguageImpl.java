@@ -9,10 +9,15 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
+
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @Service
 @RequiredArgsConstructor
 public class DubbingLanguageImpl implements DubbingLanguageService {
+
+    private static final String DUBBING_LANGUAGE_NOT_FOUND = "Dubbing language not found with id: ";
 
     private final DubbingLanguageRepository dubbingLanguageRepository;
     private final DubbingLanguageMapper dubbingLanguageMapper;
@@ -25,7 +30,8 @@ public class DubbingLanguageImpl implements DubbingLanguageService {
 
     @Override
     public DubbingLanguageDTO getDubbingLanguage(Long id) {
-        return dubbingLanguageMapper.toDTO(dubbingLanguageRepository.findById(id).orElseThrow(() -> new RuntimeException("Dubbing language not found with id " + id)));
+        return dubbingLanguageMapper.toDTO(dubbingLanguageRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(NOT_FOUND,DUBBING_LANGUAGE_NOT_FOUND + id)));
     }
 
     @Override
@@ -37,7 +43,7 @@ public class DubbingLanguageImpl implements DubbingLanguageService {
     @Override
     public DubbingLanguageDTO updateDubbingLanguage(Long id, DubbingLanguageDTO dubbingLanguageDTO) {
         DubbingLanguage dubbingLanguage = dubbingLanguageRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Dubbing language not found with id " + id));
+                .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, DUBBING_LANGUAGE_NOT_FOUND + id));
         dubbingLanguageMapper.updateDubbingLanguageFromDTO(dubbingLanguageDTO, dubbingLanguage);
         return dubbingLanguageMapper.toDTO(dubbingLanguageRepository.save(dubbingLanguage));
     }

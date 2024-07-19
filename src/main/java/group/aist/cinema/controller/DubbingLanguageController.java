@@ -6,13 +6,16 @@ import group.aist.cinema.service.DubbingLanguageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/v1/api/dubbing-languages")
 public class DubbingLanguageController {
+
     private final DubbingLanguageService dubbingLanguageService;
+
     @GetMapping
     public BaseResponse<Page<DubbingLanguageDTO>> getDubbingLanguages(Pageable pageable) {
         return BaseResponse.success(dubbingLanguageService.getAllDubbingLanguages(pageable));
@@ -24,16 +27,19 @@ public class DubbingLanguageController {
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public BaseResponse<DubbingLanguageDTO> createDubbingLanguage(@RequestBody DubbingLanguageDTO dubbingLanguageDTO) {
         return BaseResponse.created(dubbingLanguageService.createDubbingLanguage(dubbingLanguageDTO));
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public BaseResponse<DubbingLanguageDTO> updateDubbingLanguage(@RequestBody DubbingLanguageDTO dubbingLanguageDTO, @PathVariable Long id) {
         return BaseResponse.success(dubbingLanguageService.updateDubbingLanguage(id, dubbingLanguageDTO));
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public BaseResponse<Void> deleteDubbingLanguage(@PathVariable Long id) {
         dubbingLanguageService.deleteDubbingLanguage(id);
         return BaseResponse.noContent();
