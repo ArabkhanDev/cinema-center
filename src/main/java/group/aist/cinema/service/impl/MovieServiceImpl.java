@@ -9,20 +9,23 @@ import group.aist.cinema.repository.MovieRepository;
 import group.aist.cinema.service.MovieService;
 import group.aist.cinema.util.ImageUploadUtil;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
 import java.util.Base64;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static org.springframework.http.HttpStatus.*;
+
 @Service
 @RequiredArgsConstructor
-@Slf4j
 public class MovieServiceImpl implements MovieService {
+
+    private static final String MOVIE_NOT_FOUND = "Movie Not Found with ID: ";
 
     private final MovieRepository movieRepository;
     private final MovieMapper movieMapper;
@@ -36,7 +39,7 @@ public class MovieServiceImpl implements MovieService {
     @Override
     public MovieResponseDTO getMovieById(Long id) {
         Movie movie = movieRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Movie not found with id: " + id));
+                .orElseThrow(() -> new ResponseStatusException(BAD_REQUEST, MOVIE_NOT_FOUND + id));
         return movieMapper.mapToDto(movie);
     }
 
@@ -60,7 +63,7 @@ public class MovieServiceImpl implements MovieService {
     @Override
     public MovieResponseDTO updateMovie(Long id, MovieUpdateRequest movieDto) {
         Movie existingMovie = movieRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Movie not found with id: " + id));
+                .orElseThrow(() -> new ResponseStatusException(BAD_REQUEST, MOVIE_NOT_FOUND + id));
         movieMapper.updateMovieFromDTO(movieDto, existingMovie);
         return movieMapper.mapToDto(movieRepository.save(existingMovie));
     }
@@ -68,7 +71,7 @@ public class MovieServiceImpl implements MovieService {
     @Override
     public void deleteMovie(Long id) {
         if (!movieRepository.existsById(id)) {
-            throw new RuntimeException("Movie not found with id: " + id);
+            throw new ResponseStatusException(BAD_REQUEST, MOVIE_NOT_FOUND + id);
         }
         movieRepository.deleteById(id);
     }

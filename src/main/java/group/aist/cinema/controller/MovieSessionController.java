@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.EntityModel;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
@@ -36,16 +37,19 @@ public class MovieSessionController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public BaseResponse<MovieSessionResponseDTO> createMovieSession(@RequestBody MovieSessionRequestDTO movieSessionRequestDTO) {
         return BaseResponse.created(movieSessionService.createMovieSession(movieSessionRequestDTO));
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public BaseResponse<MovieSessionResponseDTO> updateMovieSession(@PathVariable Long id, @RequestBody MovieSessionRequestDTO movieSessionRequestDTO) {
         return BaseResponse.success(movieSessionService.updateMovieSession(id, movieSessionRequestDTO));
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public BaseResponse<Void> deleteMovieSession(@PathVariable Long id) {
         movieSessionService.deleteMovieSession(id);
         return BaseResponse.noContent();
