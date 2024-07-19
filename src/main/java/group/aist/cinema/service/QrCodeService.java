@@ -46,7 +46,6 @@ public class QrCodeService {
         PdfDocument pdf = new PdfDocument(writer);
         Document document = new Document(pdf);
 
-        // Add ticket information
         document.add(new Paragraph("Ticket Information:"));
         document.add(new Paragraph("Movie: " + ticket.getMovieSession().getMovie().getName()));
         document.add(new Paragraph("Date: " + ticket.getStartDate()));
