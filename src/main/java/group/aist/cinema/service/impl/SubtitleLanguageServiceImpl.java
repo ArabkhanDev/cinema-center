@@ -10,13 +10,17 @@ import group.aist.cinema.service.SubtitleLanguageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
+
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @Service
 @RequiredArgsConstructor
 public class SubtitleLanguageServiceImpl implements SubtitleLanguageService {
-
+    private static final String SUBTITLE_NOT_FOUND = "Subtitle language not found with id ";
     private final SubtitleLanguageRepository subtitleLanguageRepository;
     private final SubtitleLanguageMapper subtitleLanguageMapper;
 
@@ -28,10 +32,9 @@ public class SubtitleLanguageServiceImpl implements SubtitleLanguageService {
     }
 
     @Override
-    @PreAuthorize("hasRole('ADMIN')")
     public SubtitleLanguageDTO getSubtitleLanguageById(Long id) {
         SubtitleLanguage subtitleLanguage = subtitleLanguageRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Subtitle language not found with id: " + id));
+                .orElseThrow(() -> new ResponseStatusException(NOT_FOUND,SUBTITLE_NOT_FOUND + id));
         return subtitleLanguageMapper.mapToDto(subtitleLanguage);
     }
 
@@ -44,14 +47,14 @@ public class SubtitleLanguageServiceImpl implements SubtitleLanguageService {
     @Override
     public SubtitleLanguageDTO updateSubtitleLanguage(Long id, SubtitleLanguageDTO subtitleLanguageDto) {
         SubtitleLanguage existingSubtitleLanguage = subtitleLanguageRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Subtitle language not found with id: " + id));
+                .orElseThrow(() -> new ResponseStatusException(NOT_FOUND,SUBTITLE_NOT_FOUND + id));
         return subtitleLanguageMapper.mapToDto(subtitleLanguageRepository.save(existingSubtitleLanguage));
     }
 
     @Override
     public void deleteSubtitleLanguage(Long id) {
         if (!subtitleLanguageRepository.existsById(id)) {
-            throw new RuntimeException("Subtitle language not found with id: " + id);
+            throw new ResponseStatusException(NOT_FOUND,SUBTITLE_NOT_FOUND + id);
         }
         subtitleLanguageRepository.deleteById(id);
     }

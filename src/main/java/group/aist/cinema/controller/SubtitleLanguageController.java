@@ -17,11 +17,13 @@ public class SubtitleLanguageController {
     private final SubtitleLanguageService subtitleLanguageService;
 
     @GetMapping
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     public BaseResponse<Page<SubtitleLanguageDTO>> getAllSubtitleLanguages(Pageable pageable) {
         return BaseResponse.success(subtitleLanguageService.getAllSubtitleLanguages(pageable));
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     public BaseResponse<SubtitleLanguageDTO> getSubtitleLanguageById(@PathVariable Long id) {
         return BaseResponse.success(subtitleLanguageService.getSubtitleLanguageById(id));
     }

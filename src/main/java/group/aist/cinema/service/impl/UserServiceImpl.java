@@ -21,15 +21,21 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
+
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
+    private static final String USER_NOT_FOUND = "User not found with id ";
+    private static final String BALANCE_NOT_FOUND = "Balance not found with id ";
     private final UserRepository userRepository;
     private final UserMapper userMapper;
     private final BalanceRepository balanceRepository;
@@ -50,7 +56,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional(readOnly = true)
     public UserResponseDTO getUserById(String id) {
-        User user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("Not found user id " + id));
+        User user = userRepository.findById(id).orElseThrow(() -> new ResponseStatusException(NOT_FOUND,USER_NOT_FOUND + id));
         UserResponseDTO userResponseDTO = userMapper.toDTO(user);
         userResponseDTO.setBalanceDTO(balanceMapper.toDTO(user.getBalance()));
         return userResponseDTO;
@@ -58,7 +64,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserResponseDTO getUserByEmail(String email) {
-        User user = userRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("User not found with this email"));
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new ResponseStatusException(NOT_FOUND,"User not found with this email " + email));
         UserResponseDTO userResponseDTO = userMapper.toDTO(user);
         userResponseDTO.setBalanceDTO(balanceMapper.toDTO(user.getBalance()));
         return userResponseDTO;
@@ -78,10 +84,10 @@ public class UserServiceImpl implements UserService {
         List<CredentialRepresentation> credentialsList = new ArrayList<>();
         credentialsList.add(credentialRepresentation);
         userRepresentation.setCredentials(credentialsList);
-        Response res = keycloakSecurityUtil.getKeycloakInstance().realm("cinema").users().create(userRepresentation);
+        Response res = keycloakSecurityUtil.getKeycloakInstance().realm("Team1").users().create(userRepresentation);
 
         if (res.getStatus() != 201) {
-            throw new RuntimeException("Failed to create user: " + res.readEntity(String.class));
+            throw new ResponseStatusException(BAD_REQUEST,"Failed to create user: " + res.readEntity(String.class));
         }
 
         URI location = res.getLocation();
@@ -89,7 +95,7 @@ public class UserServiceImpl implements UserService {
         String userId = locationHeader.substring(locationHeader.lastIndexOf('/') + 1);
 
         Balance balance = balanceRepository.findById(userRequestDTO.getBalanceId())
-                .orElseThrow(() -> new RuntimeException("Balance not found with id " + userRequestDTO.getBalanceId()));
+                .orElseThrow(() -> new ResponseStatusException(NOT_FOUND,BALANCE_NOT_FOUND + userRequestDTO.getBalanceId()));
         BalanceDTO balanceDTO = balanceMapper.toDTO(balance);
         User user = userMapper.toEntity(userRequestDTO);
         user.setId(userId);
@@ -105,13 +111,13 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public UserResponseDTO updateUser(String id, UserUpdateRequest userUpdateRequest) {
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("User not found with id: " + id));
+                .orElseThrow(() -> new ResponseStatusException(NOT_FOUND,USER_NOT_FOUND + id));
         userMapper.updateUserFromUpdateRequestDTO(userUpdateRequest,user);
         userRepository.save(user);
         Keycloak keycloak = keycloakSecurityUtil.getKeycloakInstance();
-        UserRepresentation userRepresentation = keycloak.realm("cinema").users().get(id).toRepresentation();
+        UserRepresentation userRepresentation = keycloak.realm("Team1").users().get(id).toRepresentation();
         userRepresentation.setEmail(userUpdateRequest.getEmail());
-        keycloakSecurityUtil.getKeycloakInstance().realm("cinema").users().get(id).update(userRepresentation);
+        keycloakSecurityUtil.getKeycloakInstance().realm("Team1").users().get(id).update(userRepresentation);
         return userMapper.toDTO(user);
     }
 
