@@ -28,12 +28,9 @@ public class BalanceController {
         return BaseResponse.success(balanceService.getBalanceById(id));
     }
 
-<<<<<<< Updated upstream
+
     @PostMapping
-=======
-    @PostMapping()
     @PreAuthorize("hasAnyRole('ADMIN','USER')")
->>>>>>> Stashed changes
     public BaseResponse<BalanceDTO> createBalance(BalanceDTO balanceDTO) {
         return BaseResponse.created(balanceService.createBalance(balanceDTO));
     }
