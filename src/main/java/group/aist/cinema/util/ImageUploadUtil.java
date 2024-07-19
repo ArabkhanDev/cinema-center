@@ -1,5 +1,6 @@
 package group.aist.cinema.util;
 
+import lombok.experimental.UtilityClass;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -10,13 +11,14 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 
-public final class ImageUploadUtil {
+@UtilityClass
+public class ImageUploadUtil {
 
     public static final String IMAGE_PATH = "src/main/resources/docs";
 
     public static void saveFile(String fileName, MultipartFile multipartFile)
             throws IOException {
-        Path uploadPath = Paths.get("src/main/resources/docs");
+        Path uploadPath = Paths.get(IMAGE_PATH);
 
         if (!Files.exists(uploadPath)) {
             Files.createDirectories(uploadPath);

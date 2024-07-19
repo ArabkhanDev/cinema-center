@@ -11,13 +11,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import static group.aist.cinema.util.ExceptionMessages.HALL_NOT_FOUND;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @Service
 @RequiredArgsConstructor
 public class HallServiceImpl implements HallService {
-
-    private static final String HALL_NOT_FOUND = "Hall not found with id: ";
 
     private final HallRepository hallRepository;
     private final HallMapper hallMapper;

@@ -2,25 +2,23 @@ package group.aist.cinema.service.impl;
 
 import group.aist.cinema.dto.common.SubtitleLanguageDTO;
 import group.aist.cinema.mapper.SubtitleLanguageMapper;
-import group.aist.cinema.model.MovieStream;
 import group.aist.cinema.model.SubtitleLanguage;
-import group.aist.cinema.repository.MovieStreamRepository;
 import group.aist.cinema.repository.SubtitleLanguageRepository;
 import group.aist.cinema.service.SubtitleLanguageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import static group.aist.cinema.util.ExceptionMessages.SUBTITLE_NOT_FOUND;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @Service
 @RequiredArgsConstructor
 public class SubtitleLanguageServiceImpl implements SubtitleLanguageService {
-    private static final String SUBTITLE_NOT_FOUND = "Subtitle language not found with id ";
+
     private final SubtitleLanguageRepository subtitleLanguageRepository;
     private final SubtitleLanguageMapper subtitleLanguageMapper;
 
