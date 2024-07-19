@@ -19,15 +19,12 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Set;
 
+import static group.aist.cinema.util.ExceptionMessages.*;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
 @Service
 @RequiredArgsConstructor
 public class MovieStreamServiceImpl implements MovieStreamService {
-
-    private static final String MOVIE_STREAM_NOT_FOUND = "Movie Stream not found with id: ";
-    private static final String DUBBING_LANGUAGE_NOT_FOUND = "Dubbing Language not found with id: ";
-    private static final String SUBTITLE_LANGUAGE_NOT_FOUND = "Dubbing Language not found with id: ";
 
     private final MovieStreamRepository movieStreamRepository;
 

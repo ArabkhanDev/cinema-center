@@ -11,13 +11,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import static group.aist.cinema.util.ExceptionMessages.BALANCE_NOT_FOUND;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @Service
 @RequiredArgsConstructor
 public class BalanceServiceImpl implements BalanceService {
-
-     private static final String BALANCE_NOT_FOUND = "Balance not found with id: ";
 
      private final BalanceRepository balanceRepository;
      private final BalanceMapper balanceMapper;

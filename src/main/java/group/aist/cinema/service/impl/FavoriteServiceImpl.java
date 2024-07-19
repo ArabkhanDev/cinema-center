@@ -16,13 +16,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
+import static group.aist.cinema.util.ExceptionMessages.FAVORITE_NOT_FOUND;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @Service
 @RequiredArgsConstructor
 public class FavoriteServiceImpl implements FavoriteService {
-
-    private static final String FAVORITE_NOT_FOUND= "Favorite not found with id: ";
 
     private final FavoriteRepository favoriteRepository;
     private final MovieRepository movieRepository;
