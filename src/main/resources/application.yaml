@@ -38,8 +38,8 @@ spring:
       maxLifetime: 1800000
   mail:
     host: smtp.gmail.com
-    username: udemyaltun@gmail.com
-    password: altun9542
+    username:
+    password:
     port: 587
     properties:
       mail:
@@ -79,7 +79,7 @@ springdoc:
   swagger-ui:
     oauth:
       client-id: cinema-client
-      client-secret: Vs9dMXbnaQjuTuxV4bmnuxdepLjMBjba
+      client-secret: BNbND6rmxNf0zwYV72yFzbTrm7DxvZDQ
 
 
 logging:

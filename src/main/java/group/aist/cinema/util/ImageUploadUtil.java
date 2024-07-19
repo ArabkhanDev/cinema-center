@@ -14,7 +14,7 @@ public final class ImageUploadUtil {
 
     public static final String IMAGE_PATH = "src/main/resources/docs";
 
-    public static String saveFile(String fileName, MultipartFile multipartFile)
+    public static void saveFile(String fileName, MultipartFile multipartFile)
             throws IOException {
         Path uploadPath = Paths.get("src/main/resources/docs");
 
@@ -31,7 +31,6 @@ public final class ImageUploadUtil {
             throw new IOException("Could not save file: " + fileName, ioe);
         }
 
-        return fileCode;
     }
 
 }
