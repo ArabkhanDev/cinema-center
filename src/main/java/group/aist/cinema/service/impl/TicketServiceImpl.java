@@ -31,6 +31,9 @@ import static org.springframework.http.HttpStatus.BAD_REQUEST;
 @Service
 @RequiredArgsConstructor
 public class TicketServiceImpl implements TicketService {
+
+    private final String TICKET_NOT_FOUND= "Ticket not found with id: ";
+
     private final TicketRepository ticketRepository;
     private final UserRepository userRepository;
     private final BalanceRepository balanceRepository;
@@ -43,7 +46,7 @@ public class TicketServiceImpl implements TicketService {
     @Override
     public void sendPurchaseLink(Long ticketId) {
         Ticket ticket = ticketRepository.findById(ticketId)
-                .orElseThrow(() -> new ResponseStatusException(BAD_REQUEST, "Ticket not found with id: " + ticketId));
+                .orElseThrow(() -> new ResponseStatusException(BAD_REQUEST, TICKET_NOT_FOUND + ticketId));
 
         if (ticket.getAvailableType() != AvailableType.AVAILABLE){
             throw new ResponseStatusException(BAD_REQUEST, "Ticket is not available");
@@ -63,7 +66,7 @@ public class TicketServiceImpl implements TicketService {
     @Override
     public Ticket confirmPurchase(Long ticketId) throws IOException, WriterException, MessagingException {
         Ticket ticket = ticketRepository.findById(ticketId)
-                .orElseThrow(() -> new ResponseStatusException(BAD_REQUEST, "Ticket not found with id: " + ticketId));
+                .orElseThrow(() -> new ResponseStatusException(BAD_REQUEST, TICKET_NOT_FOUND + ticketId));
 
         User user = ticket.getUser();
 
@@ -103,7 +106,7 @@ public class TicketServiceImpl implements TicketService {
     @Transactional
     public void returnTicketLink(Long ticketId) {
         Ticket ticket = ticketRepository.findById(ticketId)
-                .orElseThrow(() -> new ResponseStatusException(BAD_REQUEST, "Ticket not found with id: " + ticketId));
+                .orElseThrow(() -> new ResponseStatusException(BAD_REQUEST, TICKET_NOT_FOUND + ticketId));
 
         Balance balance = balanceRepository.findById(ticket.getUser().getBalance().getId())
                 .orElseThrow(() -> new ResponseStatusException(BAD_REQUEST, "Balance not found with id: " + ticket.getUser().getBalance().getId()));
@@ -123,7 +126,7 @@ public class TicketServiceImpl implements TicketService {
     @Transactional
     public void confirmReturn(Long ticketId) {
         Ticket ticket = ticketRepository.findById(ticketId)
-                .orElseThrow(() -> new ResponseStatusException(BAD_REQUEST, "Ticket not found with id: " + ticketId));
+                .orElseThrow(() -> new ResponseStatusException(BAD_REQUEST, TICKET_NOT_FOUND + ticketId));
 
         User user = ticket.getUser();
 
@@ -143,7 +146,7 @@ public class TicketServiceImpl implements TicketService {
     @Transactional
     public String generateQrCode(Long ticketId) throws IOException, WriterException {
         Ticket ticket = ticketRepository.findById(ticketId)
-                .orElseThrow(() -> new ResponseStatusException(BAD_REQUEST, "Ticket not found with id: " + ticketId));
+                .orElseThrow(() -> new ResponseStatusException(BAD_REQUEST, TICKET_NOT_FOUND + ticketId));
         return Base64.encodeBytes(qrCodeService.generatePdfWithQrCode(ticketId));
     }
 
@@ -151,7 +154,7 @@ public class TicketServiceImpl implements TicketService {
     @Transactional
     public String scanQrCode(Long ticketId){
         Ticket ticket = ticketRepository.findById(ticketId)
-                .orElseThrow(() -> new ResponseStatusException(BAD_REQUEST, "Ticket not found with id: " + ticketId));
+                .orElseThrow(() -> new ResponseStatusException(BAD_REQUEST, TICKET_NOT_FOUND + ticketId));
         if (ticket.getIsScanned())
             return "Ticket already scanned!!!";
         else
@@ -172,7 +175,7 @@ public class TicketServiceImpl implements TicketService {
     @Transactional(readOnly = true)
     public TicketResponseDTO getTicketById(Long id) {
         Ticket ticket = ticketRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(BAD_REQUEST, "Ticket not found with id: " + id));
+                .orElseThrow(() -> new ResponseStatusException(BAD_REQUEST, TICKET_NOT_FOUND + id));
         return ticketMapper.toDTO(ticket);
     }
 
@@ -227,7 +230,7 @@ public class TicketServiceImpl implements TicketService {
     @Transactional
     public TicketResponseDTO updateTicket(Long id, TicketRequestDTO ticketRequestDTO) {
         Ticket ticket = ticketRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(BAD_REQUEST, "Ticket not found with id: " + id));
+                .orElseThrow(() -> new ResponseStatusException(BAD_REQUEST, TICKET_NOT_FOUND + id));
 
         MovieSession movieSession = movieSessionRepository.findById(ticketRequestDTO.getMovieSessionId())
                 .orElseThrow(() -> new ResponseStatusException(BAD_REQUEST, "Movie Session not found with id: " + ticketRequestDTO.getMovieSessionId()));
@@ -249,27 +252,4 @@ public class TicketServiceImpl implements TicketService {
         ticketRepository.deleteById(id);
     }
 
-
-    private void sendConfirmationEmail(Ticket ticket, byte[] qrCodePdf) throws MessagingException {
-        String emailContent = String.format(
-                "Your ticket has been confirmed.\n\n" +
-                        "Ticket Details:\n" +
-                        "Movie: %s\n" +
-                        "Date: %s\n" +
-                        "Price: %s %s\n\n" +
-                        "Please find the QR code attached to this email. " +
-                        "You'll need to present this QR code at the cinema for entry.",
-                ticket.getMovieSession().getMovie().getName(),
-                ticket.getStartDate(),
-                ticket.getPrice(),
-                ticket.getCurrency()
-        );
-
-        emailService.sendMessageWithQrCode(
-                ticket.getUser().getEmail(),
-                "Ticket Purchase Confirmation",
-                emailContent,
-                qrCodePdf
-        );
-    }
 }

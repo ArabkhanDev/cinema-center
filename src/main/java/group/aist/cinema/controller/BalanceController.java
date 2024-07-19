@@ -25,7 +25,7 @@ public class BalanceController {
         return BaseResponse.success(balanceService.getBalanceById(id));
     }
 
-    @PostMapping()
+    @PostMapping
     public BaseResponse<BalanceDTO> createBalance(BalanceDTO balanceDTO) {
         return BaseResponse.created(balanceService.createBalance(balanceDTO));
     }

@@ -16,9 +16,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
+import static org.springframework.http.HttpStatus.NOT_FOUND;
+
 @Service
 @RequiredArgsConstructor
 public class FavoriteServiceImpl implements FavoriteService {
+
+    private static final String FAVORITE_NOT_FOUND= "Favorite not found with id: ";
+
     private final FavoriteRepository favoriteRepository;
     private final MovieRepository movieRepository;
     private final UserRepository userRepository;
@@ -32,7 +37,7 @@ public class FavoriteServiceImpl implements FavoriteService {
     @Override
     public FavoriteResponseDTO getFavoriteByName(String name) {
         return favoriteMapper.toDTO(favoriteRepository.findByName(name).
-                orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST,"There is no name with this favorite")));
+                orElseThrow(() -> new ResponseStatusException(NOT_FOUND,FAVORITE_NOT_FOUND)));
     }
 
     @Override
@@ -44,7 +49,7 @@ public class FavoriteServiceImpl implements FavoriteService {
     public FavoriteResponseDTO createFavorite(FavoriteRequestDTO favoriteDTO) {
         Favorite favorite = favoriteMapper.toEntity(favoriteDTO);
         favorite.setUser(userRepository.findById(favoriteDTO.getUserId())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST,"There is no user with this id" + favoriteDTO.getUserId())));
+                .orElseThrow(() -> new ResponseStatusException(NOT_FOUND,FAVORITE_NOT_FOUND + favoriteDTO.getUserId())));
         return favoriteMapper.toDTO(favoriteRepository.save(favorite));
     }
 
@@ -53,7 +58,7 @@ public class FavoriteServiceImpl implements FavoriteService {
     public FavoriteResponseDTO addMovieToFavorite(Long id, Long movieId) {
         Favorite favorite = getFavorite(id);
         favorite.getMovies().add(movieRepository.findById(movieId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST,"There is no movie with this id " + movieId)));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST,FAVORITE_NOT_FOUND + movieId)));
         return favoriteMapper.toDTO(favoriteRepository.save(favorite));
     }
 
@@ -62,7 +67,7 @@ public class FavoriteServiceImpl implements FavoriteService {
     public FavoriteResponseDTO deleteMovieFromFavorite(Long id, Long movieId) {
         Favorite favorite = getFavorite(id);
         favorite.getMovies().remove(movieRepository.findById(movieId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST,"There is no movie with this id " + movieId)));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST,FAVORITE_NOT_FOUND + movieId)));
         return favoriteMapper.toDTO(favoriteRepository.save(favorite));
     }
 
@@ -81,6 +86,6 @@ public class FavoriteServiceImpl implements FavoriteService {
 
     private Favorite getFavorite(Long id) {
         return favoriteRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST,"There is no favorite with this id " + id));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST,FAVORITE_NOT_FOUND + id));
     }
 }

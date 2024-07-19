@@ -9,10 +9,15 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
+
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @Service
 @RequiredArgsConstructor
 public class HallServiceImpl implements HallService {
+
+    private static final String HALL_NOT_FOUND = "Hall not found with id: ";
 
     private final HallRepository hallRepository;
     private final HallMapper hallMapper;
@@ -27,7 +32,7 @@ public class HallServiceImpl implements HallService {
     @Override
     public HallDTO getHallById(Long id) {
         return hallMapper.toDTO(hallRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Hall not found with id " + id)));
+                .orElseThrow(() -> new ResponseStatusException(NOT_FOUND,HALL_NOT_FOUND + id)));
     }
 
     @Override
@@ -39,7 +44,7 @@ public class HallServiceImpl implements HallService {
     @Override
     public HallDTO updateHall(Long id, HallDTO hallDTO) {
         Hall hall = hallRepository.findById(id).
-                orElseThrow(() -> new RuntimeException("Hall not found with id " + id));
+                orElseThrow(() -> new ResponseStatusException(NOT_FOUND, HALL_NOT_FOUND + id));
         hallMapper.updateHallFromDTO(hallDTO, hall);
         return hallMapper.toDTO(hallRepository.save(hall));
     }
