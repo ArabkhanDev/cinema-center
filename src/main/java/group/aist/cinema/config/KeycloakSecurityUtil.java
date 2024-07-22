@@ -34,4 +34,14 @@ public class KeycloakSecurityUtil {
                 .build();
     }
 
+    public KeycloakBuilder newKeycloakBuilderWithPasswordCredentials(String email, String password) {
+        return KeycloakBuilder.builder()
+                .realm(realm)
+                .serverUrl(authServerUrl)//
+                .clientId(adminClientId) //
+                .clientSecret(adminClientSecret) //
+                .username(email) //
+                .password(password);
+    }
+
 }

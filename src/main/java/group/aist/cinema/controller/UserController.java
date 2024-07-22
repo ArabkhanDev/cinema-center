@@ -1,7 +1,9 @@
 package group.aist.cinema.controller;
 
+import group.aist.cinema.dto.request.UserLoginRequestDTO;
 import group.aist.cinema.dto.request.UserRequestDTO;
 import group.aist.cinema.dto.request.UserUpdateRequest;
+import group.aist.cinema.dto.response.UserLoginResponseDTO;
 import group.aist.cinema.dto.response.UserResponseDTO;
 import group.aist.cinema.model.base.BaseResponse;
 import group.aist.cinema.service.UserService;
@@ -36,9 +38,14 @@ public class UserController {
         return BaseResponse.success(userService.getUserByEmail(email));
     }
 
-    @PostMapping
+    @PostMapping("/register")
     public BaseResponse<UserResponseDTO> registerUser(@RequestBody UserRequestDTO userDTO) {
         return BaseResponse.success(userService.registerUser(userDTO));
+    }
+
+    @PostMapping("/login")
+    public BaseResponse<UserLoginResponseDTO> login(@RequestBody UserLoginRequestDTO userLoginRequestDTO) {
+        return BaseResponse.success(userService.login(userLoginRequestDTO));
     }
 
     @PutMapping("/{id}")

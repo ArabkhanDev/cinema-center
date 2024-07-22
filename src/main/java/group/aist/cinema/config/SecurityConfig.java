@@ -40,7 +40,7 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable);
         http.authorizeHttpRequests(authorize -> authorize
                 .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
-                .requestMatchers(HttpMethod.POST,"v1/api/users","v1/api/balances").permitAll()
+                .requestMatchers(HttpMethod.POST,"v1/api/users/**","v1/api/balances").permitAll()
                 .anyRequest().hasAnyAuthority("ADMIN", "USER"));
         http.oauth2ResourceServer(t -> t.jwt(configurer -> configurer.jwtAuthenticationConverter(keycloakRoleConverter)));
         http.sessionManagement(t -> t.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
