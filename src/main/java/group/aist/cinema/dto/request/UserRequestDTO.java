@@ -10,9 +10,13 @@ import lombok.*;
 @NoArgsConstructor
 public class UserRequestDTO {
 
-    @NotNull(message = "Username must not be null")
-    @Size(max = 30, message = "Username must not exceed 30 characters")
-    private String username;
+    @NotNull(message = "First name  must not be null")
+    @Size(max = 20, message = "First name must not exceed 30 characters")
+    private String firstName;
+
+    @NotNull(message = "Last name  must not be null")
+    @Size(max = 20, message = "Last name must not exceed 30 characters")
+    private String lastName;
 
     @NotNull(message = "Email must not be null")
     @Email(message = "Email must be valid")

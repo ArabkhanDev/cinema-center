@@ -1,6 +1,5 @@
 package group.aist.cinema.service.impl;
 
-import group.aist.cinema.config.KeycloakSecurityUtil;
 import group.aist.cinema.dto.common.BalanceDTO;
 import group.aist.cinema.dto.request.UserRequestDTO;
 import group.aist.cinema.dto.request.UserUpdateRequest;
@@ -12,19 +11,28 @@ import group.aist.cinema.model.User;
 import group.aist.cinema.repository.BalanceRepository;
 import group.aist.cinema.repository.UserRepository;
 import group.aist.cinema.service.UserService;
-import jakarta.ws.rs.core.Response;
 import lombok.RequiredArgsConstructor;
 import org.keycloak.admin.client.Keycloak;
+import org.keycloak.admin.client.resource.RoleMappingResource;
+import org.keycloak.admin.client.resource.RoleResource;
 import org.keycloak.representations.idm.CredentialRepresentation;
+import org.keycloak.representations.idm.RoleRepresentation;
 import org.keycloak.representations.idm.UserRepresentation;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.management.relation.Role;
+import javax.ws.rs.core.Response;
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
@@ -39,8 +47,11 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
     private final BalanceRepository balanceRepository;
-    private final KeycloakSecurityUtil keycloakSecurityUtil;
+    private final Keycloak keycloak;
     private final BalanceMapper balanceMapper;
+
+    @Value("${keycloak.realm}")
+    private String realm;
 
     @Override
     @Transactional(readOnly = true)
@@ -74,18 +85,10 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public UserResponseDTO registerUser(UserRequestDTO userRequestDTO) {
 
-        UserRepresentation userRepresentation = userMapper.mapToRepresentation(userRequestDTO);
-
-        CredentialRepresentation credentialRepresentation = new CredentialRepresentation();
-        credentialRepresentation.setValue(userRequestDTO.getPassword());
-        credentialRepresentation.setTemporary(false);
-        credentialRepresentation.setType(CredentialRepresentation.PASSWORD);
-
-        List<CredentialRepresentation> credentialsList = new ArrayList<>();
-        credentialsList.add(credentialRepresentation);
-        userRepresentation.setCredentials(credentialsList);
-        Response res = keycloakSecurityUtil.getKeycloakInstance().realm("Team1").users().create(userRepresentation);
-
+        Balance balance = balanceRepository.findById(userRequestDTO.getBalanceId())
+                .orElseThrow(() -> new ResponseStatusException(NOT_FOUND,BALANCE_NOT_FOUND + userRequestDTO.getBalanceId()));
+        UserRepresentation userRepresentation = createUserRepresentation(userRequestDTO);
+        Response res = keycloak.realm(realm).users().create(userRepresentation);
         if (res.getStatus() != 201) {
             throw new ResponseStatusException(BAD_REQUEST,"Failed to create user: " + res.readEntity(String.class));
         }
@@ -94,15 +97,12 @@ public class UserServiceImpl implements UserService {
         String locationHeader = location.toString();
         String userId = locationHeader.substring(locationHeader.lastIndexOf('/') + 1);
 
-        Balance balance = balanceRepository.findById(userRequestDTO.getBalanceId())
-                .orElseThrow(() -> new ResponseStatusException(NOT_FOUND,BALANCE_NOT_FOUND + userRequestDTO.getBalanceId()));
-        BalanceDTO balanceDTO = balanceMapper.toDTO(balance);
         User user = userMapper.toEntity(userRequestDTO);
         user.setId(userId);
         user.setBalance(balance);
 
-        User savedUser = userRepository.save(user);
-        UserResponseDTO userResponseDTO = userMapper.toDTO(savedUser);
+        BalanceDTO balanceDTO = balanceMapper.toDTO(balance);
+        UserResponseDTO userResponseDTO = userMapper.toDTO(userRepository.save(user));
         userResponseDTO.setBalanceDTO(balanceDTO);
         return userResponseDTO;
     }
@@ -114,19 +114,37 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new ResponseStatusException(NOT_FOUND,USER_NOT_FOUND + id));
         userMapper.updateUserFromUpdateRequestDTO(userUpdateRequest,user);
         userRepository.save(user);
-        Keycloak keycloak = keycloakSecurityUtil.getKeycloakInstance();
-        UserRepresentation userRepresentation = keycloak.realm("Team1").users().get(id).toRepresentation();
-        userRepresentation.setEmail(userUpdateRequest.getEmail());
-        keycloakSecurityUtil.getKeycloakInstance().realm("Team1").users().get(id).update(userRepresentation);
+        UserRepresentation userRepresentation = keycloak.realm(realm).users().get(id).toRepresentation();
+        userMapper.updateUserRepresentation(userUpdateRequest,userRepresentation);
+        keycloak.realm(realm).users().get(id).update(userRepresentation);
         return userMapper.toDTO(user);
     }
 
     @Override
     public void deleteUserById(String id) {
-        Keycloak keycloak = keycloakSecurityUtil.getKeycloakInstance();
-        keycloak.realm("cinema").users().delete(id);
+        keycloak.realm(realm).users().delete(id);
         userRepository.deleteUserById(id);
+    }
 
+    private UserRepresentation createUserRepresentation(UserRequestDTO userRequestDTO) {
+        UserRepresentation userRepresentation = new UserRepresentation();
+
+        userRepresentation.setUsername(userRequestDTO.getEmail());
+        userRepresentation.setEmail(userRequestDTO.getEmail());
+        userRepresentation.setFirstName(userRequestDTO.getFirstName());
+        userRepresentation.setLastName(userRequestDTO.getLastName());
+        userRepresentation.setEnabled(true);
+
+        CredentialRepresentation credentialRepresentation = new CredentialRepresentation();
+        credentialRepresentation.setValue(userRequestDTO.getPassword());
+        credentialRepresentation.setTemporary(false);
+        credentialRepresentation.setType(CredentialRepresentation.PASSWORD);
+
+        List<CredentialRepresentation> credentialsList = new ArrayList<>();
+        credentialsList.add(credentialRepresentation);
+        userRepresentation.setCredentials(credentialsList);
+
+        return userRepresentation;
     }
 
 }

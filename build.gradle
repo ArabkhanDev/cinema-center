@@ -38,10 +38,10 @@ dependencies {
 
 	implementation 'jakarta.activation:jakarta.activation-api:2.0.1'
 
-	configurations.all {
-		exclude group: 'javax.mail', module: 'mail'
-		exclude group: 'javax.activation', module: 'activation'
-	}
+//	configurations.all {
+//		exclude group: 'javax.mail', module: 'mail'
+//		exclude group: 'javax.activation', module: 'activation'
+//	}
 
 	implementation group: 'com.google.zxing', name: 'core', version: '3.3.1'
 
@@ -64,7 +64,7 @@ dependencies {
 
 	implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
-	implementation 'org.keycloak:keycloak-admin-client:25.0.1'
+	implementation 'org.keycloak:keycloak-admin-client:21.1.2'
 
 	implementation 'org.springframework.hateoas:spring-hateoas:2.3.1'
 

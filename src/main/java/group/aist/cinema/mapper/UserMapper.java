@@ -16,14 +16,12 @@ public interface UserMapper {
     @Mapping(source = "balance", target = "balanceDTO")
     UserResponseDTO toDTO(User user);
 
-    UserResponseDTO mapFromRepresentationToDto(UserRepresentation userRepresentation);
-
-    UserRepresentation mapToRepresentation(UserRequestDTO userRequestDTO);
-
     User toEntity(UserRequestDTO userDTO);
 
-    void updateUserFromDTO(UserRequestDTO userRequestDTO, @MappingTarget User user);
 
     @Mapping(target = "id", ignore = true)
     void updateUserFromUpdateRequestDTO(UserUpdateRequest userUpdateRequest, @MappingTarget User user);
+
+    @Mapping(target = "id", ignore = true)
+    void updateUserRepresentation(UserUpdateRequest userUpdateRequest, @MappingTarget UserRepresentation userRepresentation);
 }

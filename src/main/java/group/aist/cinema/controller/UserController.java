@@ -37,19 +37,18 @@ public class UserController {
     }
 
     @PostMapping
-    @PreAuthorize("hasRole('ADMIN')")
     public BaseResponse<UserResponseDTO> registerUser(@RequestBody UserRequestDTO userDTO) {
         return BaseResponse.success(userService.registerUser(userDTO));
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('USER')")
     public BaseResponse<UserResponseDTO> updateUser(@PathVariable String id, @RequestBody UserUpdateRequest userDTO) {
         return BaseResponse.success(userService.updateUser(id, userDTO));
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('USER')")
     public BaseResponse<Void> deleteUser(@PathVariable String id) {
         userService.deleteUserById(id);
         return BaseResponse.noContent();
