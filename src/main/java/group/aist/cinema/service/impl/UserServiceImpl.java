@@ -16,7 +16,10 @@ import group.aist.cinema.repository.UserRepository;
 import group.aist.cinema.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.keycloak.admin.client.Keycloak;
+import org.keycloak.admin.client.resource.RolesResource;
+import org.keycloak.admin.client.resource.UserResource;
 import org.keycloak.representations.idm.CredentialRepresentation;
+import org.keycloak.representations.idm.RoleRepresentation;
 import org.keycloak.representations.idm.UserRepresentation;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
@@ -36,10 +39,7 @@ import org.springframework.web.server.ResponseStatusException;
 import javax.ws.rs.core.Response;
 import java.math.BigDecimal;
 import java.net.URI;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static group.aist.cinema.util.ExceptionMessages.BALANCE_NOT_FOUND;
 import static group.aist.cinema.util.ExceptionMessages.USER_NOT_FOUND;
@@ -114,7 +114,8 @@ public class UserServiceImpl implements UserService {
 
         User user = userMapper.toEntity(userRequestDTO);
         user.setId(userId);
-        Balance balance = new Balance(1L,"azn", BigDecimal.valueOf(100));
+
+        Balance balance = new Balance(new Random().nextLong(),"azn", BigDecimal.valueOf(100));
         user.setBalance(balance);
 
         BalanceDTO balanceDTO = balanceMapper.toDTO(balance);
