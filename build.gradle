@@ -46,22 +46,10 @@ dependencies {
 
 	implementation 'jakarta.activation:jakarta.activation-api:2.0.1'
 
-	configurations.all {
-		exclude group: 'javax.mail', module: 'mail'
-		exclude group: 'javax.activation', module: 'activation'
-	}
-
 	implementation group: 'com.google.zxing', name: 'core', version: '3.3.1'
-
-
-
-
 	implementation group: 'com.google.zxing', name: 'javase', version: '3.3.1'
 
 	implementation 'com.itextpdf:itext7-core:7.1.17'
-
-
-
 
 	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.1.0'
 
@@ -72,7 +60,7 @@ dependencies {
 
 	implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
-	implementation 'org.keycloak:keycloak-admin-client:21.1.2'
+	implementation 'org.keycloak:keycloak-admin-client:22.0.0'
 
 	implementation 'org.springframework.hateoas:spring-hateoas:2.3.1'
 
@@ -82,6 +70,7 @@ dependencies {
 	testImplementation 'org.springframework.security:spring-security-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
+
 
 task dockerFile(type: Dockerfile, dependsOn: assemble) {
 	destFile.set(project.file('Dockerfile'))

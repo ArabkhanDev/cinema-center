@@ -1,13 +1,13 @@
 package group.aist.cinema.model;
 
-import group.aist.cinema.enums.SessionType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Set;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -22,12 +22,10 @@ public class MovieSession {
     @SequenceGenerator(name = "movie_sessions_seq_gen", sequenceName = "movie_sessions_seq", allocationSize = 1)
     private Long id;
 
-    @Column(name = "time", nullable = false)
-    private LocalDate time;
-
-    @Column(name = "type", nullable = false)
-    @Enumerated(EnumType.STRING)
-    private SessionType type;
+    @Column(name = "time")
+    @ElementCollection
+    @CollectionTable(name = "movie_session_times", joinColumns = @JoinColumn(name = "movie_session_id"))
+    private Set<LocalDateTime> time;
 
     @Column(name = "is_active", nullable = false)
     private boolean isActive;

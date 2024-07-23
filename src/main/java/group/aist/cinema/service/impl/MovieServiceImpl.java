@@ -17,7 +17,6 @@ import org.springframework.web.server.ResponseStatusException;
 import java.io.IOException;
 import java.util.Base64;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static group.aist.cinema.util.ExceptionMessages.MOVIE_NOT_FOUND;
 import static org.springframework.http.HttpStatus.*;
@@ -45,13 +44,14 @@ public class MovieServiceImpl implements MovieService {
     @Override
     public List<MovieResponseDTO> getMovieByName(String name) {
         List<Movie> movies = movieRepository.findByName(name);
-        return movies.stream().map(movieMapper::mapToDto).collect(Collectors.toList());
+        return movies.stream().map(movieMapper::mapToDto).toList();
     }
 
     @Override
     public MovieResponseDTO createMovie(MovieRequestDTO movieRequestDTO) throws IOException {
         Movie movie = movieMapper.mapToEntity(movieRequestDTO);
 
+        ImageUploadUtil.saveFile(movieRequestDTO.getName(), movieRequestDTO.getBackgroundImage());
         ImageUploadUtil.saveFile(movieRequestDTO.getName(), movieRequestDTO.getPosterImage());
         MovieResponseDTO movieResponseDTO = movieMapper.mapToDto(movieRepository.save(movie));
 
@@ -77,11 +77,11 @@ public class MovieServiceImpl implements MovieService {
 
 
     private static void returnBase64Image(MovieRequestDTO movieRequestDTO, MovieResponseDTO movieResponseDTO) throws IOException {
-        byte[] posterImageBytes = movieRequestDTO.getPosterImage().getBytes();
-        byte[] backgroundImageBytes = movieRequestDTO.getBackgroundImage().getBytes();
-        String posterImageBase64 = Base64.getEncoder().encodeToString(posterImageBytes);
-        String backgroundImageBase64 = Base64.getEncoder().encodeToString(backgroundImageBytes);
-        movieResponseDTO.setPosterImage(posterImageBase64);
+        byte[] backgroundImage = movieRequestDTO.getBackgroundImage().getBytes();
+        byte[] posterImage = movieRequestDTO.getBackgroundImage().getBytes();
+        String backgroundImageBase64 = Base64.getEncoder().encodeToString(backgroundImage);
+        String posterImageBase64 = Base64.getEncoder().encodeToString(posterImage);
         movieResponseDTO.setBackgroundImage(backgroundImageBase64);
+        movieResponseDTO.setPosterImage(posterImageBase64);
     }
 }

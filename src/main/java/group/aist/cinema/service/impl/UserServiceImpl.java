@@ -12,6 +12,7 @@ import group.aist.cinema.model.Balance;
 import group.aist.cinema.model.User;
 import group.aist.cinema.repository.UserRepository;
 import group.aist.cinema.service.UserService;
+import jakarta.ws.rs.core.Response;
 import lombok.RequiredArgsConstructor;
 import org.keycloak.admin.client.Keycloak;
 import org.keycloak.representations.idm.CredentialRepresentation;
@@ -28,14 +29,11 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.server.ResponseStatusException;
 
-import javax.ws.rs.core.Response;
 import java.math.BigDecimal;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
-import static group.aist.cinema.util.ExceptionMessages.BALANCE_NOT_FOUND;
 import static group.aist.cinema.util.ExceptionMessages.USER_NOT_FOUND;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.NOT_FOUND;

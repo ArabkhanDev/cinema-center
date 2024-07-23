@@ -1,0 +1,21 @@
+spring:
+  security:
+    oauth2:
+      resource-server:
+        jwt:
+          issuer-uri: "https://auth.md7.info/auth/realms/team1"
+          jwk-set-uri: "https://auth.md7.info/auth/realms/team1/protocol/openid-connect/certs"
+
+
+keycloak:
+  realm: Team1
+  host: https://auth.md7.info
+  clientId: admin-cli
+  clientSecret: xC5PbB13IzkUd8XrvAmlfjl3CvzBDSB0
+  grantType: client_credentials
+
+springdoc:
+  swagger-ui:
+    oauth:
+      client-id: cinema-client
+      client-secret: Vjb68I0aHtyIUdgxtk3qUVEmWnD4HtkY

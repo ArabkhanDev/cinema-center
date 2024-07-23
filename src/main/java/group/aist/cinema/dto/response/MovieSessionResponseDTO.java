@@ -7,6 +7,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Set;
 
 @Data
 @AllArgsConstructor
@@ -15,7 +17,7 @@ public class MovieSessionResponseDTO {
 
     private Long id;
 
-    private LocalDate time;
+    private Set<LocalDateTime> time;
 
     private SessionType type;
 
