@@ -35,6 +35,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import static group.aist.cinema.util.ExceptionMessages.BALANCE_NOT_FOUND;
 import static group.aist.cinema.util.ExceptionMessages.USER_NOT_FOUND;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
