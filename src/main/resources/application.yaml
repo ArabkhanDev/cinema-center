@@ -38,7 +38,7 @@ spring:
       maxLifetime: 1800000
   mail:
     host: smtp.gmail.com
-    username:
+    username: udemy9569@gmail.com
     password:
     port: 587
     properties:
@@ -59,7 +59,7 @@ spring:
     generateDdl: false
     openInView: false
     hibernate:
-      ddlAuto: validate
+      ddlAuto: update
   security:
     oauth2:
       resource-server:
@@ -69,8 +69,8 @@ spring:
 
 
 keycloak:
-  realm: Team1
-  host: https://auth.md7.info
+  realm: team1
+  host: https://auth.md7.info/auth
   clientId: admin-cli
   clientSecret: xC5PbB13IzkUd8XrvAmlfjl3CvzBDSB0
   grantType: client_credentials
@@ -85,4 +85,3 @@ springdoc:
 logging:
   level:
     liquibase: DEBUG
-

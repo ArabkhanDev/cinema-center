@@ -40,7 +40,7 @@ public class TicketRequestDTO {
 
     @NotNull(message = "User id must not be null")
     @Positive(message = "User ID must be a positive number")
-    private Long userId;
+    private String userId;
 
     @NotNull(message = "Movie Session id must not be null")
     @Positive(message = "Movie Session ID must be a positive number")

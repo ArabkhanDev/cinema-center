@@ -72,7 +72,7 @@ dependencies {
 
 	implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
-	implementation 'org.keycloak:keycloak-admin-client:25.0.1'
+	implementation 'org.keycloak:keycloak-admin-client:21.1.2'
 
 	implementation 'org.springframework.hateoas:spring-hateoas:2.3.1'
 

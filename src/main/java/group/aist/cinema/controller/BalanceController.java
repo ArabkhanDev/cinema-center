@@ -30,7 +30,7 @@ public class BalanceController {
 
 
     @PostMapping
-    @PreAuthorize("hasAnyRole('ADMIN','USER')")
+//    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     public BaseResponse<BalanceDTO> createBalance(BalanceDTO balanceDTO) {
         return BaseResponse.created(balanceService.createBalance(balanceDTO));
     }

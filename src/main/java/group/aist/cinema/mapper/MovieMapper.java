@@ -15,20 +15,23 @@ import static group.aist.cinema.util.ImageUploadUtil.IMAGE_PATH;
 @Mapper(componentModel = "spring")
 public interface MovieMapper {
 
-    @Mapping(target = "image", ignore = true)
+    @Mapping(target = "posterImage", ignore = true)
+    @Mapping(target = "backgroundImage", ignore = true)
     Movie mapToEntity(MovieRequestDTO movieRequestDTO);
 
     MovieResponseDTO mapToDto(Movie movie);
 
     @Mapping(target = "id", ignore = true)
-    @Mapping(target = "image", ignore = true)
+    @Mapping(target = "posterImage", ignore = true)
     void updateMovieFromDTO(MovieUpdateRequest movieDto, @MappingTarget Movie movie);
 
     @AfterMapping
     default void setImagePath(@MappingTarget Movie movie, MovieRequestDTO movieRequestDTO) {
-        String imageName = movieRequestDTO.getImage().getOriginalFilename();
-        String imagePath = IMAGE_PATH + "/" + imageName;
-        movie.setImage(imagePath);
+        String posterImageName = movieRequestDTO.getPosterImage().getOriginalFilename();
+        String backgroundImageName = movieRequestDTO.getBackgroundImage().getOriginalFilename();
+        String posterImagePath = IMAGE_PATH + "/" + posterImageName;
+        String backgroundImagePath = IMAGE_PATH + "/" + backgroundImageName;
+        movie.setPosterImage(posterImagePath);
+        movie.setBackgroundImage(backgroundImagePath);
     }
-
 }

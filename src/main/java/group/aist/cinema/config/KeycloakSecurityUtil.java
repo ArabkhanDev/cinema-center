@@ -4,9 +4,10 @@ import org.keycloak.OAuth2Constants;
 import org.keycloak.admin.client.Keycloak;
 import org.keycloak.admin.client.KeycloakBuilder;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
-@Component
+@Configuration
 public class KeycloakSecurityUtil {
 
     @Value("${keycloak.clientId}")
@@ -21,8 +22,8 @@ public class KeycloakSecurityUtil {
     @Value("${keycloak.realm}")
     private String realm;
 
-
-    public Keycloak getKeycloakInstance(){
+    @Bean
+    public Keycloak keycloakInstance(){
 
         return KeycloakBuilder.builder()
                 .serverUrl(authServerUrl)

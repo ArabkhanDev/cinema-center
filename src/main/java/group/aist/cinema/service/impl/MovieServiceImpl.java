@@ -52,7 +52,7 @@ public class MovieServiceImpl implements MovieService {
     public MovieResponseDTO createMovie(MovieRequestDTO movieRequestDTO) throws IOException {
         Movie movie = movieMapper.mapToEntity(movieRequestDTO);
 
-        ImageUploadUtil.saveFile(movieRequestDTO.getName(), movieRequestDTO.getImage());
+        ImageUploadUtil.saveFile(movieRequestDTO.getName(), movieRequestDTO.getPosterImage());
         MovieResponseDTO movieResponseDTO = movieMapper.mapToDto(movieRepository.save(movie));
 
         returnBase64Image(movieRequestDTO, movieResponseDTO);
@@ -77,8 +77,11 @@ public class MovieServiceImpl implements MovieService {
 
 
     private static void returnBase64Image(MovieRequestDTO movieRequestDTO, MovieResponseDTO movieResponseDTO) throws IOException {
-        byte[] imageBytes = movieRequestDTO.getImage().getBytes();
-        String imageBase64 = Base64.getEncoder().encodeToString(imageBytes);
-        movieResponseDTO.setImage(imageBase64);
+        byte[] posterImageBytes = movieRequestDTO.getPosterImage().getBytes();
+        byte[] backgroundImageBytes = movieRequestDTO.getBackgroundImage().getBytes();
+        String posterImageBase64 = Base64.getEncoder().encodeToString(posterImageBytes);
+        String backgroundImageBase64 = Base64.getEncoder().encodeToString(backgroundImageBytes);
+        movieResponseDTO.setPosterImage(posterImageBase64);
+        movieResponseDTO.setBackgroundImage(backgroundImageBase64);
     }
 }
