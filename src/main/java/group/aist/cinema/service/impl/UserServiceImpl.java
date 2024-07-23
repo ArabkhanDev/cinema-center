@@ -34,6 +34,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.ws.rs.core.Response;
+import java.math.BigDecimal;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -99,8 +100,8 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public UserResponseDTO registerUser(UserRequestDTO userRequestDTO) {
 
-        Balance balance = balanceRepository.findById(userRequestDTO.getBalanceId())
-                .orElseThrow(() -> new ResponseStatusException(NOT_FOUND,BALANCE_NOT_FOUND + userRequestDTO.getBalanceId()));
+//        Balance balance = balanceRepository.findById(userRequestDTO.getBalanceId())
+//                .orElseThrow(() -> new ResponseStatusException(NOT_FOUND,BALANCE_NOT_FOUND + userRequestDTO.getBalanceId()));
         UserRepresentation userRepresentation = createUserRepresentation(userRequestDTO);
         Response res = keycloak.realm(realm).users().create(userRepresentation);
         if (res.getStatus() != 201) {
@@ -113,6 +114,7 @@ public class UserServiceImpl implements UserService {
 
         User user = userMapper.toEntity(userRequestDTO);
         user.setId(userId);
+        Balance balance = new Balance(1L,"azn", BigDecimal.valueOf(100));
         user.setBalance(balance);
 
         BalanceDTO balanceDTO = balanceMapper.toDTO(balance);
@@ -136,9 +138,8 @@ public class UserServiceImpl implements UserService {
         body.add("password", userRequest.getPassword());
 
         HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(body, headers);
-        System.out.println(request);
         RestTemplate restTemplate = new RestTemplate();
-        ResponseEntity response;
+        ResponseEntity<UserLoginResponseDTO> response;
 
         try {
             response = restTemplate.postForEntity(tokenUrl, request, UserLoginResponseDTO.class);
@@ -152,13 +153,12 @@ public class UserServiceImpl implements UserService {
         }
 
         UserLoginResponseDTO tokenResponseDTO = (UserLoginResponseDTO) response.getBody();
-        System.out.println(response.getBody());
         UserLoginResponseDTO loginResponseDTO = new UserLoginResponseDTO();
         loginResponseDTO.setAccess_token(tokenResponseDTO.getAccess_token());
         loginResponseDTO.setRefresh_token(tokenResponseDTO.getRefresh_token());
         loginResponseDTO.setExpires_in(tokenResponseDTO.getExpires_in());
         loginResponseDTO.setRefresh_expires_in(tokenResponseDTO.getRefresh_expires_in());
-        
+
         return loginResponseDTO;
     }
 

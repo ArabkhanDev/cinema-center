@@ -59,7 +59,7 @@ spring:
     generateDdl: false
     openInView: false
     hibernate:
-      ddlAuto: update
+      ddlAuto: create-drop
   security:
     oauth2:
       resource-server:
@@ -85,4 +85,3 @@ springdoc:
 logging:
   level:
     liquibase: DEBUG
-
