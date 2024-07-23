@@ -5,6 +5,8 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
+import java.time.LocalDate;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -21,6 +23,8 @@ public class UserRequestDTO {
     @NotNull(message = "Email must not be null")
     @Email(message = "Email must be valid")
     private String email;
+
+    private LocalDate birthDate;
 
     @NotNull(message = "Phone must not be null")
     @Size(max = 15, message = "Phone must not exceed 15 characters")

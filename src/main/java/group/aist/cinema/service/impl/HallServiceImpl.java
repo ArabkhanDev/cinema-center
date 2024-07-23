@@ -1,15 +1,21 @@
 package group.aist.cinema.service.impl;
 
 import group.aist.cinema.dto.common.HallDTO;
+import group.aist.cinema.enums.SeatType;
 import group.aist.cinema.mapper.HallMapper;
 import group.aist.cinema.model.Hall;
+import group.aist.cinema.model.Seat;
 import group.aist.cinema.repository.HallRepository;
 import group.aist.cinema.service.HallService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static group.aist.cinema.util.ExceptionMessages.HALL_NOT_FOUND;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
@@ -20,7 +26,6 @@ public class HallServiceImpl implements HallService {
 
     private final HallRepository hallRepository;
     private final HallMapper hallMapper;
-
 
     @Override
     public Page<HallDTO> getAllHalls(Pageable pageable) {
@@ -35,8 +40,13 @@ public class HallServiceImpl implements HallService {
     }
 
     @Override
+    @Transactional
     public HallDTO createHall(HallDTO hallDTO) {
         Hall hall = hallMapper.toEntity(hallDTO);
+        List<Seat> seats = initializeSeatsInHall(hall);
+        hall.setSeats(seats);
+        hall.setSeatCount(57);
+        hall.setAvailableSeat(57);
         return hallMapper.toDTO(hallRepository.save(hall));
     }
 
@@ -51,5 +61,29 @@ public class HallServiceImpl implements HallService {
     @Override
     public void deleteHall(Long id) {
         hallRepository.deleteById(id);
+    }
+
+    public List<Seat> initializeSeatsInHall(Hall hall){
+        List<Seat> seats = new ArrayList<>();
+
+        String[] rows = {"G", "F", "E", "D", "C", "B", "A"};
+        int[] seatCounts = {6, 7, 8, 9, 9, 9, 9};
+
+        for (int i = 0; i < rows.length; i++) {
+            addSeats(seats, rows[i], seatCounts[i], hall);
+        }
+
+        return hall.getSeats();
+    }
+
+    private void addSeats(List<Seat> seats, String row, int seatCount, Hall hall) {
+        for (int i = 1; i <= seatCount; i++) {
+            Seat seat = new Seat();
+            seat.setRow(row);
+            seat.setNumber(i);
+            seat.setType(SeatType.AVAILABLE);
+            seats.add(seat);
+        }
+        hall.setSeats(seats);
     }
 }

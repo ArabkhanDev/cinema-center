@@ -38,7 +38,7 @@ spring:
       maxLifetime: 1800000
   mail:
     host: smtp.gmail.com
-    username:
+    username: udemy9569@gmail.com
     password:
     port: 587
     properties:
@@ -59,7 +59,7 @@ spring:
     generateDdl: false
     openInView: false
     hibernate:
-      ddlAuto: validate
+      ddlAuto: update
   security:
     oauth2:
       resource-server:

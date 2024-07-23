@@ -17,17 +17,18 @@ public class Seat {
     @SequenceGenerator(name = "seats_seq_gen", sequenceName = "seats_seq", allocationSize = 1)
     private Long id;
 
-    @Column(name = "horizontal", nullable = false)
-    private String horizontal;
+    @Column(name = "row")
+    private String row;
 
-    @Column(name = "vertical", nullable = false)
-    private String vertical;
+    @Column(name = "number")
+    private Integer number;
 
-    @Column(name = "type", nullable = false)
+    @Column(name = "type")
     @Enumerated(EnumType.STRING)
     private SeatType type;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "sector_id", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "sector_id")
     private Sector sector;
+
 }
