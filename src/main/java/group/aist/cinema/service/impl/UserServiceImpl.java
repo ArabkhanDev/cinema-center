@@ -1,6 +1,5 @@
 package group.aist.cinema.service.impl;
 
-import group.aist.cinema.config.KeycloakSecurityUtil;
 import group.aist.cinema.dto.common.BalanceDTO;
 import group.aist.cinema.dto.request.UserLoginRequestDTO;
 import group.aist.cinema.dto.request.UserRequestDTO;
@@ -11,23 +10,16 @@ import group.aist.cinema.mapper.BalanceMapper;
 import group.aist.cinema.mapper.UserMapper;
 import group.aist.cinema.model.Balance;
 import group.aist.cinema.model.User;
-import group.aist.cinema.repository.BalanceRepository;
 import group.aist.cinema.repository.UserRepository;
 import group.aist.cinema.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.keycloak.admin.client.Keycloak;
-import org.keycloak.admin.client.resource.RolesResource;
-import org.keycloak.admin.client.resource.UserResource;
 import org.keycloak.representations.idm.CredentialRepresentation;
-import org.keycloak.representations.idm.RoleRepresentation;
 import org.keycloak.representations.idm.UserRepresentation;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.*;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.LinkedMultiValueMap;
@@ -39,9 +31,10 @@ import org.springframework.web.server.ResponseStatusException;
 import javax.ws.rs.core.Response;
 import java.math.BigDecimal;
 import java.net.URI;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
-import static group.aist.cinema.util.ExceptionMessages.BALANCE_NOT_FOUND;
 import static group.aist.cinema.util.ExceptionMessages.USER_NOT_FOUND;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
@@ -52,12 +45,8 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final UserMapper userMapper;
-    private final BalanceRepository balanceRepository;
     private final Keycloak keycloak;
     private final BalanceMapper balanceMapper;
-    private final AuthenticationManagerBuilder authenticationManagerBuilder;
-    private final KeycloakSecurityUtil keycloakSecurityUtil;
-//    private final AuthenticationManager authenticationManager;
 
     @Value("${keycloak.realm}")
     private String realm;
@@ -100,8 +89,6 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public UserResponseDTO registerUser(UserRequestDTO userRequestDTO) {
 
-//        Balance balance = balanceRepository.findById(userRequestDTO.getBalanceId())
-//                .orElseThrow(() -> new ResponseStatusException(NOT_FOUND,BALANCE_NOT_FOUND + userRequestDTO.getBalanceId()));
         UserRepresentation userRepresentation = createUserRepresentation(userRequestDTO);
         Response res = keycloak.realm(realm).users().create(userRepresentation);
         if (res.getStatus() != 201) {
@@ -115,12 +102,20 @@ public class UserServiceImpl implements UserService {
         User user = userMapper.toEntity(userRequestDTO);
         user.setId(userId);
 
-        Balance balance = new Balance(new Random().nextLong(),"azn", BigDecimal.valueOf(100));
+        Balance balance = new Balance();
+        balance.setAmount(BigDecimal.valueOf(100));
+        balance.setCurrency("azn");
         user.setBalance(balance);
 
+        user = userRepository.save(user);
+        balance = user.getBalance();
+
+        UserResponseDTO userResponseDTO = userMapper.toDTO(user);
         BalanceDTO balanceDTO = balanceMapper.toDTO(balance);
-        UserResponseDTO userResponseDTO = userMapper.toDTO(userRepository.save(user));
+
+        balanceDTO.setId(balance.getId());
         userResponseDTO.setBalanceDTO(balanceDTO);
+
         return userResponseDTO;
     }
 
