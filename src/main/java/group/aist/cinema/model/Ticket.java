@@ -42,9 +42,6 @@ public class Ticket {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate endDate;
 
-    @Column(name = "qr_code", nullable = false)
-    private String qrCode;
-
     @Column(name = "is_scanned", nullable = false)
     private Boolean isScanned;
 
@@ -53,7 +50,7 @@ public class Ticket {
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "movie_session_id ", nullable = false)
+    @JoinColumn(name = "movie_session_id", nullable = false)
     private MovieSession movieSession;
 
 }

@@ -7,6 +7,7 @@ import group.aist.cinema.service.FavoriteService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
@@ -32,12 +33,14 @@ public class FavoriteController {
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public BaseResponse<Void> addFavorite(@RequestBody FavoriteRequestDTO favoriteRequestDTO) {
         favoriteService.createFavorite(favoriteRequestDTO);
         return BaseResponse.noContent();
     }
 
     @PostMapping("/{favoriteId}/movies/{movieId}")
+    @PreAuthorize("hasRole('ADMIN')")
     public BaseResponse<Void> addFavoriteToUser(@PathVariable Long favoriteId,
                                   @PathVariable Long movieId) {
         favoriteService.addMovieToFavorite(favoriteId, movieId);
@@ -45,12 +48,14 @@ public class FavoriteController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public BaseResponse<Void> updateFavorite(@PathVariable Long id, @RequestBody FavoriteRequestDTO favoriteRequestDTO) {
         favoriteService.updateFavorite(id, favoriteRequestDTO);
         return BaseResponse.noContent();
     }
 
     @DeleteMapping("/{favoriteId}/movies/{movieId}")
+    @PreAuthorize("hasRole('ADMIN')")
     public BaseResponse<Void> deleteFavorite(@PathVariable Long favoriteId,
                                @PathVariable Long movieId) {
         favoriteService.deleteMovieFromFavorite(favoriteId, movieId);
@@ -58,6 +63,7 @@ public class FavoriteController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public BaseResponse<Void> deleteFavorite(@PathVariable Long id) {
         favoriteService.deleteFavorite(id);
         return BaseResponse.noContent();

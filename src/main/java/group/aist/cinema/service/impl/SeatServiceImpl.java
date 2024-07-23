@@ -14,6 +14,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
+
+import static group.aist.cinema.util.ExceptionMessages.SEAT_NOT_FOUND;
+import static group.aist.cinema.util.ExceptionMessages.SECTOR_NOT_FOUND;
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
 @Service
 @RequiredArgsConstructor
@@ -35,7 +40,7 @@ public class SeatServiceImpl implements SeatService {
     @Transactional
     public SeatResponseDTO getSeatById(Long id) {
         return seatMapper.toDTO(seatRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Seat not found with id " + id)));
+                .orElseThrow(() -> new ResponseStatusException(BAD_REQUEST, SEAT_NOT_FOUND + id)));
     }
 
     @Override
@@ -58,10 +63,10 @@ public class SeatServiceImpl implements SeatService {
 
     private Seat getSeat(Long id, SeatRequestDTO seatRequestDTO) {
         Seat seat = seatRepository.findById(id).
-                orElseThrow(() -> new RuntimeException("Seat not found with id " + id));
+                orElseThrow(() -> new ResponseStatusException(BAD_REQUEST, SEAT_NOT_FOUND + id));
 
         Sector sector = sectorRepository.findById(seatRequestDTO.getSectorId())
-                .orElseThrow(() -> new RuntimeException("Seat not found with id " + seatRequestDTO.getSectorId()));
+                .orElseThrow(() -> new ResponseStatusException(BAD_REQUEST, SEAT_NOT_FOUND + seatRequestDTO.getSectorId()));
 
         seat.setSector(sector);
         seat.setType(SeatType.fromString(seatRequestDTO.getType()));
@@ -72,7 +77,7 @@ public class SeatServiceImpl implements SeatService {
         Seat seat = seatMapper.toEntity(seatRequestDTO);
 
         Sector sector = sectorRepository.findById(seatRequestDTO.getSectorId())
-                .orElseThrow(() -> new RuntimeException("Sector not found with id " + seatRequestDTO.getSectorId()));
+                .orElseThrow(() -> new ResponseStatusException(BAD_REQUEST, SECTOR_NOT_FOUND + seatRequestDTO.getSectorId()));
 
         seat.setSector(sector);
         seat.setType(SeatType.fromString(seatRequestDTO.getType()));

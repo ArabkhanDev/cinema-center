@@ -1,5 +1,6 @@
 package group.aist.cinema.model;
 
+import group.aist.cinema.model.embeddable.MovieLanguage;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -7,6 +8,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -40,6 +43,15 @@ public class Movie {
     private String duration;
 
     @Column(name = "image")
-    private String image;
+    private String backgroundImage;
 
+    @Column(name = "poster_image")
+    private String posterImage;
+
+    @Column(name = "arrival_of_cinema")
+    private LocalDate arrivalOfCinema;
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "movie_languages", joinColumns = @JoinColumn(name = "movie_id"))
+    private Set<MovieLanguage> languages = new HashSet<>();
 }

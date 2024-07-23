@@ -38,8 +38,8 @@ databaseChangeLog:
                   constraints:
                     nullable: false
               - column:
-                  name: qr_code
-                  type: VARCHAR(255)
+                  name: is_scanned
+                  type: BOOLEAN
                   constraints:
                     nullable: false
               - column:

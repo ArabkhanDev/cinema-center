@@ -7,10 +7,25 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 
 public interface TicketRepository extends JpaRepository<Ticket,Long> {
 
-    @EntityGraph(attributePaths = {"users", "movies"})
+    @Override
+    @EntityGraph(attributePaths = {
+            "user",
+            "movieSession",
+            "movieSession.hall",
+            "movieSession.movie",
+            "movieSession.movieStream",
+            "user.balance",
+            "movieSession.movieStream.dubbingLanguages",
+            "movieSession.movieStream.subtitleLanguages"
+    })
+    Optional<Ticket> findById(Long id);
+
+
+    @EntityGraph(attributePaths = {"user", "movieSession"})
     List<Ticket> findByPriceOrderByPrice(BigDecimal price);
 
     List<Ticket> findByAvailableType(AvailableType availableType);

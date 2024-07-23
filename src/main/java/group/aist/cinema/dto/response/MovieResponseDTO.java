@@ -25,6 +25,9 @@ public class MovieResponseDTO {
 
     private String duration;
 
-    private String image;
+    private String backgroundImage;
 
+    private String posterImage;
+
+    private LocalDate arrivalOfCinema;
 }

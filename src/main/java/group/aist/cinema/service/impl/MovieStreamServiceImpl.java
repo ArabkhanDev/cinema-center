@@ -19,6 +19,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Set;
 
+import static group.aist.cinema.util.ExceptionMessages.*;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
 @Service
@@ -42,7 +43,7 @@ public class MovieStreamServiceImpl implements MovieStreamService {
     @Transactional
     public MovieStreamResponseDTO getMovieStreamById(Long id) {
         MovieStream movieStream = movieStreamRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(BAD_REQUEST, "Movie Stream not found with id: " + id));
+                .orElseThrow(() -> new ResponseStatusException(BAD_REQUEST, MOVIE_STREAM_NOT_FOUND + id));
         return checkSubtitle(movieStream);
     }
 
@@ -51,7 +52,7 @@ public class MovieStreamServiceImpl implements MovieStreamService {
     public MovieStreamResponseDTO createMovieStream(MovieStreamRequestDTO movieStreamRequestDto) {
         MovieStream movieStream = movieStreamMapper.mapToEntity(movieStreamRequestDto);
         DubbingLanguage dubbingLanguage = dubbingLanguageRepository.findById(movieStreamRequestDto.getDubbingLanguageId())
-                .orElseThrow(() -> new ResponseStatusException(BAD_REQUEST, "Movie Stream not found with id: " + movieStreamRequestDto.getDubbingLanguageId()));
+                .orElseThrow(() -> new ResponseStatusException(BAD_REQUEST, DUBBING_LANGUAGE_NOT_FOUND + movieStreamRequestDto.getDubbingLanguageId()));
         movieStream.getDubbingLanguages().add(dubbingLanguage);
         checkSubtitleLanguageOrAdd(movieStreamRequestDto, movieStream);
         return movieStreamMapper.mapToResponseDTO(movieStreamRepository.save(movieStream));
@@ -62,10 +63,10 @@ public class MovieStreamServiceImpl implements MovieStreamService {
     @Transactional
     public void addDubbingLanguageToMovieStream(Long movieStreamId, Long dubbingLanguageId) {
         MovieStream movieStream = movieStreamRepository.findById(movieStreamId)
-                .orElseThrow(() -> new ResponseStatusException(BAD_REQUEST, "Movie Stream not found with id: " + movieStreamId));
+                .orElseThrow(() -> new ResponseStatusException(BAD_REQUEST, MOVIE_STREAM_NOT_FOUND + movieStreamId));
 
         DubbingLanguage dubbingLanguage = dubbingLanguageRepository.findById(dubbingLanguageId)
-                .orElseThrow(() -> new ResponseStatusException(BAD_REQUEST, "Dubbing Language not found with id: " + dubbingLanguageId));
+                .orElseThrow(() -> new ResponseStatusException(BAD_REQUEST, DUBBING_LANGUAGE_NOT_FOUND + dubbingLanguageId));
 
         movieStream.getDubbingLanguages().add(dubbingLanguage);
         movieStreamRepository.save(movieStream);
@@ -78,7 +79,7 @@ public class MovieStreamServiceImpl implements MovieStreamService {
                 .orElseThrow(() -> new ResponseStatusException(BAD_REQUEST, "Movie Stream not found with id: " + movieStreamId));
 
         SubtitleLanguage subtitleLanguage = subtitleLanguageRepository.findById(subtitleLanguageId)
-                .orElseThrow(() -> new ResponseStatusException(BAD_REQUEST, "Subtitle Language not found with id: " + subtitleLanguageId));
+                .orElseThrow(() -> new ResponseStatusException(BAD_REQUEST, SUBTITLE_LANGUAGE_NOT_FOUND + subtitleLanguageId));
 
         movieStream.getSubtitleLanguages().add(subtitleLanguage);
         movieStreamRepository.save(movieStream);
@@ -88,7 +89,7 @@ public class MovieStreamServiceImpl implements MovieStreamService {
     @Transactional
     public MovieStreamResponseDTO updateMovieStream(Long id, MovieStreamRequestDTO movieStreamRequestDto) {
         MovieStream movieStream = movieStreamRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(BAD_REQUEST, "Movie Stream not found with id: " + id));
+                .orElseThrow(() -> new ResponseStatusException(BAD_REQUEST, MOVIE_STREAM_NOT_FOUND + id));
         movieStreamMapper.updateMovieStreamFromDTO(movieStreamRequestDto, movieStream);
         return checkSubtitle(movieStream);
     }
@@ -112,7 +113,7 @@ public class MovieStreamServiceImpl implements MovieStreamService {
     private void checkSubtitleLanguageOrAdd(MovieStreamRequestDTO movieStreamRequestDto, MovieStream movieStream) {
         if (movieStream.getHasSubtitle()) {
             SubtitleLanguage subtitleLanguage = subtitleLanguageRepository.findById(movieStreamRequestDto.getSubtitleLanguageId())
-                    .orElseThrow(() -> new RuntimeException("Subtitle Language not found with id: " + movieStreamRequestDto.getSubtitleLanguageId()));
+                    .orElseThrow(() -> new ResponseStatusException(BAD_REQUEST, SUBTITLE_LANGUAGE_NOT_FOUND + movieStreamRequestDto.getSubtitleLanguageId()));
             movieStream.getSubtitleLanguages().add(subtitleLanguage);
         }
     }

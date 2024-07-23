@@ -13,9 +13,11 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+
+import static group.aist.cinema.util.ExceptionMessages.MOVIE_SESSION_NOT_FOUND;
+import static org.springframework.http.HttpStatus.*;
 
 @Service
 @RequiredArgsConstructor
@@ -35,7 +37,8 @@ public class MovieSessionServiceImpl implements MovieSessionService {
 
     @Override
     public MovieSessionResponseDTO getMovieSessionById(Long id) {
-        MovieSession movieSession = movieSessionRepository.findMovieSessionById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST,"There is no id with this movie session"));
+        MovieSession movieSession = movieSessionRepository.findMovieSessionById(id)
+                .orElseThrow(() -> new ResponseStatusException(BAD_REQUEST,MOVIE_SESSION_NOT_FOUND));
         return movieSessionMapper.mapToResponseDTO(movieSession);
     }
 
@@ -50,7 +53,8 @@ public class MovieSessionServiceImpl implements MovieSessionService {
     @Override
     @Transactional
     public MovieSessionResponseDTO updateMovieSession(Long id, MovieSessionRequestDTO movieSessionRequestDTO) {
-        MovieSession movieSession = movieSessionRepository.findMovieSessionById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST,"There is no id with this movie session"));
+        MovieSession movieSession = movieSessionRepository.findMovieSessionById(id)
+                .orElseThrow(() -> new ResponseStatusException(NOT_FOUND,MOVIE_SESSION_NOT_FOUND));
         setAllRelations(movieSessionRequestDTO, movieSession);
         movieSessionMapper.updateMovieSessionFromDTO(movieSessionRequestDTO,movieSession);
         return movieSessionMapper.mapToResponseDTO(movieSessionRepository.save(movieSession));
@@ -62,8 +66,8 @@ public class MovieSessionServiceImpl implements MovieSessionService {
     }
 
     private void setAllRelations(MovieSessionRequestDTO movieSessionRequestDTO, MovieSession movieSession) {
-        movieSession.setMovie(movieRepository.findById(movieSessionRequestDTO.getMovieId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST,"There is no id with this movie session")));
-        movieSession.setHall(hallRepository.findById(movieSessionRequestDTO.getHallId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST,"There is no id with this movie session")));
-        movieSession.setMovieStream(movieStreamRepository.findById(movieSessionRequestDTO.getMovieStreamId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST,"There is no id with this movie session")));
+        movieSession.setMovie(movieRepository.findById(movieSessionRequestDTO.getMovieId()).orElseThrow(() -> new ResponseStatusException(NOT_FOUND, MOVIE_SESSION_NOT_FOUND)));
+        movieSession.setHall(hallRepository.findById(movieSessionRequestDTO.getHallId()).orElseThrow(() -> new ResponseStatusException(NOT_FOUND,MOVIE_SESSION_NOT_FOUND)));
+        movieSession.setMovieStream(movieStreamRepository.findById(movieSessionRequestDTO.getMovieStreamId()).orElseThrow(() -> new ResponseStatusException(NOT_FOUND,MOVIE_SESSION_NOT_FOUND)));
     }
 }

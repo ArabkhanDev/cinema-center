@@ -1,11 +1,8 @@
 package group.aist.cinema.mapper;
 
 import group.aist.cinema.dto.request.TicketRequestDTO;
-import group.aist.cinema.dto.request.UserRequestDTO;
 import group.aist.cinema.dto.response.TicketResponseDTO;
-import group.aist.cinema.dto.response.UserResponseDTO;
 import group.aist.cinema.model.Ticket;
-import group.aist.cinema.model.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;

@@ -10,7 +10,13 @@ import group.aist.cinema.service.SectorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
+
+import static group.aist.cinema.util.ExceptionMessages.HALL_NOT_FOUND;
+import static group.aist.cinema.util.ExceptionMessages.SECTOR_NOT_FOUND;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @Service
 @RequiredArgsConstructor
@@ -29,7 +35,7 @@ public class SectorServiceImpl implements SectorService {
     @Override
     public SectorDTO getSectorById(Long id) {
         return sectorMapper.toDTO(sectorRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Sector not found with id " + id)));
+                .orElseThrow(() -> new ResponseStatusException(NOT_FOUND,SECTOR_NOT_FOUND + id)));
     }
 
     @Override
@@ -40,7 +46,7 @@ public class SectorServiceImpl implements SectorService {
     @Override
     public SectorDTO updateSector(Long id, SectorDTO sectorDTO) {
         Sector sector = sectorRepository.findById(id).
-                orElseThrow(() -> new RuntimeException("Sector not found with id " + id));
+                orElseThrow(() -> new ResponseStatusException(NOT_FOUND,SECTOR_NOT_FOUND + id));
         sectorMapper.updateSectorFromDTO(sectorDTO, setHallAndGetSector(sectorDTO, sector));
         return sectorMapper.toDTO(sectorRepository.save(sector));
     }
@@ -53,7 +59,7 @@ public class SectorServiceImpl implements SectorService {
 
     private Sector setHallAndGetSector(SectorDTO sectorDTO, Sector sector) {
         Hall hall = hallRepository.findById(sectorDTO.getHallId())
-                .orElseThrow(() -> new RuntimeException("Hall not found with id " + sectorDTO.getHallId()));
+                .orElseThrow(() -> new ResponseStatusException(NOT_FOUND,HALL_NOT_FOUND+ sectorDTO.getHallId()));
         sector.setHall(hall);
         return sector;
     }

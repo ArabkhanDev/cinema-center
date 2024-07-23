@@ -6,6 +6,7 @@ import group.aist.cinema.service.HallService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -26,15 +27,18 @@ public class HallController {
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public BaseResponse<HallDTO> createHall(@RequestBody HallDTO hallDTO) {
         return BaseResponse.created(hallService.createHall(hallDTO));
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public BaseResponse<HallDTO> updateHall(@PathVariable Long id, @RequestBody HallDTO hallDTO) {
         return BaseResponse.success(hallService.updateHall(id, hallDTO));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public BaseResponse<Void> deleteHall(@PathVariable Long id) {
         hallService.deleteHall(id);

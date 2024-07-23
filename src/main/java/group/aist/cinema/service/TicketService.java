@@ -15,10 +15,10 @@ import java.util.List;
 
 public interface TicketService {
     void sendPurchaseLink(Long ticketId);
-    Ticket confirmPurchase(Long ticketId);
+    Ticket confirmPurchase(Long ticketId) throws IOException, WriterException, MessagingException;
     void returnTicketLink(Long ticketId) throws WriterException, MessagingException, IOException;
     void confirmReturn(Long ticketId);
-    byte[] generateQrCode(Long ticketId) throws IOException, WriterException;
+    String generateQrCode(Long ticketId) throws IOException, WriterException;
     String scanQrCode(Long ticketId);
     Page<TicketResponseDTO> getAllTickets(Pageable pageable);
     TicketResponseDTO getTicketById(Long id);
