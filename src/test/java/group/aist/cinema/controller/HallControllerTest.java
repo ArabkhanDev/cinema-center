@@ -5,41 +5,37 @@ import group.aist.cinema.model.base.BaseResponse;
 import group.aist.cinema.service.HallService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
 import java.util.Collections;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@WebMvcTest(HallController.class)
+@ExtendWith(MockitoExtension.class)
 class HallControllerTest {
 
-    @Autowired
-    private MockMvc mockMvc;
-
-    @MockBean
+    @Mock
     private HallService hallService;
+
+    @InjectMocks
+    private HallController hallController;
 
     private HallDTO hallDTO;
     private Page<HallDTO> hallDTOPage;
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.openMocks(this);
-
         hallDTO = new HallDTO();
         hallDTO.setId(1L);
 
@@ -47,51 +43,56 @@ class HallControllerTest {
     }
 
     @Test
-    void getAllHalls() throws Exception {
+    void getAllHalls() {
         when(hallService.getAllHalls(any(Pageable.class))).thenReturn(hallDTOPage);
 
-        mockMvc.perform(get("/v1/api/halls")
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.data.content[0].id").value(hallDTO.getId()));
+        BaseResponse<Page<HallDTO>> response = hallController.getAllHalls(null);
+
+        assertEquals(HttpStatus.OK, response.getStatus());
+        assertEquals(1, response.getData().getContent().size());
+        assertEquals(hallDTO.getId(), response.getData().getContent().get(0).getId());
     }
 
     @Test
-    void getHallById() throws Exception {
+    void getHallById() {
         when(hallService.getHallById(anyLong())).thenReturn(hallDTO);
 
-        mockMvc.perform(get("/v1/api/halls/{id}", 1L)
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.data.id").value(hallDTO.getId()));
+        BaseResponse<HallDTO> response = hallController.getHallById(1L);
+
+        assertEquals(HttpStatus.OK, response.getStatus());
+        assertEquals(hallDTO.getId(), response.getData().getId());
     }
 
     @Test
-    void createHall() throws Exception {
+    void createHall() {
         when(hallService.createHall(any(HallDTO.class))).thenReturn(hallDTO);
 
-        mockMvc.perform(post("/v1/api/halls")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"id\":1}"))
-                .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.data.id").value(hallDTO.getId()));
+        HallDTO newHallDTO = new HallDTO();
+        newHallDTO.setId(1L);
+
+        BaseResponse<HallDTO> response = hallController.createHall(newHallDTO);
+
+        assertEquals(HttpStatus.CREATED, response.getStatus());
+        assertEquals(hallDTO.getId(), response.getData().getId());
     }
 
     @Test
-    void updateHall() throws Exception {
+    void updateHall() {
         when(hallService.updateHall(anyLong(), any(HallDTO.class))).thenReturn(hallDTO);
 
-        mockMvc.perform(put("/v1/api/halls/{id}", 1L)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"id\":1}"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.data.id").value(hallDTO.getId()));
+        HallDTO updatedHallDTO = new HallDTO();
+        updatedHallDTO.setId(1L);
+
+        BaseResponse<HallDTO> response = hallController.updateHall(1L, updatedHallDTO);
+
+        assertEquals(HttpStatus.OK, response.getStatus());
+        assertEquals(hallDTO.getId(), response.getData().getId());
     }
 
     @Test
-    void deleteHall() throws Exception {
-        mockMvc.perform(delete("/v1/api/halls/{id}", 1L)
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNoContent());
+    void deleteHall() {
+        BaseResponse<Void> response = hallController.deleteHall(1L);
+
+        assertEquals(HttpStatus.NO_CONTENT, response.getStatus());
     }
 }

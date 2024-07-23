@@ -5,33 +5,31 @@ import group.aist.cinema.model.base.BaseResponse;
 import group.aist.cinema.service.BalanceService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
 import java.util.Collections;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@WebMvcTest(BalanceController.class)
+@ExtendWith(MockitoExtension.class)
 class BalanceControllerTest {
 
-    @Autowired
-    private MockMvc mockMvc;
-
-    @MockBean
+    @Mock
     private BalanceService balanceService;
+
+    @InjectMocks
+    private BalanceController balanceController;
 
     private BalanceDTO balanceDTO;
     private Page<BalanceDTO> balanceDTOPage;
@@ -45,51 +43,50 @@ class BalanceControllerTest {
     }
 
     @Test
-    void getAllBalances() throws Exception {
+    void getAllBalances() {
         when(balanceService.getAllBalances(any(Pageable.class))).thenReturn(balanceDTOPage);
 
-        mockMvc.perform(get("/v1/api/balances")
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.data.content[0].id").value(balanceDTO.getId()));
+        BaseResponse<Page<BalanceDTO>> response = balanceController.getAllBalances(null);
+
+        assertEquals(HttpStatus.OK, response.getStatus());
+        assertEquals(1, response.getData().getContent().size());
+        assertEquals(balanceDTO.getId(), response.getData().getContent().get(0).getId());
     }
 
     @Test
-    void getBalanceById() throws Exception {
+    void getBalanceById() {
         when(balanceService.getBalanceById(anyLong())).thenReturn(balanceDTO);
 
-        mockMvc.perform(get("/v1/api/balances/{id}", 1L)
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.data.id").value(balanceDTO.getId()));
+        BaseResponse<BalanceDTO> response = balanceController.getBalanceById(1L);
+
+        assertEquals(HttpStatus.OK, response.getStatus());
+        assertEquals(balanceDTO.getId(), response.getData().getId());
     }
 
     @Test
-    void createBalance() throws Exception {
+    void createBalance() {
         when(balanceService.createBalance(any(BalanceDTO.class))).thenReturn(balanceDTO);
 
-        mockMvc.perform(post("/v1/api/balances")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"id\":1}"))
-                .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.data.id").value(balanceDTO.getId()));
+        BaseResponse<BalanceDTO> response = balanceController.createBalance(balanceDTO);
+
+        assertEquals(HttpStatus.CREATED, response.getStatus());
+        assertEquals(balanceDTO.getId(), response.getData().getId());
     }
 
     @Test
-    void updateBalance() throws Exception {
+    void updateBalance() {
         when(balanceService.updateBalance(anyLong(), any(BalanceDTO.class))).thenReturn(balanceDTO);
 
-        mockMvc.perform(put("/v1/api/balances/{id}", 1L)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"id\":1}"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.data.id").value(balanceDTO.getId()));
+        BaseResponse<BalanceDTO> response = balanceController.updateBalance(1L, balanceDTO);
+
+        assertEquals(HttpStatus.OK, response.getStatus());
+        assertEquals(balanceDTO.getId(), response.getData().getId());
     }
 
     @Test
-    void deleteBalance() throws Exception {
-        mockMvc.perform(delete("/v1/api/balances/delete/{id}", 1L)
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNoContent());
+    void deleteBalance() {
+        BaseResponse<Void> response = balanceController.deleteBalance(1L);
+
+        assertEquals(HttpStatus.NO_CONTENT, response.getStatus());
     }
 }

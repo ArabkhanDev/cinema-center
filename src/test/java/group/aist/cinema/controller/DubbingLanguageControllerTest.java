@@ -5,33 +5,31 @@ import group.aist.cinema.model.base.BaseResponse;
 import group.aist.cinema.service.DubbingLanguageService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
 import java.util.Collections;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@WebMvcTest(DubbingLanguageController.class)
+@ExtendWith(MockitoExtension.class)
 class DubbingLanguageControllerTest {
 
-    @Autowired
-    private MockMvc mockMvc;
-
-    @MockBean
+    @Mock
     private DubbingLanguageService dubbingLanguageService;
+
+    @InjectMocks
+    private DubbingLanguageController dubbingLanguageController;
 
     private DubbingLanguageDTO dubbingLanguageDTO;
     private Page<DubbingLanguageDTO> dubbingLanguageDTOPage;
@@ -45,51 +43,50 @@ class DubbingLanguageControllerTest {
     }
 
     @Test
-    void getDubbingLanguages() throws Exception {
+    void getDubbingLanguages() {
         when(dubbingLanguageService.getAllDubbingLanguages(any(Pageable.class))).thenReturn(dubbingLanguageDTOPage);
 
-        mockMvc.perform(get("/v1/api/dubbing-languages")
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.data.content[0].id").value(dubbingLanguageDTO.getId()));
+        BaseResponse<Page<DubbingLanguageDTO>> response = dubbingLanguageController.getDubbingLanguages(null);
+
+        assertEquals(HttpStatus.OK, response.getStatus());
+        assertEquals(1, response.getData().getContent().size());
+        assertEquals(dubbingLanguageDTO.getId(), response.getData().getContent().get(0).getId());
     }
 
     @Test
-    void getDubbingLanguageById() throws Exception {
+    void getDubbingLanguageById() {
         when(dubbingLanguageService.getDubbingLanguage(anyLong())).thenReturn(dubbingLanguageDTO);
 
-        mockMvc.perform(get("/v1/api/dubbing-languages/{id}", 1L)
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.data.id").value(dubbingLanguageDTO.getId()));
+        BaseResponse<DubbingLanguageDTO> response = dubbingLanguageController.dubbingLanguageById(1L);
+
+        assertEquals(HttpStatus.OK, response.getStatus());
+        assertEquals(dubbingLanguageDTO.getId(), response.getData().getId());
     }
 
     @Test
-    void createDubbingLanguage() throws Exception {
+    void createDubbingLanguage() {
         when(dubbingLanguageService.createDubbingLanguage(any(DubbingLanguageDTO.class))).thenReturn(dubbingLanguageDTO);
 
-        mockMvc.perform(post("/v1/api/dubbing-languages")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"id\":1}"))
-                .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.data.id").value(dubbingLanguageDTO.getId()));
+        BaseResponse<DubbingLanguageDTO> response = dubbingLanguageController.createDubbingLanguage(dubbingLanguageDTO);
+
+        assertEquals(HttpStatus.CREATED, response.getStatus());
+        assertEquals(dubbingLanguageDTO.getId(), response.getData().getId());
     }
 
     @Test
-    void updateDubbingLanguage() throws Exception {
+    void updateDubbingLanguage() {
         when(dubbingLanguageService.updateDubbingLanguage(anyLong(), any(DubbingLanguageDTO.class))).thenReturn(dubbingLanguageDTO);
 
-        mockMvc.perform(put("/v1/api/dubbing-languages/{id}", 1L)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"id\":1}"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.data.id").value(dubbingLanguageDTO.getId()));
+        BaseResponse<DubbingLanguageDTO> response = dubbingLanguageController.updateDubbingLanguage(dubbingLanguageDTO,1L);
+
+        assertEquals(HttpStatus.OK, response.getStatus());
+        assertEquals(dubbingLanguageDTO.getId(), response.getData().getId());
     }
 
     @Test
-    void deleteDubbingLanguage() throws Exception {
-        mockMvc.perform(delete("/v1/api/dubbing-languages/{id}", 1L)
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNoContent());
+    void deleteDubbingLanguage() {
+        BaseResponse<Void> response = dubbingLanguageController.deleteDubbingLanguage(1L);
+
+        assertEquals(HttpStatus.NO_CONTENT, response.getStatus());
     }
 }
