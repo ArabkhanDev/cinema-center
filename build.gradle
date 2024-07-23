@@ -46,10 +46,10 @@ dependencies {
 
 	implementation 'jakarta.activation:jakarta.activation-api:2.0.1'
 
-//	configurations.all {
-//		exclude group: 'javax.mail', module: 'mail'
-//		exclude group: 'javax.activation', module: 'activation'
-//	}
+	configurations.all {
+		exclude group: 'javax.mail', module: 'mail'
+		exclude group: 'javax.activation', module: 'activation'
+	}
 
 	implementation group: 'com.google.zxing', name: 'core', version: '3.3.1'
 

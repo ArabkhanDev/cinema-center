@@ -33,7 +33,4 @@ public class UserRequestDTO {
     @NotNull(message = "Password must not be null")
     @Size(min = 8, max = 50, message = "Password must be between 8 and 50 characters")
     private String password;
-
-//    @NotNull(message = "Balance ID must not be null")
-    private Long balanceId;
 }
