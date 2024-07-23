@@ -38,11 +38,14 @@ public class MovieRequestDTO {
     @Pattern(regexp = "^(\\d{1,2}h)?\\s*(\\d{1,2}m)?$", message = "Duration must be in the format 'Xh Ym'")
     private String duration;
 
-    @NotNull(message = "Poster image cannot be null")
-    private MultipartFile posterImage;
-
     @NotNull(message = "Background image cannot be null")
     private MultipartFile backgroundImage;
 
-    private Long dubbingLanguageId;
+    @NotNull(message = "Image cannot be null")
+    private MultipartFile posterImage;
+
+    @NotNull(message = "Arrival of cinema cannot be null")
+    @PastOrPresent(message = "Arrival of cinema must be in the past or present")
+    private LocalDate arrivalOfCinema;
+
 }

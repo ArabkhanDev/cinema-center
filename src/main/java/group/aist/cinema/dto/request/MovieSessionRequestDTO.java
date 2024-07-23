@@ -8,7 +8,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Set;
 
 @Data
 @AllArgsConstructor
@@ -17,7 +18,7 @@ public class MovieSessionRequestDTO {
 
     @NotNull(message = "Time cannot be null")
     @FutureOrPresent(message = "Time must be in the present or future")
-    private LocalDate time;
+    private Set<LocalDateTime> time;
 
     @NotNull(message = "Type cannot be null")
     private SessionType type;
