@@ -4,6 +4,7 @@ import group.aist.cinema.dto.request.SeatRequestDTO;
 import group.aist.cinema.dto.response.SeatResponseDTO;
 import group.aist.cinema.model.base.BaseResponse;
 import group.aist.cinema.service.SeatService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -29,13 +30,14 @@ public class SeatController {
 
     @PostMapping
     @PreAuthorize("hasAnyRole('ADMIN')")
-    public BaseResponse<SeatResponseDTO> createSector(SeatRequestDTO seatRequestDTO) {
+    public BaseResponse<SeatResponseDTO> createSector(@Valid @RequestBody SeatRequestDTO seatRequestDTO) {
         return BaseResponse.created(seatService.createSeat(seatRequestDTO));
     }
 
     @PutMapping("/{id}")
     @PreAuthorize("hasAnyRole('ADMIN')")
-    public BaseResponse<SeatResponseDTO> updateSector(@PathVariable Long id, SeatRequestDTO seatRequestDTO) {
+    public BaseResponse<SeatResponseDTO> updateSector(@PathVariable Long id,
+                                                      @Valid @RequestBody SeatRequestDTO seatRequestDTO) {
         return BaseResponse.success(seatService.updateSeat(id, seatRequestDTO));
     }
 

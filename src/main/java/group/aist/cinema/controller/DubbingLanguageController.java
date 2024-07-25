@@ -3,6 +3,7 @@ package group.aist.cinema.controller;
 import group.aist.cinema.dto.common.DubbingLanguageDTO;
 import group.aist.cinema.model.base.BaseResponse;
 import group.aist.cinema.service.DubbingLanguageService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -28,7 +29,7 @@ public class DubbingLanguageController {
 
     @PostMapping
     @PreAuthorize("hasRole('ADMIN')")
-    public BaseResponse<DubbingLanguageDTO> createDubbingLanguage(@RequestBody DubbingLanguageDTO dubbingLanguageDTO) {
+    public BaseResponse<DubbingLanguageDTO> createDubbingLanguage(@Valid @RequestBody DubbingLanguageDTO dubbingLanguageDTO) {
         return BaseResponse.created(dubbingLanguageService.createDubbingLanguage(dubbingLanguageDTO));
     }
 

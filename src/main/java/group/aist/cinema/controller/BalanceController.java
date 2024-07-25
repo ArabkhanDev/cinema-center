@@ -3,6 +3,7 @@ package group.aist.cinema.controller;
 import group.aist.cinema.dto.common.BalanceDTO;
 import group.aist.cinema.model.base.BaseResponse;
 import group.aist.cinema.service.BalanceService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -30,14 +31,14 @@ public class BalanceController {
 
 
     @PostMapping
-//    @PreAuthorize("hasAnyRole('ADMIN','USER')")
-    public BaseResponse<BalanceDTO> createBalance(BalanceDTO balanceDTO) {
+    public BaseResponse<BalanceDTO> createBalance(@Valid @RequestBody BalanceDTO balanceDTO) {
         return BaseResponse.created(balanceService.createBalance(balanceDTO));
     }
 
     @PutMapping("/{id}")
     @PreAuthorize("hasAnyRole('ADMIN','USER')")
-    public BaseResponse<BalanceDTO> updateBalance(@PathVariable Long id, BalanceDTO balanceDTO) {
+    public BaseResponse<BalanceDTO> updateBalance(@PathVariable Long id,
+                                                  @Valid @RequestBody BalanceDTO balanceDTO) {
         return BaseResponse.success(balanceService.updateBalance(id, balanceDTO));
     }
 

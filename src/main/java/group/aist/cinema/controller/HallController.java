@@ -3,6 +3,7 @@ package group.aist.cinema.controller;
 import group.aist.cinema.dto.common.HallDTO;
 import group.aist.cinema.model.base.BaseResponse;
 import group.aist.cinema.service.HallService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -28,13 +29,14 @@ public class HallController {
 
     @PostMapping
     @PreAuthorize("hasRole('ADMIN')")
-    public BaseResponse<HallDTO> createHall(@RequestBody HallDTO hallDTO) {
+    public BaseResponse<HallDTO> createHall(@Valid @RequestBody HallDTO hallDTO) {
         return BaseResponse.created(hallService.createHall(hallDTO));
     }
 
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    public BaseResponse<HallDTO> updateHall(@PathVariable Long id, @RequestBody HallDTO hallDTO) {
+    public BaseResponse<HallDTO> updateHall(@PathVariable Long id,
+                                            @Valid @RequestBody HallDTO hallDTO) {
         return BaseResponse.success(hallService.updateHall(id, hallDTO));
     }
 

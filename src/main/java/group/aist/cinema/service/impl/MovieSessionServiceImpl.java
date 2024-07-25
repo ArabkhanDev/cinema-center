@@ -16,7 +16,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import static group.aist.cinema.util.ExceptionMessages.MOVIE_SESSION_NOT_FOUND;
+import static group.aist.cinema.util.ExceptionMessages.*;
 import static org.springframework.http.HttpStatus.*;
 
 @Service
@@ -66,8 +66,8 @@ public class MovieSessionServiceImpl implements MovieSessionService {
     }
 
     private void setAllRelations(MovieSessionRequestDTO movieSessionRequestDTO, MovieSession movieSession) {
-        movieSession.setMovie(movieRepository.findById(movieSessionRequestDTO.getMovieId()).orElseThrow(() -> new ResponseStatusException(NOT_FOUND, MOVIE_SESSION_NOT_FOUND)));
-        movieSession.setHall(hallRepository.findById(movieSessionRequestDTO.getHallId()).orElseThrow(() -> new ResponseStatusException(NOT_FOUND,MOVIE_SESSION_NOT_FOUND)));
-        movieSession.setMovieStream(movieStreamRepository.findById(movieSessionRequestDTO.getMovieStreamId()).orElseThrow(() -> new ResponseStatusException(NOT_FOUND,MOVIE_SESSION_NOT_FOUND)));
+        movieSession.setMovie(movieRepository.findById(movieSessionRequestDTO.getMovieId()).orElseThrow(() -> new ResponseStatusException(NOT_FOUND, MOVIE_NOT_FOUND)));
+        movieSession.setHall(hallRepository.findById(movieSessionRequestDTO.getHallId()).orElseThrow(() -> new ResponseStatusException(NOT_FOUND,HALL_NOT_FOUND)));
+        movieSession.setMovieStream(movieStreamRepository.findById(movieSessionRequestDTO.getMovieStreamId()).orElseThrow(() -> new ResponseStatusException(NOT_FOUND,MOVIE_STREAM_NOT_FOUND)));
     }
 }

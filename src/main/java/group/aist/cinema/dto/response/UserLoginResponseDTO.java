@@ -1,6 +1,5 @@
 package group.aist.cinema.dto.response;
 
-import com.fasterxml.jackson.databind.annotation.JsonAppend;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

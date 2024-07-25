@@ -45,8 +45,8 @@ public class HallServiceImpl implements HallService {
         Hall hall = hallMapper.toEntity(hallDTO);
         List<Seat> seats = initializeSeatsInHall(hall);
         hall.setSeats(seats);
-        hall.setSeatCount(57);
-        hall.setAvailableSeat(57);
+        hall.setSeatCount(70);
+        hall.setAvailableSeat(70);
         return hallMapper.toDTO(hallRepository.save(hall));
     }
 
@@ -67,7 +67,7 @@ public class HallServiceImpl implements HallService {
         List<Seat> seats = new ArrayList<>();
 
         String[] rows = {"G", "F", "E", "D", "C", "B", "A"};
-        int[] seatCounts = {6, 7, 8, 9, 9, 9, 9};
+        int[] seatCounts = {6, 8, 10, 12, 12, 12, 12};
 
         for (int i = 0; i < rows.length; i++) {
             addSeats(seats, rows[i], seatCounts[i], hall);

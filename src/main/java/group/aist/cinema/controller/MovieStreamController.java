@@ -4,6 +4,7 @@ import group.aist.cinema.dto.request.MovieStreamRequestDTO;
 import group.aist.cinema.dto.response.MovieStreamResponseDTO;
 import group.aist.cinema.model.base.BaseResponse;
 import group.aist.cinema.service.MovieStreamService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -29,13 +30,14 @@ public class MovieStreamController {
 
     @PostMapping
     @PreAuthorize("hasAnyRole('ADMIN')")
-    public BaseResponse<MovieStreamResponseDTO> createMovieStream(@RequestBody MovieStreamRequestDTO movieStreamRequestDto) {
+    public BaseResponse<MovieStreamResponseDTO> createMovieStream(@Valid @RequestBody MovieStreamRequestDTO movieStreamRequestDto) {
         return BaseResponse.created(movieStreamService.createMovieStream(movieStreamRequestDto));
     }
 
     @PutMapping("/{id}")
     @PreAuthorize("hasAnyRole('ADMIN')")
-    public BaseResponse<MovieStreamResponseDTO> updateMovieStream(@PathVariable Long id, @RequestBody MovieStreamRequestDTO movieStreamRequestDto) {
+    public BaseResponse<MovieStreamResponseDTO> updateMovieStream(@PathVariable Long id,
+                                                                  @Valid @RequestBody MovieStreamRequestDTO movieStreamRequestDto) {
         return BaseResponse.success(movieStreamService.updateMovieStream(id, movieStreamRequestDto));
     }
 

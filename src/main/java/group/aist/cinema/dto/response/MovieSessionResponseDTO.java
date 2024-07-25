@@ -19,8 +19,6 @@ public class MovieSessionResponseDTO {
 
     private Set<LocalDateTime> time;
 
-    private SessionType type;
-
     private boolean isActive;
 
     private MovieResponseDTO movie;

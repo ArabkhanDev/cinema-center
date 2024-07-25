@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.Base64;
 import java.util.List;
 
@@ -39,6 +40,11 @@ public class MovieServiceImpl implements MovieService {
         Movie movie = movieRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(BAD_REQUEST, MOVIE_NOT_FOUND + id));
         return movieMapper.mapToDto(movie);
+    }
+
+    @Override
+    public List<MovieResponseDTO> getMovieByDate(LocalDate date) {
+        return movieRepository.findByReleaseDate(date).stream().map(movieMapper::mapToDto).toList();
     }
 
     @Override

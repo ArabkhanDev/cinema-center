@@ -3,6 +3,7 @@ package group.aist.cinema.controller;
 import group.aist.cinema.dto.common.SubtitleLanguageDTO;
 import group.aist.cinema.model.base.BaseResponse;
 import group.aist.cinema.service.SubtitleLanguageService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -31,13 +32,14 @@ public class SubtitleLanguageController {
 
     @PostMapping
     @PreAuthorize("hasRole('ADMIN')")
-    public BaseResponse<SubtitleLanguageDTO> createSubtitleLanguage(@RequestBody SubtitleLanguageDTO subtitleLanguageDTO) {
+    public BaseResponse<SubtitleLanguageDTO> createSubtitleLanguage(@Valid @RequestBody SubtitleLanguageDTO subtitleLanguageDTO) {
         return BaseResponse.success(subtitleLanguageService.createSubtitleLanguage(subtitleLanguageDTO));
     }
 
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    public BaseResponse<SubtitleLanguageDTO> updateSubtitleLanguage(@PathVariable Long id, @RequestBody SubtitleLanguageDTO subtitleLanguageDTO) {
+    public BaseResponse<SubtitleLanguageDTO> updateSubtitleLanguage(@PathVariable Long id,
+                                                                    @RequestBody SubtitleLanguageDTO subtitleLanguageDTO) {
         return BaseResponse.success(subtitleLanguageService.updateSubtitleLanguage(id, subtitleLanguageDTO));
     }
 
