@@ -1,7 +1,5 @@
 package group.aist.cinema.dto.request;
 
-import group.aist.cinema.enums.SeatType;
-import group.aist.cinema.model.Seat;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -13,13 +11,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class SeatRequestDTO {
 
-    @NotNull(message = "Vertical must not be null")
-    @Size(max = 10, message = "Vertical must not exceed 10 characters")
-    private String vertical;
+    @NotNull(message = "Row must not be null")
+    @Size(max = 10, message = "Row must not exceed 10 characters")
+    private String row;
 
-    @NotNull(message = "Horizontal must not be null")
-    @Size(max = 10, message = "Horizontal must not exceed 10 characters")
-    private String horizontal;
+    @NotNull(message = "Number must not be null")
+    @Size(max = 10, message = "Number must not exceed 10 characters")
+    private String number;
 
     @NotNull(message = "Type must not be null")
     @Size(max = 20, message = "Type must not exceed 20 characters")

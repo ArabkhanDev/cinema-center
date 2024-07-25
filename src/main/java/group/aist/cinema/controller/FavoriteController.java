@@ -4,6 +4,7 @@ import group.aist.cinema.dto.request.FavoriteRequestDTO;
 import group.aist.cinema.dto.response.FavoriteResponseDTO;
 import group.aist.cinema.model.base.BaseResponse;
 import group.aist.cinema.service.FavoriteService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -34,7 +35,7 @@ public class FavoriteController {
 
     @PostMapping
     @PreAuthorize("hasRole('ADMIN')")
-    public BaseResponse<Void> addFavorite(@RequestBody FavoriteRequestDTO favoriteRequestDTO) {
+    public BaseResponse<Void> addFavorite(@Valid @RequestBody FavoriteRequestDTO favoriteRequestDTO) {
         favoriteService.createFavorite(favoriteRequestDTO);
         return BaseResponse.noContent();
     }
@@ -49,7 +50,8 @@ public class FavoriteController {
 
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    public BaseResponse<Void> updateFavorite(@PathVariable Long id, @RequestBody FavoriteRequestDTO favoriteRequestDTO) {
+    public BaseResponse<Void> updateFavorite(@PathVariable Long id,
+                                             @Valid @RequestBody FavoriteRequestDTO favoriteRequestDTO) {
         favoriteService.updateFavorite(id, favoriteRequestDTO);
         return BaseResponse.noContent();
     }

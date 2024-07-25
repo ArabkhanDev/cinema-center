@@ -8,8 +8,8 @@ spring:
 
 
 keycloak:
-  realm: Team1
-  host: https://auth.md7.info
+  realm: team1
+  host: https://auth.md7.info/auth
   clientId: admin-cli
   clientSecret: xC5PbB13IzkUd8XrvAmlfjl3CvzBDSB0
   grantType: client_credentials

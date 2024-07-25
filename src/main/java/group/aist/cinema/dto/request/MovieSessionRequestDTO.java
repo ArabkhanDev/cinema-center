@@ -1,6 +1,5 @@
 package group.aist.cinema.dto.request;
 
-import group.aist.cinema.enums.SessionType;
 import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
@@ -19,9 +18,6 @@ public class MovieSessionRequestDTO {
     @NotNull(message = "Time cannot be null")
     @FutureOrPresent(message = "Time must be in the present or future")
     private Set<LocalDateTime> time;
-
-    @NotNull(message = "Type cannot be null")
-    private SessionType type;
 
     private boolean isActive;
 

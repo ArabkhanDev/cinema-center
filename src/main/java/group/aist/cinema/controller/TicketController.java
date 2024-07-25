@@ -7,6 +7,7 @@ import group.aist.cinema.model.Ticket;
 import group.aist.cinema.model.base.BaseResponse;
 import group.aist.cinema.service.TicketService;
 import jakarta.mail.MessagingException;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -69,7 +70,7 @@ public class TicketController {
 
 
     @PostMapping
-    public TicketResponseDTO createTicket(@RequestBody TicketRequestDTO ticketRequestDTO){
+    public TicketResponseDTO createTicket(@Valid @RequestBody TicketRequestDTO ticketRequestDTO){
         return ticketService.createTicket(ticketRequestDTO);
     }
 
@@ -97,7 +98,8 @@ public class TicketController {
 
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    public TicketResponseDTO updateTicket(@PathVariable Long id, @RequestBody TicketRequestDTO ticketRequestDTO) {
+    public TicketResponseDTO updateTicket(@PathVariable Long id,
+                                          @Valid @RequestBody TicketRequestDTO ticketRequestDTO) {
         return ticketService.updateTicket(id, ticketRequestDTO);
     }
 

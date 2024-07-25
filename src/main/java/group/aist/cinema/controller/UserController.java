@@ -7,6 +7,7 @@ import group.aist.cinema.dto.response.UserLoginResponseDTO;
 import group.aist.cinema.dto.response.UserResponseDTO;
 import group.aist.cinema.model.base.BaseResponse;
 import group.aist.cinema.service.UserService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -39,18 +40,19 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public BaseResponse<UserResponseDTO> registerUser(@RequestBody UserRequestDTO userDTO) {
+    public BaseResponse<UserResponseDTO> registerUser(@Valid @RequestBody UserRequestDTO userDTO) {
         return BaseResponse.success(userService.registerUser(userDTO));
     }
 
     @PostMapping("/login")
-    public BaseResponse<UserLoginResponseDTO> login(@RequestBody UserLoginRequestDTO userLoginRequestDTO) {
+    public BaseResponse<UserLoginResponseDTO> login(@Valid @RequestBody UserLoginRequestDTO userLoginRequestDTO) {
         return BaseResponse.success(userService.login(userLoginRequestDTO));
     }
 
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('USER')")
-    public BaseResponse<UserResponseDTO> updateUser(@PathVariable String id, @RequestBody UserUpdateRequest userDTO) {
+    public BaseResponse<UserResponseDTO> updateUser(@PathVariable String id,
+                                                    @Valid @RequestBody UserUpdateRequest userDTO) {
         return BaseResponse.success(userService.updateUser(id, userDTO));
     }
 

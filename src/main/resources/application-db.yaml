@@ -6,7 +6,7 @@ spring:
       max-request-size: 2MB
 
   liquibase:
-    enabled: false
+    enabled: true
     change-log: db/changelog/db.changelog-master.yaml
 
   datasource:
@@ -41,7 +41,7 @@ spring:
     generateDdl: false
     openInView: false
     hibernate:
-      ddlAuto: update
+      ddlAuto: validate
 
   mail:
     host: smtp.gmail.com

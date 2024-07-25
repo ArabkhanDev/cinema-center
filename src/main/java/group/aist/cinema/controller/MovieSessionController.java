@@ -4,6 +4,7 @@ import group.aist.cinema.dto.request.MovieSessionRequestDTO;
 import group.aist.cinema.dto.response.MovieSessionResponseDTO;
 import group.aist.cinema.model.base.BaseResponse;
 import group.aist.cinema.service.MovieSessionService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -38,13 +39,14 @@ public class MovieSessionController {
 
     @PostMapping
     @PreAuthorize("hasAnyRole('ADMIN')")
-    public BaseResponse<MovieSessionResponseDTO> createMovieSession(@RequestBody MovieSessionRequestDTO movieSessionRequestDTO) {
+    public BaseResponse<MovieSessionResponseDTO> createMovieSession(@Valid @RequestBody MovieSessionRequestDTO movieSessionRequestDTO) {
         return BaseResponse.created(movieSessionService.createMovieSession(movieSessionRequestDTO));
     }
 
     @PutMapping("/{id}")
     @PreAuthorize("hasAnyRole('ADMIN')")
-    public BaseResponse<MovieSessionResponseDTO> updateMovieSession(@PathVariable Long id, @RequestBody MovieSessionRequestDTO movieSessionRequestDTO) {
+    public BaseResponse<MovieSessionResponseDTO> updateMovieSession(@PathVariable Long id,
+                                                                    @Valid @RequestBody MovieSessionRequestDTO movieSessionRequestDTO) {
         return BaseResponse.success(movieSessionService.updateMovieSession(id, movieSessionRequestDTO));
     }
 
