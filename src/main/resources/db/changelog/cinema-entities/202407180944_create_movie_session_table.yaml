@@ -4,7 +4,7 @@ databaseChangeLog:
       author: arabkhan
       changes:
         - createTable:
-            tableName: movie-sessions
+            tableName: movie_sessions
             columns:
               - column:
                   name: id
@@ -12,16 +12,6 @@ databaseChangeLog:
                   autoIncrement: true
                   constraints:
                     primaryKey: true
-                    nullable: false
-              - column:
-                  name: time
-                  type: DATE
-                  constraints:
-                    nullable: false
-              - column:
-                  name: type
-                  type: VARCHAR(20)
-                  constraints:
                     nullable: false
               - column:
                   name: is_active
@@ -43,6 +33,21 @@ databaseChangeLog:
                   type: BIGINT
                   constraints:
                     nullable: false
+
+        - createTable:
+            tableName: movie_session_times
+            columns:
+              - column:
+                  name: movie_session_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: time
+                  type: TIMESTAMP
+                  constraints:
+                    nullable: false
+
         - createSequence:
             sequenceName: movie_sessions_seq
         - addAutoIncrement:
@@ -53,19 +58,19 @@ databaseChangeLog:
             columnDataType: BIGINT
         - addForeignKeyConstraint:
             baseColumnNames: movie_id
-            baseTableName: movie-sessions
+            baseTableName: movie_sessions
             constraintName: fk_movie_sessions_movie_id
             referencedColumnNames: id
             referencedTableName: movies
         - addForeignKeyConstraint:
             baseColumnNames: hall_id
-            baseTableName: movie-sessions
+            baseTableName: movie_sessions
             constraintName: fk_movie_sessions_hall_id
             referencedColumnNames: id
             referencedTableName: halls
         - addForeignKeyConstraint:
             baseColumnNames: movie_stream_id
-            baseTableName: movie-sessions
+            baseTableName: movie_sessions
             constraintName: fk_movie_sessions_movie_stream_id
             referencedColumnNames: id
-            referencedTableName: movie-streams
+            referencedTableName: movie_streams

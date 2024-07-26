@@ -14,7 +14,7 @@ import java.util.Set;
 @Getter
 @Setter
 @Entity
-@Table(name = "movie-sessions")
+@Table(name = "movie_sessions")
 public class MovieSession {
 
     @Id

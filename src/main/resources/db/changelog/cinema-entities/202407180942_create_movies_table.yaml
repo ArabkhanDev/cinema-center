@@ -43,8 +43,38 @@ databaseChangeLog:
                   constraints:
                     nullable: false
               - column:
-                  name: image
-                  type: VARCHAR(100)
+                  name: background_image
+                  type: VARCHAR(255)
+              - column:
+                  name: poster_image
+                  type: VARCHAR(255)
+              - column:
+                  name: arrival_of_cinema
+                  type: DATE
+
+        - createTable:
+            tableName: movie_languages
+            columns:
+              - column:
+                  name: movie_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: language
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+
+        - addForeignKeyConstraint:
+            baseTableName: movie_languages
+            baseColumnNames: movie_id
+            referencedTableName: movies
+            referencedColumnNames: id
+            constraintName: fk_movie_languages_movie_id
+            onDelete: CASCADE
+            onUpdate: CASCADE
+
         - createSequence:
             sequenceName: movies_seq
         - addAutoIncrement:

@@ -1,6 +1,6 @@
 databaseChangeLog:
   - changeSet:
-      id: 202407181006_create_seat_table
+      id: 202407180845_create_seat_table
       author: arabkhan
       changes:
         - createTable:
@@ -41,3 +41,39 @@ databaseChangeLog:
             constraintName: fk_seat_sector_id
             referencedTableName: sectors
             referencedColumnNames: id
+
+  - changeSet:
+      id: 202407201050_create_halls_seats_table
+      author: arabkhan
+      changes:
+        - createTable:
+            tableName: halls_seats
+            columns:
+              - column:
+                  name: hall_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: seats_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+        - addForeignKeyConstraint:
+            baseTableName: halls_seats
+            baseColumnNames: hall_id
+            referencedTableName: halls
+            referencedColumnNames: id
+            constraintName: fk_halls_seats_hall_id
+            onDelete: CASCADE
+            onUpdate: CASCADE
+        - addForeignKeyConstraint:
+            baseTableName: halls_seats
+            baseColumnNames: seats_id
+            referencedTableName: seats
+            referencedColumnNames: id
+            constraintName: fk_halls_seats_seat_id
+            onDelete: CASCADE
+            onUpdate: CASCADE
+
+

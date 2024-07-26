@@ -70,5 +70,5 @@ databaseChangeLog:
             baseColumnNames: movie_session_id
             baseTableName: tickets
             constraintName: fk_tickets_movie_session_id
-            referencedTableName: movie-sessions
+            referencedTableName: movie_sessions
             referencedColumnNames: id

@@ -1,6 +1,6 @@
 databaseChangeLog:
   - changeSet:
-      id: 202407181130_create_users_table
+      id: 202407170812_create_user_table
       author: ilkin
       changes:
         - createTable:

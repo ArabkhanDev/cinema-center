@@ -1,6 +1,6 @@
 databaseChangeLog:
   - changeSet:
-      id: 202407171807_create_balance_table
+      id: 202407170805_create_balance_table
       author: arabkhan
       changes:
         - createTable:
