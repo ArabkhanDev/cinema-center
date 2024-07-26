@@ -4,7 +4,7 @@ databaseChangeLog:
       author: arabkhan
       changes:
         - createTable:
-            tableName: movie-streams
+            tableName: movie_streams
             columns:
               - column:
                   name: id
@@ -62,7 +62,7 @@ databaseChangeLog:
             baseTableName: movie_stream_dubbing_languages
             constraintName: fk_dubbing_movie_stream_id
             referencedColumnNames: id
-            referencedTableName: movie-streams
+            referencedTableName: movie_streams
 
         - addForeignKeyConstraint:
             baseColumnNames: dubbing_language_id
@@ -76,7 +76,7 @@ databaseChangeLog:
             baseTableName: movie_stream_subtitle_languages
             constraintName: fk_subtitle_movie_stream_id
             referencedColumnNames: id
-            referencedTableName: movie-streams
+            referencedTableName: movie_streams
 
         - addForeignKeyConstraint:
             baseColumnNames: subtitle_language_id

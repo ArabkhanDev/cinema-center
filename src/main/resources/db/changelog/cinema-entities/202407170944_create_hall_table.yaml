@@ -1,6 +1,6 @@
 databaseChangeLog:
   - changeSet:
-      id: 202407180953_create_halls_table
+      id: 202407170944_create_hall_table
       author: elshan
       changes:
         - createTable:

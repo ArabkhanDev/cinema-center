@@ -1,6 +1,6 @@
 databaseChangeLog:
   - changeSet:
-      id: 202407180943_create_sectors_table
+      id: 202407171005_create_sector_table
       author: ilkin
       changes:
         - createTable:
