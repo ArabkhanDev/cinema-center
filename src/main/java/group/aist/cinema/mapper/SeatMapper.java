@@ -18,11 +18,4 @@ public interface SeatMapper {
     @Mapping(target = "id", ignore = true)
     void updateSeatFromDTO(SeatRequestDTO seatRequestDTO, @MappingTarget Seat seat);
 
-    @AfterMapping
-    default void setHallId(@MappingTarget SeatResponseDTO seatResponseDTO, Seat seat) {
-        if (seat.getSector() != null && seat.getSector().getHall() != null) {
-            seatResponseDTO.getSector().setHallId(seat.getSector().getHall().getId());
-        }
-    }
-
 }

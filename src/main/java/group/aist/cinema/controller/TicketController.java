@@ -1,7 +1,9 @@
 package group.aist.cinema.controller;
 
 import com.google.zxing.WriterException;
+import group.aist.cinema.dto.request.TicketPurchaseConfirmRequestDTO;
 import group.aist.cinema.dto.request.TicketRequestDTO;
+import group.aist.cinema.dto.request.TicketReturnConfirmRequestDTO;
 import group.aist.cinema.dto.response.TicketResponseDTO;
 import group.aist.cinema.model.Ticket;
 import group.aist.cinema.model.base.BaseResponse;
@@ -31,9 +33,9 @@ public class TicketController {
         return BaseResponse.success("Email send successfully! Please check your email and confirm your ticket");
     }
 
-    @PostMapping("/confirm-purchase/{ticketId}")
-    public Ticket confirmPurchase(@PathVariable Long ticketId) throws MessagingException, IOException, WriterException {
-        return ticketService.confirmPurchase(ticketId);
+    @PostMapping("/confirm-purchase")
+    public Ticket confirmPurchase(@RequestBody TicketPurchaseConfirmRequestDTO requestDTO) throws MessagingException, IOException, WriterException {
+        return ticketService.confirmPurchase(requestDTO);
     }
 
     @PostMapping("/return/{ticketId}")
@@ -42,9 +44,9 @@ public class TicketController {
         return BaseResponse.success("Email send successfully! Please check your email to return your ticket");
     }
 
-    @PostMapping("/confirm-return/{ticketId}")
-    public BaseResponse<String>  confirmReturn(@PathVariable Long ticketId) {
-        ticketService.confirmReturn(ticketId);
+    @PostMapping("/confirm-return")
+    public BaseResponse<String>  confirmReturn(@RequestBody TicketReturnConfirmRequestDTO requestDTO) {
+        ticketService.confirmReturn(requestDTO);
         return BaseResponse.success("You returned ticket successfully!");
     }
 

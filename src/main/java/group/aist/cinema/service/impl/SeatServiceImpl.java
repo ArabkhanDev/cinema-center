@@ -65,21 +65,12 @@ public class SeatServiceImpl implements SeatService {
         Seat seat = seatRepository.findById(id).
                 orElseThrow(() -> new ResponseStatusException(BAD_REQUEST, SEAT_NOT_FOUND + id));
 
-        Sector sector = sectorRepository.findById(seatRequestDTO.getSectorId())
-                .orElseThrow(() -> new ResponseStatusException(BAD_REQUEST, SEAT_NOT_FOUND + seatRequestDTO.getSectorId()));
-
-        seat.setSector(sector);
         seat.setType(SeatType.fromString(seatRequestDTO.getType()));
         return seat;
     }
 
     private Seat getSeat(SeatRequestDTO seatRequestDTO) {
         Seat seat = seatMapper.toEntity(seatRequestDTO);
-
-        Sector sector = sectorRepository.findById(seatRequestDTO.getSectorId())
-                .orElseThrow(() -> new ResponseStatusException(BAD_REQUEST, SECTOR_NOT_FOUND + seatRequestDTO.getSectorId()));
-
-        seat.setSector(sector);
         seat.setType(SeatType.fromString(seatRequestDTO.getType()));
         return seat;
     }

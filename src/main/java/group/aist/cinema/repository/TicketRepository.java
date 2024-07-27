@@ -16,11 +16,14 @@ public interface TicketRepository extends JpaRepository<Ticket,Long> {
             "user",
             "movieSession",
             "movieSession.hall",
+            "movieSession.hall.seats",
             "movieSession.movie",
             "movieSession.movieStream",
+            "movieSession.time",
             "user.balance",
             "movieSession.movieStream.dubbingLanguages",
-            "movieSession.movieStream.subtitleLanguages"
+            "movieSession.movieStream.subtitleLanguages",
+            "movieSession.movie.languages"
     })
     Optional<Ticket> findById(Long id);
 

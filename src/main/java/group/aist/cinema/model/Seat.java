@@ -27,8 +27,4 @@ public class Seat {
     @Enumerated(EnumType.STRING)
     private SeatType type;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "sector_id")
-    private Sector sector;
-
 }

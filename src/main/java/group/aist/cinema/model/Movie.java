@@ -42,7 +42,7 @@ public class Movie {
     @Column(name = "duration", nullable = false)
     private String duration;
 
-    @Column(name = "image")
+    @Column(name = "background_image")
     private String backgroundImage;
 
     @Column(name = "poster_image")

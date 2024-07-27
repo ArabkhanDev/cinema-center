@@ -1,5 +1,6 @@
 package group.aist.cinema.dto.request;
 
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
@@ -8,6 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -16,8 +18,8 @@ import java.util.Set;
 public class MovieSessionRequestDTO {
 
     @NotNull(message = "Time cannot be null")
-    @FutureOrPresent(message = "Time must be in the present or future")
-    private Set<LocalDateTime> time;
+    @Valid
+    private Set<@FutureOrPresent(message = "Time must be in the present or future") LocalDateTime> time;
 
     private boolean isActive;
 

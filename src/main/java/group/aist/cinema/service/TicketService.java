@@ -1,7 +1,9 @@
 package group.aist.cinema.service;
 
 import com.google.zxing.WriterException;
+import group.aist.cinema.dto.request.TicketPurchaseConfirmRequestDTO;
 import group.aist.cinema.dto.request.TicketRequestDTO;
+import group.aist.cinema.dto.request.TicketReturnConfirmRequestDTO;
 import group.aist.cinema.dto.response.TicketResponseDTO;
 import group.aist.cinema.model.Ticket;
 import jakarta.mail.MessagingException;
@@ -15,9 +17,9 @@ import java.util.List;
 
 public interface TicketService {
     void sendPurchaseLink(Long ticketId);
-    Ticket confirmPurchase(Long ticketId) throws IOException, WriterException, MessagingException;
+    Ticket confirmPurchase(TicketPurchaseConfirmRequestDTO requestDTO) throws IOException, WriterException, MessagingException;
     void returnTicketLink(Long ticketId) throws WriterException, MessagingException, IOException;
-    void confirmReturn(Long ticketId);
+    void confirmReturn(TicketReturnConfirmRequestDTO requestDTO);
     String generateQrCode(Long ticketId) throws IOException, WriterException;
     String scanQrCode(Long ticketId);
     Page<TicketResponseDTO> getAllTickets(Pageable pageable);
