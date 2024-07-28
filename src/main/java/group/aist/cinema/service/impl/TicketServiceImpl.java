@@ -2,13 +2,12 @@ package group.aist.cinema.service.impl;
 
 
 import com.google.zxing.WriterException;
-import com.itextpdf.io.codec.Base64;
+import com.itextpdf.commons.utils.Base64;
 import group.aist.cinema.dto.request.TicketPurchaseConfirmRequestDTO;
 import group.aist.cinema.dto.request.TicketRequestDTO;
 import group.aist.cinema.dto.request.TicketReturnConfirmRequestDTO;
 import group.aist.cinema.dto.response.TicketResponseDTO;
 import group.aist.cinema.enums.AvailableType;
-import group.aist.cinema.enums.SeatType;
 import group.aist.cinema.mapper.TicketMapper;
 import group.aist.cinema.model.*;
 import group.aist.cinema.repository.*;
@@ -16,13 +15,13 @@ import group.aist.cinema.service.EmailService;
 import group.aist.cinema.service.QrCodeService;
 import group.aist.cinema.service.TicketService;
 import jakarta.mail.MessagingException;
+import lombok.RequiredArgsConstructor;
 import org.apache.coyote.BadRequestException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
-import org.springframework.transaction.annotation.Transactional;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
@@ -71,7 +70,7 @@ public class TicketServiceImpl implements TicketService {
 
     @Transactional
     @Override
-    public Ticket confirmPurchase(TicketPurchaseConfirmRequestDTO requestDTO) throws IOException, WriterException, MessagingException {
+    public Ticket confirmPurchase(TicketPurchaseConfirmRequestDTO requestDTO) throws IOException, MessagingException {
         Ticket ticket = ticketRepository.findById(requestDTO.getTicketId())
                 .orElseThrow(() -> new ResponseStatusException(BAD_REQUEST, TICKET_NOT_FOUND + requestDTO.getTicketId()));
         Seat seat = seatRepository.findSeatByRowAndNumber(requestDTO.getSeatRow(),requestDTO.getSeatNumber()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,"No Seat found with this credentials"));
@@ -83,6 +82,11 @@ public class TicketServiceImpl implements TicketService {
         User user = ticket.getUser();
         int availableSeats = ticket.getMovieSession().getHall().getAvailableSeat();
         BigDecimal balance = user.getBalance().getAmount();
+        if(requestDTO.getSeatRow().equals("G")){
+            ticket.setPrice(BigDecimal.valueOf(20.00));
+        }else{
+            ticket.setPrice(BigDecimal.valueOf(10.00));
+        }
         BigDecimal price = ticket.getPrice();
         if (balance.compareTo(price) >= 0) {
             BigDecimal newBalance = balance.subtract(price);
@@ -103,7 +107,8 @@ public class TicketServiceImpl implements TicketService {
             throw new ResponseStatusException(BAD_REQUEST, "Insufficient balance");
         }
 
-        byte[] qrCodePdf = qrCodeService.generatePdfWithQrCode(requestDTO.getTicketId());
+        byte[] qrCodePdf = null;
+        qrCodePdf = qrCodeService.generatePdfWithQrCode(requestDTO.getTicketId());
 
         emailService.sendMessageWithQrCode(
                 user.getEmail(),
@@ -167,7 +172,9 @@ public class TicketServiceImpl implements TicketService {
     public String generateQrCode(Long ticketId) throws IOException, WriterException {
         Ticket ticket = ticketRepository.findById(ticketId)
                 .orElseThrow(() -> new ResponseStatusException(BAD_REQUEST, TICKET_NOT_FOUND + ticketId));
+
         return Base64.encodeBytes(qrCodeService.generatePdfWithQrCode(ticketId));
+
     }
 
     @Override
@@ -239,7 +246,6 @@ public class TicketServiceImpl implements TicketService {
         ticket.setUser(user);
         ticket.setMovieSession(movieSession);
         ticket.setIsScanned(false);
-
 
         Ticket saved = ticketRepository.save(ticket);
 
