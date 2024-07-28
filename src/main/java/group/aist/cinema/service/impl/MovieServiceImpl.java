@@ -3,6 +3,7 @@ package group.aist.cinema.service.impl;
 import group.aist.cinema.dto.request.MovieRequestDTO;
 import group.aist.cinema.dto.request.MovieUpdateRequest;
 import group.aist.cinema.dto.response.MovieResponseDTO;
+import group.aist.cinema.exporter.ExcelExporter;
 import group.aist.cinema.mapper.MovieMapper;
 import group.aist.cinema.model.Movie;
 import group.aist.cinema.repository.MovieRepository;
@@ -15,9 +16,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
+import java.nio.file.Files;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static group.aist.cinema.util.ExceptionMessages.MOVIE_NOT_FOUND;
 import static org.springframework.http.HttpStatus.*;
@@ -28,10 +32,12 @@ public class MovieServiceImpl implements MovieService {
 
     private final MovieRepository movieRepository;
     private final MovieMapper movieMapper;
+    private final ExcelExporter exporter;
 
     @Override
     public Page<MovieResponseDTO> getAllMovies(Pageable pageable) {
         Page<Movie> movies = movieRepository.findAll(pageable);
+//        List<String> ads = new ArrayList<>(List.of("id","name","description","genre","releaseDate","ageRestriction","duration","backgroundImage","posterImage","arrivalOfCinema","languages"));
         return movies.map(movieMapper::mapToDto);
     }
 
@@ -62,6 +68,7 @@ public class MovieServiceImpl implements MovieService {
         MovieResponseDTO movieResponseDTO = movieMapper.mapToDto(movieRepository.save(movie));
 
         returnBase64Image(movieRequestDTO, movieResponseDTO);
+        exporter.export(movieRepository.findAll().stream().map(movieMapper::mapToDto).collect(Collectors.toList()), "./","movie-data.xlsx");
         return movieResponseDTO;
     }
 

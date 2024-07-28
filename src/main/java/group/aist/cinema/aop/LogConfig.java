@@ -1,4 +1,4 @@
-package group.aist.cinema.config;
+package group.aist.cinema.aop;
 
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -22,9 +22,9 @@ public class LogConfig {
     public Object logAround(ProceedingJoinPoint joinPoint) throws Throwable {
         Object[] args = joinPoint.getArgs();
         String methodName = joinPoint.getSignature().getName();
-        log.info(">> {}() - {}", methodName, Arrays.toString(args));
+        log.info(">> {} - starts", methodName);
         Object result = joinPoint.proceed();
-        log.info("<< {}() - {}", methodName, result);
+        log.info("<< {} - ends", methodName);
         return result;
     }
 }
