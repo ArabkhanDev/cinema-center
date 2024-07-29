@@ -20,12 +20,12 @@ public class HallDTO {
     @Size(min = 1, max = 100, message = "Name must be between 1 and 100 characters")
     private String name;
 
-    @NotNull(message = "Seat count cannot be null")
-    @Positive(message = "Seat count must be a positive integer")
+//    @NotNull(message = "Seat count cannot be null")
+//    @Positive(message = "Seat count must be a positive integer")
     private Integer seatCount;
 
-    @NotNull(message = "Available seat cannot be null")
-    @Positive(message = "Available seat must be greater than or equal to 0")
+//    @NotNull(message = "Available seat cannot be null")
+//    @Positive(message = "Available seat must be greater than or equal to 0")
     private Integer availableSeat;
 
     public HallDTO(Hall hall) {

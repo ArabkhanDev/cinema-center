@@ -61,7 +61,12 @@ databaseChangeLog:
                   constraints:
                     nullable: false
               - column:
-                  name: language
+                  name: name
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: iso_code
                   type: VARCHAR(255)
                   constraints:
                     nullable: false

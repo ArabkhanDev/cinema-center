@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ticket</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        p{
+            margin: 0;
+            padding: 0;
+        }
+        .ticket {
+            width: 600px;
+            border: 1px solid #000;
+            padding: 20px;
+            margin: 20px auto;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .contact {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        .ticketNumber{
+            display: flex;
+            flex-direction: column;
+        }
+        .title {
+            font-size: 20px;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+        .subtitle {
+            font-size: 18px;
+            margin-top: 10px;
+        }
+        .details {
+            margin-top: 20px;
+        }
+        .details p {
+            margin: 5px 0;
+        }
+        .qr-code {
+            float: left;
+            width: 100px;
+            height: 100px;
+            margin-right: 20px;
+        }
+        .footer {
+            margin-top: 30px;
+            border-top: 1px solid #000;
+            padding-top: 10px;
+        }
+        .footer p {
+            font-size: 12px;
+        }
+        ul{
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+</head>
+<body>
+<div class="ticket">
+    <div class="header">
+        <img src="src/main/resources/static/logo.jpeg" class="logo"/>
+        <div class="contact">
+            <p>Dəstək / Support</p>
+            <p>Phone: +994 12 424 24 24</p>
+            <p>Email: nizamimoviecenter@gmail.com</p>
+        </div>
+        <div style="position: absolute; right: 50px; top: 50px; ">
+            <ul  th:each="digit : ${ticketNumber}">
+                <li style="text-align: right" class="" th:text="${digit}"></li>
+            </ul>
+        </div>
+    </div>
+    <div class="title">Nizami Movie Center</div>
+    <div class="subtitle"> <p>Movie Name: <span th:text="${name}"></span></p></div>
+    <div class="details">
+        <p>Tarix / Date: <span th:text="${date}"></span></p>
+        <p>Saat / Time: <span th:text="${time}"></span></p>
+        <p>Sektor / Sector: <span th:text="${sector}"></span></p>
+        <p>Qiymət / Price: <span th:text="${price}"></span> AZN</p>
+    </div>
+    <div id="qr-code">
+        <img src="">
+    </div>
+    <div class="footer">
+        <p>ALICILARIN NƏZƏRİNƏ!</p>
+        <p>ГК СВЕДЕНИЮ ПОКУПАТЕЛЕЙ!</p>
+        <p>NOTICE TO BUYERS!</p>
+        <p>• Gecikən şəxslər buraxılmır və biletlər geri qaytarılmır.</p>
+        <p>• Опоздавшие лица не допускаются, и билеты не возвращаются.</p>
+        <p>• Latecomers are not allowed to enter and tickets cannot be returned.</p>
+    </div>
+</div>
+</body>
+</html>

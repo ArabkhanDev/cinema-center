@@ -3,6 +3,7 @@ package group.aist.cinema.controller;
 import group.aist.cinema.dto.common.BalanceDTO;
 import group.aist.cinema.model.base.BaseResponse;
 import group.aist.cinema.service.BalanceService;
+import group.aist.cinema.service.QrCodeService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -10,16 +11,19 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.FileNotFoundException;
+
 @RestController
 @RequestMapping("/v1/api/balances")
 @RequiredArgsConstructor
 public class BalanceController {
 
     private final BalanceService balanceService;
+    private final QrCodeService qrCodeService;
 
     @GetMapping
     @PreAuthorize("hasAnyRole('ADMIN','USER')")
-    public BaseResponse<Page<BalanceDTO>> getAllBalances(Pageable pageable){
+    public BaseResponse<Page<BalanceDTO>> getAllBalances(Pageable pageable) {
         return BaseResponse.success(balanceService.getAllBalances(pageable));
     }
 

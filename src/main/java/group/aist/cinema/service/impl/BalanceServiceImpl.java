@@ -1,15 +1,20 @@
 package group.aist.cinema.service.impl;
 
 import group.aist.cinema.dto.common.BalanceDTO;
+import group.aist.cinema.exporter.ExcelExporter;
 import group.aist.cinema.mapper.BalanceMapper;
+import group.aist.cinema.mapper.MovieMapper;
 import group.aist.cinema.model.Balance;
 import group.aist.cinema.repository.BalanceRepository;
+import group.aist.cinema.repository.MovieRepository;
 import group.aist.cinema.service.BalanceService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+
+import java.util.stream.Collectors;
 
 import static group.aist.cinema.util.ExceptionMessages.BALANCE_NOT_FOUND;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
@@ -20,7 +25,6 @@ public class BalanceServiceImpl implements BalanceService {
 
      private final BalanceRepository balanceRepository;
      private final BalanceMapper balanceMapper;
-
 
      @Override
      public Page<BalanceDTO> getAllBalances(Pageable pageable) {

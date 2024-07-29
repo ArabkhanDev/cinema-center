@@ -2,8 +2,8 @@ spring:
   servlet:
     multipart:
       enabled: true
-      max-file-size: 2MB
-      max-request-size: 2MB
+      max-file-size: 10MB
+      max-request-size: 10MB
 
   liquibase:
     enabled: true
@@ -45,8 +45,8 @@ spring:
 
   mail:
     host: smtp.gmail.com
-    username:
-    password:
+    username: udemy9569@gmail.com
+    password: zubx utjs pfyo tteg
     port: 587
     properties:
       mail:

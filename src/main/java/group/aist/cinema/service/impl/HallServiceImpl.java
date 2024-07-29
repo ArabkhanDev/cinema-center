@@ -6,6 +6,7 @@ import group.aist.cinema.mapper.HallMapper;
 import group.aist.cinema.model.Hall;
 import group.aist.cinema.model.Seat;
 import group.aist.cinema.repository.HallRepository;
+import group.aist.cinema.repository.SeatRepository;
 import group.aist.cinema.service.HallService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -26,6 +27,7 @@ public class HallServiceImpl implements HallService {
 
     private final HallRepository hallRepository;
     private final HallMapper hallMapper;
+    private final SeatRepository seatRepository;
 
     @Override
     public Page<HallDTO> getAllHalls(Pageable pageable) {

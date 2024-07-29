@@ -18,10 +18,6 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class TicketRequestDTO {
 
-    @NotNull(message = "Ticket id must not be null")
-    @Positive(message = "Ticket ID must be a positive number")
-    private Long id;
-
     @NotNull(message = "Price must not be null")
     @Positive(message = "Price must be a positive number")
     private BigDecimal price;
@@ -39,7 +35,6 @@ public class TicketRequestDTO {
     private LocalDate endDate;
 
     @NotNull(message = "User id must not be null")
-    @Positive(message = "User ID must be a positive number")
     private String userId;
 
     @NotNull(message = "Movie Session id must not be null")
