@@ -1,0 +1,41 @@
+databaseChangeLog:
+  - changeSet:
+      id: 202407291003_insert_default_values_payment_table
+      author: arabkhan
+      changes:
+        - insert:
+            tableName: payments
+            columns:
+              - column:
+                  name: type
+                  value: "CREDIT"
+              - column:
+                  name: card_number
+                  value: "4111111111111111"
+              - column:
+                  name: user_id
+                  value: "user1"
+        - insert:
+            tableName: payments
+            columns:
+              - column:
+                  name: type
+                  value: "DEBIT"
+              - column:
+                  name: card_number
+                  value: "5555555555554444"
+              - column:
+                  name: user_id
+                  value: "user2"
+        - insert:
+            tableName: payments
+            columns:
+              - column:
+                  name: type
+                  value: "PAYPAL"
+              - column:
+                  name: card_number
+                  value: "paypal-1234567890"
+              - column:
+                  name: user_id
+                  value: "user3"

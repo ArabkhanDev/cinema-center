@@ -1,0 +1,32 @@
+databaseChangeLog:
+  - changeSet:
+      id: 202407260000_add_default_data_to_balances
+      author: arabkhan
+      changes:
+        - insert:
+            tableName: balances
+            columns:
+              - column:
+                  name: currency
+                  value: 'USD'
+              - column:
+                  name: amount
+                  value: '100.00'
+        - insert:
+            tableName: balances
+            columns:
+              - column:
+                  name: currency
+                  value: 'EUR'
+              - column:
+                  name: amount
+                  value: '200.00'
+        - insert:
+            tableName: balances
+            columns:
+              - column:
+                  name: currency
+                  value: 'JPY'
+              - column:
+                  name: amount
+                  value: '3000.00'

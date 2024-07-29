@@ -1,0 +1,41 @@
+databaseChangeLog:
+  - changeSet:
+      id: 202407190945_insert_default_values_into_hall
+      author: arabkhan
+      changes:
+        - insert:
+            tableName: halls
+            columns:
+              - column:
+                  name: name
+                  value: 'Hall A'
+              - column:
+                  name: seat_count
+                  value: '100'
+              - column:
+                  name: available_seat
+                  value: '100'
+        - insert:
+            tableName: halls
+            columns:
+              - column:
+                  name: name
+                  value: 'Hall B'
+              - column:
+                  name: seat_count
+                  value: '150'
+              - column:
+                  name: available_seat
+                  value: '150'
+        - insert:
+            tableName: halls
+            columns:
+              - column:
+                  name: name
+                  value: 'Hall C'
+              - column:
+                  name: seat_count
+                  value: '200'
+              - column:
+                  name: available_seat
+                  value: '200'

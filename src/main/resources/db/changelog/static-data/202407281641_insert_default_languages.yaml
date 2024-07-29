@@ -1,0 +1,97 @@
+databaseChangeLog:
+  - changeSet:
+      id: 202407281641_insert_default_languages
+      author: arabkhan
+      changes:
+        - insert:
+            tableName: dubbing_languages
+            columns:
+              - column:
+                  name: name
+                  value: 'English'
+              - column:
+                  name: iso_code
+                  value: 'en'
+        - insert:
+            tableName: dubbing_languages
+            columns:
+              - column:
+                  name: name
+                  value: 'Spanish'
+              - column:
+                  name: iso_code
+                  value: 'es'
+        - insert:
+            tableName: dubbing_languages
+            columns:
+              - column:
+                  name: name
+                  value: 'French'
+              - column:
+                  name: iso_code
+                  value: 'fr'
+        - insert:
+            tableName: dubbing_languages
+            columns:
+              - column:
+                  name: name
+                  value: 'German'
+              - column:
+                  name: iso_code
+                  value: 'de'
+        - insert:
+            tableName: dubbing_languages
+            columns:
+              - column:
+                  name: name
+                  value: 'Italian'
+              - column:
+                  name: iso_code
+                  value: 'it'
+
+        # Inserting into subtitle_languages
+        - insert:
+            tableName: subtitle_languages
+            columns:
+              - column:
+                  name: name
+                  value: 'English'
+              - column:
+                  name: iso_code
+                  value: 'en'
+        - insert:
+            tableName: subtitle_languages
+            columns:
+              - column:
+                  name: name
+                  value: 'Spanish'
+              - column:
+                  name: iso_code
+                  value: 'es'
+        - insert:
+            tableName: subtitle_languages
+            columns:
+              - column:
+                  name: name
+                  value: 'French'
+              - column:
+                  name: iso_code
+                  value: 'fr'
+        - insert:
+            tableName: subtitle_languages
+            columns:
+              - column:
+                  name: name
+                  value: 'German'
+              - column:
+                  name: iso_code
+                  value: 'de'
+        - insert:
+            tableName: subtitle_languages
+            columns:
+              - column:
+                  name: name
+                  value: 'Italian'
+              - column:
+                  name: iso_code
+                  value: 'it'

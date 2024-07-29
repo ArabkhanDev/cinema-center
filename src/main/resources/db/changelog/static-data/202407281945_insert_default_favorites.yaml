@@ -1,0 +1,31 @@
+databaseChangeLog:
+  - changeSet:
+      id: 202407281945_insert_default_favorites
+      author: arabkhan
+      changes:
+        - insert:
+            tableName: favorites
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: 1
+              - column:
+                  name: name
+                  value: 'Default Favorite'
+              - column:
+                  name: user_id
+                  value: 'user1'
+
+  - changeSet:
+      id: 202407281946_insert_default_favorite_movies
+      author: arabkhan
+      changes:
+        - insert:
+            tableName: favorite_movies
+            columns:
+              - column:
+                  name: favorite_id
+                  valueNumeric: 1
+              - column:
+                  name: movie_id
+                  valueNumeric: 1

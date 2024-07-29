@@ -1,3 +1,5 @@
 databaseChangeLog:
   - includeAll:
       path: db/changelog/cinema-entities/
+  - includeAll:
+      path: db/changelog/static-data/

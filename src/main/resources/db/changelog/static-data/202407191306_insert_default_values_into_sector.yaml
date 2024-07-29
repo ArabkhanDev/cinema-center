@@ -1,0 +1,88 @@
+databaseChangeLog:
+  - changeSet:
+      id: 2024072801446_insert_seats_for_all_sectors
+      author: arabkhan
+      changes:
+        - sql:
+            splitStatements: true
+            sql: |
+              -- Sector A (id: 1)
+              INSERT INTO seats (number, row, type)
+              SELECT 
+                 row_number AS number,
+                 column_number::TEXT AS row,
+                 'STANDARD' AS type
+              FROM 
+                 generate_series(1, 10) AS row_number,
+                 generate_series(1, 6) AS column_number;
+              
+              -- Sector B (id: 2)
+              INSERT INTO seats (number, row, type)
+              SELECT 
+                 row_number AS number,
+                 column_number::TEXT AS row,
+                 'STANDARD' AS type
+              FROM 
+                 generate_series(1, 10) AS row_number,
+                 generate_series(1, 8) AS column_number;
+              
+              -- Sector C (id: 3)
+              INSERT INTO seats (number, row, type)
+              SELECT 
+                 row_number AS number,
+                 column_number::TEXT AS row,
+                 'STANDARD' AS type
+              FROM 
+                 generate_series(1, 10) AS row_number,
+                 generate_series(1, 10) AS column_number;
+              
+              -- Sector D (id: 4)
+              INSERT INTO seats (number, row, type)
+              SELECT 
+                 row_number AS number,
+                 column_number::TEXT AS row,
+                 'STANDARD' AS type
+              FROM 
+                 generate_series(1, 10) AS row_number,
+                 generate_series(1, 12) AS column_number;
+              
+              -- Sector E (id: 5)
+              INSERT INTO seats (number, row, type)
+              SELECT 
+                 row_number AS number,
+                 column_number::TEXT AS row,
+                 'STANDARD' AS type
+              FROM 
+                 generate_series(1, 10) AS row_number,
+                 generate_series(1, 12) AS column_number;
+              
+              -- Sector F (id: 6)
+              INSERT INTO seats (number, row, type)
+              SELECT 
+                 row_number AS number,
+                 column_number::TEXT AS row,
+                 'STANDARD' AS type
+              FROM 
+                 generate_series(1, 10) AS row_number,
+                 generate_series(1, 12) AS column_number;
+              
+              -- Sector G (id: 7)
+              INSERT INTO seats (number, row, type)
+              SELECT 
+                 row_number AS number,
+                 column_number::TEXT AS row,
+                 'STANDARD' AS type
+              FROM 
+                 generate_series(1, 10) AS row_number,
+                 generate_series(1, 12) AS column_number;
+
+  - changeSet:
+      id: 202407281447_populate_halls_seats
+      author: arabkhan
+      changes:
+        - sql:
+            sql: |
+              INSERT INTO halls_seats (hall_id, seats_id)
+              SELECT DISTINCT h.id, s.id
+              FROM halls h
+              CROSS JOIN seats s;
