@@ -1,0 +1,64 @@
+databaseChangeLog:
+  - changeSet:
+      id: 202407281701_insert_default_movie_stream_values
+      author: arabkhan
+      changes:
+        - insert:
+            tableName: movie_streams
+            columns:
+              - column:
+                  name: id
+                  valueComputed: "nextval('movie_streams_seq')"
+              - column:
+                  name: has_subtitle
+                  valueBoolean: true
+
+        - insert:
+            tableName: movie_streams
+            columns:
+              - column:
+                  name: id
+                  valueComputed: "nextval('movie_streams_seq')"
+              - column:
+                  name: has_subtitle
+                  valueBoolean: false
+
+        - insert:
+            tableName: movie_stream_dubbing_languages
+            columns:
+              - column:
+                  name: movie_stream_id
+                  valueComputed: "(SELECT currval('movie_streams_seq') - 1)"
+              - column:
+                  name: dubbing_language_id
+                  valueNumeric: 1
+
+        - insert:
+            tableName: movie_stream_dubbing_languages
+            columns:
+              - column:
+                  name: movie_stream_id
+                  valueComputed: "(SELECT currval('movie_streams_seq'))"
+              - column:
+                  name: dubbing_language_id
+                  valueNumeric: 2
+
+        - insert:
+            tableName: movie_stream_subtitle_languages
+            columns:
+              - column:
+                  name: movie_stream_id
+                  valueComputed: "(SELECT currval('movie_streams_seq') - 1)"
+              - column:
+                  name: subtitle_language_id
+                  valueNumeric: 2
+
+        - insert:
+            tableName: movie_stream_subtitle_languages
+            columns:
+              - column:
+                  name: movie_stream_id
+                  valueComputed: "(SELECT currval('movie_streams_seq'))"
+              - column:
+                  name: subtitle_language_id
+                  valueNumeric: 1

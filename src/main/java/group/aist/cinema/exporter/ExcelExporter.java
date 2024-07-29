@@ -164,8 +164,6 @@ public class ExcelExporter<T> implements Exporter<T> {
                         Set<T> childDataSet = (Set<T>) value;
                         List<T> childData = new ArrayList<>(childDataSet);
                         fillDataToCollection(uuid, cell, sheet, childSheet, childData);
-                    } else if (value instanceof Object) {
-                        // todo implement additional functionality
                     }
                 }
                 columnCount++;

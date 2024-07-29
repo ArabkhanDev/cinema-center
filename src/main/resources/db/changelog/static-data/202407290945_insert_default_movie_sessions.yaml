@@ -1,0 +1,47 @@
+databaseChangeLog:
+  - changeSet:
+      id: 202407290945_insert_default_movie_sessions
+      author: arabkhan
+      changes:
+        - insert:
+            tableName: movie_sessions
+            columns:
+              - column:
+                  name: is_active
+                  value: true
+              - column:
+                  name: movie_id
+                  value: 1
+              - column:
+                  name: hall_id
+                  value: 1
+              - column:
+                  name: movie_stream_id
+                  value: 1
+        - insert:
+            tableName: movie_session_times
+            columns:
+              - column:
+                  name: movie_session_id
+                  value: 1
+              - column:
+                  name: time
+                  value: "2024-07-18 10:00:00"
+        - insert:
+            tableName: movie_session_times
+            columns:
+              - column:
+                  name: movie_session_id
+                  value: 1
+              - column:
+                  name: time
+                  value: "2024-07-18 14:00:00"
+        - insert:
+            tableName: movie_session_times
+            columns:
+              - column:
+                  name: movie_session_id
+                  value: 1
+              - column:
+                  name: time
+                  value: "2024-07-18 18:00:00"

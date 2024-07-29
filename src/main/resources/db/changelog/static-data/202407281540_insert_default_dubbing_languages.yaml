@@ -1,0 +1,95 @@
+databaseChangeLog:
+  - changeSet:
+      id: 202407281540_insert_default_dubbing_languages
+      author: arabkhan
+      changes:
+        - insert:
+            tableName: dubbing_languages
+            columns:
+              - column:
+                  name: name
+                  value: 'English'
+              - column:
+                  name: iso_code
+                  value: 'en'
+        - insert:
+            tableName: dubbing_languages
+            columns:
+              - column:
+                  name: name
+                  value: 'Spanish'
+              - column:
+                  name: iso_code
+                  value: 'es'
+        - insert:
+            tableName: dubbing_languages
+            columns:
+              - column:
+                  name: name
+                  value: 'French'
+              - column:
+                  name: iso_code
+                  value: 'fr'
+        - insert:
+            tableName: dubbing_languages
+            columns:
+              - column:
+                  name: name
+                  value: 'German'
+              - column:
+                  name: iso_code
+                  value: 'de'
+        - insert:
+            tableName: dubbing_languages
+            columns:
+              - column:
+                  name: name
+                  value: 'Italian'
+              - column:
+                  name: iso_code
+                  value: 'it'
+        - insert:
+            tableName: dubbing_languages
+            columns:
+              - column:
+                  name: name
+                  value: 'Russian'
+              - column:
+                  name: iso_code
+                  value: 'ru'
+        - insert:
+            tableName: dubbing_languages
+            columns:
+              - column:
+                  name: name
+                  value: 'Japanese'
+              - column:
+                  name: iso_code
+                  value: 'ja'
+        - insert:
+            tableName: dubbing_languages
+            columns:
+              - column:
+                  name: name
+                  value: 'Chinese (Mandarin)'
+              - column:
+                  name: iso_code
+                  value: 'zh'
+        - insert:
+            tableName: dubbing_languages
+            columns:
+              - column:
+                  name: name
+                  value: 'Arabic'
+              - column:
+                  name: iso_code
+                  value: 'ar'
+        - insert:
+            tableName: dubbing_languages
+            columns:
+              - column:
+                  name: name
+                  value: 'Hindi'
+              - column:
+                  name: iso_code
+                  value: 'hi'
